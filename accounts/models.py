@@ -16,6 +16,8 @@ class User(AbstractUser):
     age = models.CharField(max_length=20, default='20', choices=age_Choices)
 
     address = models.CharField(max_length=200)
+    town = models.CharField(max_length=100,blank=True,null=True)
+    building = models.CharField(max_length=100,blank=True,null=True)
 
     introduce = RichTextUploadingField(blank=True,null=True)
 
