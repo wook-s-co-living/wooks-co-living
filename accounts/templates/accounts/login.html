@@ -1,9 +1,43 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %} login {% endblock title %}
+{% block header %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/accounts.css' %}"> 
+{% endblock header %}
 
 {% block content %}
 
+<div class="accounts--container">
 
+  {% comment %} logo {% endcomment %}
+  <div class="login--logo">
+    <img src="{% static 'image/logo.png' %}" alt="">혼거동락
+  </div>
+
+  <div class="login--form--box">
+    {% comment %} login form {% endcomment %}
+    <form action="{% url 'accounts:login' %}" method="POST">
+      {% csrf_token %}
+      <div class="accounts--login--box">
+        {{ form.username }}
+        {{ form.password }}
+      </div>
+      <input type="submit" value="로그인" class="accounts--btn">
+    </form>
+
+    {% comment %} social login {% endcomment %}
+    {% load socialaccount %}
+    <a href="{% provider_login_url 'kakao' method='oauth2' %}" class="accounts--btn">
+      <i class="bi bi-chat-fill"></i> 카카오 로그인
+    </a>
+
+    {% comment %} another button {% endcomment %}
+    <div class="accounts--btn--box">
+      <a href="">비밀번호 재설정</a>
+      <a href="{% url 'accounts:signup' %}">회원가입</a>
+    </div>
+  </div>
+
+</div>
 
 {% endblock content %}
