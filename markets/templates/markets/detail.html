@@ -2,6 +2,12 @@
 {% load static %}
 {% block title %} markets_detail {% endblock title %}
 
+{% block header %}
+  <link rel="stylesheet" href="{% static 'markets/css/markets.css' %}">
+{% endblock header %}
+
 {% block content %}
+
+  <div>{{ post.title }}</div>
 
 {% endblock content %}
