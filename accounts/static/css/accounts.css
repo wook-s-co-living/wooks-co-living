@@ -5,6 +5,9 @@
   font-style: normal;
 }
 
+body {
+	line-height: normal;
+}
 /* accounts 기본 컨테이너 */
 .accounts--container {
   width: 400px;
@@ -28,7 +31,7 @@
 .accounts--btn i {
   position: absolute;
   left: 10%;
-  bottom: 24%;
+  bottom: 25%;
 }
 
 .accounts--btn:hover {
@@ -36,14 +39,19 @@
   background-color: rgb(211, 189, 40);
 }
 
+.accounts--title {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+}
+
 /* color 참고 */
 .yellow {
-  background-color: rgb(255, 233, 93); /* 연노랑*/
-  background-color: rgb(255, 228, 54); /* 진노랑 */
+  background-color: #FEE500; /* 연노랑*/
+  background-color: rgb(211, 189, 40); /* 진노랑 */
 }
 
 .navy {
-  background-color: rgb(45, 33, 152);
+  background-color: #34568b;
 }
 
                                           /* accounts_login */
@@ -61,7 +69,7 @@
 }
 
 .login--form:focus {
-  border: 1px solid rgb(45, 33, 152) !important;
+  border: 1px solid #34568b !important;
   outline: none;
 }
 
@@ -71,7 +79,7 @@
   margin: 1.2rem auto;
   font-size: 2rem;
   font-family: 'ImcreSoojin';
-  color: rgb(45, 33, 152);
+  color: #34568b;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -137,10 +145,11 @@
   color: gray;
   transition: border .15s ease-in-out;
   width: 100%;
+  margin-bottom: 0.8rem !important;
 }
 
 .signup--form:focus {
-  border: 1px solid rgb(45, 33, 152);
+  border: 1px solid #34568b;
   outline: none;
 }
 
@@ -148,10 +157,6 @@
 .signup--container {
   width: 100%;
   margin: auto;
-}
-
-.signup--title {
-
 }
 
 .label--box {
@@ -163,7 +168,6 @@
 .signup--select--box {
   display: flex;
   gap: 8px;
-  margin-bottom: 1rem;
 }
 
 input[type=file]::file-selector-button {
@@ -178,12 +182,13 @@ input[type=file]::file-selector-button {
 
 .address--btn {
   width: 100px;
-  color: rgb(45, 33, 152);
+  color: #34568b;
   font-size: 1rem;
   background-color: #fff0;
   border: none;
-  text-decoration: none;
+  text-decoration: none;  
   text-align: center;
+  margin-bottom: 0.8rem;
 }
 
 .relogin--txt {
@@ -196,4 +201,270 @@ input[type=file]::file-selector-button {
   color: black;
   font-weight: 600;
   margin: 5px;
+}
+                                          /* accounts_profile */
+.accounts--profile--container {
+  width: 1000px;
+  margin: auto;
+}               
+
+.profile--container {
+  display: grid;
+  grid-template-columns: 300px auto;
+}
+
+/* 탭 */
+
+input[type="radio"] {
+  display: none;
+}
+
+input[type="radio"] + label {
+  color: #34568b;
+  cursor: pointer;
+  margin: 10px 50px;
+  font-weight: 600;
+}
+input[type="radio"]:checked + label {
+  color: #FEE500;
+}
+.profile--card {
+  display: none;
+  height: 500px;
+  width: 700px;
+}
+
+input[id="tab01"]:checked ~ .card1 {
+  display: block;
+}
+input[id="tab02"]:checked ~ .card2 {
+  display: block;
+}
+input[id="tab03"]:checked ~ .card3 {
+  display: block;
+}
+input[id="tab04"]:checked ~ .card4 {
+  display: block;
+}
+
+/* 프로필 카드 */
+.profile--box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile--namecard {
+  border: 1px solid rgb(212, 212, 212);
+  border-radius: 5px;
+  width: 200px;
+  height: 400px;
+  box-shadow: 0.2px 0.2px 10px rgba(200, 200, 200, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+.profile--namecard h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.share--btn {
+  position: absolute;
+  top:10px;
+  right: 10px;
+}
+
+.profile--imgbox {
+  width: 120px;
+  height: 120px;
+  border-radius: 100%;
+  line-height: 120px;
+  overflow: hidden;
+  margin-top: 20px;
+}
+.profile--imgbox img {
+  width: 120px;
+  height: 120px;
+}
+
+.follow--box {
+  display: flex;
+  gap: 8px;
+}
+.follow--box p,span {
+  color: gray;
+  font-size: 0.8rem;
+}
+.follow--btn {
+  background-color: #fff0;
+  border: none;
+  color: gray;
+  font-size: 0.8rem;
+  padding: 0;
+}
+
+.profile--followbtn {
+  width: 100%;
+  background-color: #34568b;
+  font-size: 0.8rem;
+  color: white;
+  border: none;
+  text-align: center;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+.maum {
+  width: 60%;
+  height: 110px;
+  position: relative;
+  margin: 0 auto;
+}
+.maum img {
+  width: 100%;
+  height: 100%;
+}
+.maum p {
+  position: absolute;
+  bottom: 18px;
+  right: 8px;
+  color: #34568b;
+  font-weight: 600;
+}
+
+.count--like {
+  display: none;
+}
+
+.user--eva {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+}
+.user--like {
+  background-color: #FDD20D;
+  width: 80px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 10px;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+.user--dislike {
+  background-color: #34568b;
+  width: 80px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 10px;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+.user--emoji {
+  color: white;
+  padding: 0;
+  font-size: 20px;
+  border: none;
+  background-color: #fff0;
+}
+
+/* 모달 */
+.follow--modal {
+  width: 50px;
+  display: inline-block;
+  margin: 10px;
+  
+}
+.follow--modal a{
+  text-decoration: none;
+  color: gray;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile--image {
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  line-height: 45px;
+  overflow: hidden;
+  padding: 0;
+  border: none;
+  background-color: rgba(244, 165, 96, 0);
+  border-radius: 100%;
+}
+.profile {
+  width: 50px;
+  height: 50px;
+  object-fit: fill;
+}
+
+/* 첫번째 박스 */
+.introduce--box {
+  display: none;
+}
+.card1 {
+  position: relative;
+}
+.card1 h1 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+#introduce-toggle {
+  border: none;
+  background-color: #fff0;
+}
+
+.introduce--txt {
+  height: 450px;
+  overflow: auto;
+}
+.introduce--txt::-webkit-scrollbar {
+  border-radius: 20px;
+  width: 10px;
+  margin: 10px 5px;
+}
+.introduce--txt::-webkit-scrollbar-thumb {
+  background-color: #34558b9b;
+  border-radius: 20px;
+  padding: 10px;
+}
+
+.introduce--box {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 500px;
+  min-width: 500px;
+}
+.introduce--btn {
+  border: none;
+  background-color: #fff0;
+  color: #34568b;
+  font-weight: 600;
+}
+.show--form {
+  display: block;
+}
+#cke_id_introduce {
+  height: 500px;
+  width: 700px !important;
+}
+#cke_1_contents {
+  min-height: 398px !important;
+}
+#cke_1_resizer {
+  display: none;
 }
