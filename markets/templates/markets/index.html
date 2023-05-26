@@ -1,15 +1,140 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 {% block title %} markets_index {% endblock title %}
 
 {% block header %}
-  <link rel="stylesheet" href="{% static 'markets/css/markets.css' %}">
+  <link rel="stylesheet" href="{% static 'css/markets.css' %}">
 {% endblock header %}
 
 {% block content %}
 
-  {% for post in posts %}
-    {{ post.title }}
-  {% endfor %}
+  <div class='markets--index'>
 
+    {% comment %} markets/index의 네비바 {% endcomment %}
+    <header class='markets--index--header'>
+      <section class='markets--index--container'>
+        <div>
+          <button id='markets--index--address'>
+            {% if request.GET.dis == 'town' %}
+              {{ request.user.town }}
+            {% else %}
+              {{ request.user.building }} 
+            {% endif %}
+            <i class="bi bi-chevron-down"></i>
+          </button>
+        </div>
+
+        <div>
+          <div class='markets--index--search--div'>
+            <form id='markets--index--search--block' class='d-none'>
+              <input name='q' type="search">
+
+              <button type='submit'>
+                <i class="bi bi-search"></i>
+              </button>
+            </form>
+
+            <button id='markets--index--search'><i class="bi bi-search"></i></button>
+          </div>
+
+          <button id='markets--index--filter'><i class="bi bi-filter"></i></button>
+        </div>
+      </section>
+    </header>
+
+    <div class='markets--index--container'>
+
+      {% comment %} 큰 모달 {% endcomment %}
+      <div id="markets--index--address--block" class='d-none'>
+        <header>
+          <button id='markets--index--address--close'>
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </header>
+
+        <form action="{% url 'markets:index' %}">
+          <input type="hidden" name='category' value='{{ request.GET.category }}'>
+
+          <h1>원하시는 범위를 설정해 주세요!</h1>
+          <button type='submit' name='dis' value='town' {% if request.GET.dis == 'town' %}class='markets--index--opacity--100'{% endif %}>
+            <i class="bi bi-geo-alt me-2"></i>
+            <span>{{ request.user.town }}</span>
+          </button>
+
+          <button type='submit' name='dis' value='building' {% if request.GET.dis == 'building' or not request.GET.dis %}class='markets--index--opacity--100'{% endif %}>
+            <i class="bi bi-building me-2"></i>
+            {{ request.user.building }}
+          </button>
+        </form>
+      </div>
+
+      <div id="markets--index--filter--block" class='d-none'>
+        <header>
+          <button id='markets--index--filter--close'>
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </header>
+
+        <form action="{% url 'markets:index' %}">
+          <input type="hidden" name='dis' value='{{ request.GET.dis }}'>
+
+          <h1>원하시는 카테고리가 뭔가요?</h1>
+
+          <button type='submit' {% if not request.GET.category %}class='markets--index--opacity--100'{% endif %}>
+            전체
+          </button>
+
+          <button type='submit' name='category' value='used' {% if request.GET.category == 'used' %}class='markets--index--opacity--100'{% endif %}>
+            중고
+          </button>
+
+          <button type='submit' name='category' value='free' {% if request.GET.category == 'free' %}class='markets--index--opacity--100'{% endif %}>
+            나눔
+          </button>
+        </form>
+      </div>
+
+      <section class='markets--index--section'>
+        {% for post in posts %}
+          <a class='markets--index--postitem' href="{% url 'markets:detail' post.pk %}">
+            
+            {% if post.postimages %}
+              <header>
+                <img src="{{ post.postimages.first.image.url }}" alt="{{ request.user.username }}">
+              </header>
+            {% endif %}
+            
+            <section>
+              <h1>{{ post.title }}</h1>
+
+              <h2>{{ post.user.building }}<span>&nbsp;·&nbsp;</span>{{ post.created_time }}</h2>
+
+              {% if post.price %}
+                <h3>{{ post.price|intcomma }}원</h3>
+              {% else %}
+                <h3>무료 나눔</h3>
+              {% endif %}
+
+              <h4>
+                <div>
+                  <i class="bi bi-heart"></i> {{ post.like_users.count }}
+                </div>
+              </h4>
+            </section>
+
+          </a>
+        {% endfor %}
+      </section>
+
+      {% comment %} 글 생성 {% endcomment %}
+      <footer class='markets--index--create'>
+        <a href="{% url 'markets:create' %}">
+          <img class='w-100' src="{% static 'image/plus.svg' %}" alt="plus">
+        </a>
+      </footer>
+    </div>
+  </div>
+
+  <script src="{% static 'js/markets_index.js' %}"></script>
 {% endblock content %}

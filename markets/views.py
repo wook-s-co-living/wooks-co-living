@@ -6,7 +6,24 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def index(request):
-    posts = Post.objects.all().order_by('-pk')
+    dis = request.GET.get('dis')
+    category = request.GET.get('category')
+    q = request.GET.get('q')
+
+    if dis == 'town':
+        posts = Post.objects.filter(user__town=request.user.town)
+    else:
+        posts = Post.objects.filter(user__building=request.user.building)
+
+    if category == 'used':
+        posts = posts.filter(price__gt=0)
+    elif category == 'free':
+        posts = posts.filter(price=0)
+    
+    if q:
+        posts = posts.filter(title__icontains=q)
+
+    posts = posts.order_by('-pk')
 
     context = {'posts': posts}
     return render(request, 'markets/index.html', context)
@@ -14,20 +31,22 @@ def index(request):
 def detail(request, market_pk):
     post = Post.objects.get(pk=market_pk)
 
-    context = {'post', post}
+    context = {'post': post}
     return render(request, 'markets/detail.html', context)
 
-# @login_required
+@login_required
 def create(request):
     if request.method == 'POST':
         post_form = PostForm(request.POST)
         files = request.FILES.getlist('image_first')
 
         if post_form.is_valid():
-            f = post_form.save()
+            form = post_form.save(commit=False)
+            form.user = request.user
+            form.save()
             for i in files:
-                Postimage.objects.create(image_first=i, post=f)
-            return redirect('markets:detail', post_form.pk)
+                Postimage.objects.create(image_first=i, post=form)
+            return redirect('markets:detail', form.pk)
         else:
             print(post_form.errors)
     else:
@@ -37,7 +56,7 @@ def create(request):
     context = {'post_form': post_form, 'postimage_form': postimage_form}
     return render(request, 'markets/create.html', context)
 
-# @login_required
+@login_required
 def update(request, market_pk):
     post = Post.objects.get(pk=market_pk)
 
@@ -62,20 +81,21 @@ def update(request, market_pk):
         postimage_form = PostImageForm()
 
     context = {
+        'post': post,
         'post_form': post_form,
         'delete_form': delete_form,
         'postimage_form': postimage_form,
     }
     return render(request, 'markets/update.html', context)
 
-# @login_required
+@login_required
 def delete(request, market_pk):
     post = Post.objects.get(pk=market_pk)
-    # if request.user == post.user:
-    post.delete()
+    if request.user == post.user:
+        post.delete()
     return redirect('markets:detail', market_pk)
 
-# @login_required
+@login_required
 def likes(request, market_pk):
     post = Post.objects.get(pk=market_pk)
 
