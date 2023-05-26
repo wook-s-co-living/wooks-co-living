@@ -12,7 +12,7 @@ from django.http import JsonResponse
 
 def signup(request):
     if request.user.is_authenticated:
-        return redirect('posts:index')
+        return redirect('index')
 
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST, request.FILES)

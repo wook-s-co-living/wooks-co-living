@@ -1,0 +1,269 @@
+/* markets/index */
+
+.markets--index--container {
+  width: 1000px;
+  padding: 5px 36px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* markets/index/header */
+
+.markets--index--header {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 600;
+  height: 56px;
+  border-bottom: 1px solid rgb(240 240 240);
+}
+
+.markets--index--header .bi-chevron-down {
+  font-size: 22px;
+}
+
+.markets--index--header section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.markets--index--header div {
+  align-items: center;
+}
+
+.markets--index--header div button {
+  background-color: white;
+  border: 0;
+  font-weight: bold;
+  color: rgb(50 50 50);
+  font-size: 18px;
+}
+
+.markets--index--search--div {
+  display: inline-block;
+}
+
+#markets--index--search--block {
+  position: relative;
+}
+
+#markets--index--search--block input {
+  padding: 8px 10px;
+  padding-right: 25px;
+  border-radius: 10px;
+  background-color: rgb(240 240 240);
+  border: 0;
+}
+
+#markets--index--search--block input:focus {
+  outline: 2px solid #FEE500;
+}
+
+#markets--index--search--block input::-webkit-search-cancel-button {
+  display: none;
+}
+
+#markets--index--search--block button {
+  position: absolute;
+  bottom: 8px;
+  right: 5px;
+  background: none;
+}
+
+.markets--index--highlight {
+  background-color: #FEE500;
+  opacity: 0.7;
+}
+
+#markets--index--filter {
+  margin-left: 5px;
+}
+
+.markets--index--header .bi-filter {
+  font-size: 24px;
+}
+
+/* 글 생성 */
+.markets--index--create {
+  position: sticky;
+  margin-left: 860px;
+  bottom: 20px;
+}
+
+.markets--index--create a {
+  display: block;
+  width: 60px;
+  height: 60px;
+  border-radius: 100px;
+  padding: 10px;
+  background-color: #FEE500;
+  opacity: 0.6;
+  transition: opacity 0.1s ease;
+  transition: transform 0.3s ease;
+}
+
+.markets--index--create a:hover {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+/* markets/index/section */
+.markets--index--section {
+  min-height: 800px;
+}
+
+.markets--index--postitem {
+  width: 100%;
+  padding: 20px;
+  border-bottom: 1px solid rgb(240 240 240);
+  display: flex;
+  text-decoration: none;
+  transition: background-color 0.1s ease;
+}
+
+.markets--index--postitem:hover {
+  background-color: rgb(245 245 245);
+}
+
+.markets--index--postitem header {
+  min-width: 120px;
+  width: 120px;
+  margin-right: 10px;
+}
+
+.markets--index--postitem header img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.markets--index--postitem section {
+  flex-grow: 1;
+  position: relative;
+}
+
+.markets--index--postitem section h1 {
+  max-width: 80%;
+  display: -webkit-box;
+  word-break: break-word;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  text-overflow: hidden;
+  overflow: hidden;
+  color: rgb(50 50 50);
+  font-weight: bold;
+  max-height: 34px;
+}
+
+.markets--index--postitem section h2 {
+  font-size: 14px;
+  color: rgb(150 150 150);
+  margin: 10px 0;
+}
+
+.markets--index--postitem section h3 {
+  font-size: 15px;
+  color: rgb(80 80 80);
+  font-weight: bold;
+}
+
+.markets--index--postitem section h4 {
+  display: flex;
+  flex-flow: row-reverse;
+  color: rgb(120 120 120);
+  font-size: 14px;
+  position: absolute;
+  bottom: 0;
+  right: 10px;
+}
+
+/* section modal */
+
+#markets--index--address--block header,
+#markets--index--filter--block header {
+  display: flex;
+  flex-flow: row-reverse;
+}
+
+#markets--index--address--block header button,
+#markets--index--filter--block header button {
+  background-color: white;
+  border: 0;
+  font-size: 35px;
+  padding: 20px;
+  margin-right: 20px;
+  color: rgb(80 80 80);
+}
+
+#markets--index--address--block header button:hover,
+#markets--index--filter--block header button:hover {
+  color: black;
+}
+
+#markets--index--address--block,
+#markets--index--filter--block {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: white;
+  z-index: 100;
+}
+
+#markets--index--address--block form,
+#markets--index--filter--block form {
+  margin: auto;
+  margin-top: 20%;
+  text-align: center;
+}
+
+#markets--index--address--block form h1,
+#markets--index--filter--block form h1 {
+  font-size: 28px;
+  font-weight: bold;
+  color: rgb(80 80 80);
+  margin-bottom: 40px;
+}
+
+#markets--index--address--block form button,
+#markets--index--filter--block form button {
+  display: block;
+  font-size: 20px;
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+  background-color: #FEE500;
+  padding: 14px 20px;
+  border-radius: 10px;
+  width: fit-content;
+  margin: 20px auto;
+  border: 0;
+  opacity: 0.7;
+  transition: opacity 0.1s ease;
+}
+
+#markets--index--filter--block form button {
+  background-color: #34568b;
+  color: white;
+  padding: 14px 80px;
+}
+
+#markets--index--address--block form button:hover,
+#markets--index--filter--block form button:hover,
+.markets--index--opacity--100 {
+  opacity: 1!important;
+}
+
+@media(max-width: 1000px) {
+  .markets--index--container {
+    margin-left: 0;
+    width: 100%;
+    padding: 0;
+  }
+
+  .markets--index--create {
+    margin-left: 86%;
+  }
+}

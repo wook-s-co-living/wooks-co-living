@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %} markets_create {% endblock title %}
+{% block title %} markets_update {% endblock title %}
 
 {% block header %}
   <link rel="stylesheet" href="{% static 'markets/css/markets.css' %}">
@@ -8,9 +8,10 @@
 
 {% block content %}
 
-  <form action="{% url 'markets:create' %}" method="POST" enctype="multipart/form-data">
+  <form action="{% url 'markets:update' post.pk %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ post_form.as_p }}
+    {{ delete_form.as_p }}
     {{ postimage_form.as_p }}
     <button type='submit'>등록</button>
   </form>
