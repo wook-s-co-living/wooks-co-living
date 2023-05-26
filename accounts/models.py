@@ -55,3 +55,9 @@ class User(AbstractUser):
                 if old_user.image_first:
                     os.remove(os.path.join(settings.MEDIA_ROOT, old_user.image_first.path))
         super(User, self).save(*args, **kwargs)
+
+    def update_maum(self):
+        like_count = self.likes.count()
+        dislike_count = self.dislikes.count()
+        self.maum = 46.0 - (0.1 * like_count) + (0.1 * dislike_count)
+        self.save()

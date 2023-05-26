@@ -1,10 +1,247 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %} profile {% endblock title %}
-
+{% block title %} {{ username }} Profile {% endblock title %}
+{% block header %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/accounts.css' %}">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+{% endblock header %}
 
 {% block content %}
 
+<div class="accounts--profile--container">
+  <div class="profile--container">
+    {% comment %} profile card {% endcomment %}
+    <div class="profile--box">
+      <div class="profile--namecard">
+        {% comment %} url 복사 {% endcomment %}
+        <a href="" onclick="copy_trackback(this.href); return false;" class="share--btn"><i class="bi bi-share"></i></a>
+        
+        {% comment %} 프로필 이미지 {% endcomment %}
+        <div class="profile--imgbox">
+          {% if person.image %}
+            <img src="{{ person.image.url }}" alt="image">
+          {% else %}
+            <img src="{% static 'image/profile-none.png' %}" alt="blank-profile-image">
+          {% endif %} 
+        </div>
+
+        {% comment %} 유저아이디 {% endcomment %}
+        <h2>{{ person.username }}</h2>
+        
+        {% comment %} 팔로워, 팔로잉 {% endcomment %}
+        <div class="follow--box">
+          <p>팔로잉 <button type="button" class="follow--btn" data-bs-toggle="modal" data-bs-target="#followingsModal"><p id="followings-count">{{ person.followings.all|length }}</p></button></p>
+          <span>|</span>
+          <p>팔로워 <button type="button" class="follow--btn" data-bs-toggle="modal" data-bs-target="#followersModal"><p id="followers-count">{{ person.followers.all|length }}</p></button></p>
+        </div>
+        
+        {% comment %} 팔로우버튼 {% endcomment %}
+        {% if request.user != person %}
+          <form id="follow-form" data-user-id="{{ person.pk }}" data-username="{{ person.username }}" action="{% url 'accounts:follow' person.pk %}" method="post">
+            {% csrf_token %} 
+              {% if request.user in person.followers.all %}
+              <input class="profile--followbtn" type="submit" value="언팔로우">
+              {% else %}
+                {% if request.user.is_authenticated %}
+                  <input class="profile--followbtn" type="submit" value="팔로우">
+                {% else %}
+                  <input class="profile--followbtn" type="submit" value="팔로우" disabled>
+                {% endif %}
+            {% endif %}
+          </form>
+        {% endif %}
+
+        {% comment %} 마음거리 {% endcomment %}
+        <div class="maum">
+          <img src="{% static 'image/maum.png' %}" alt="">
+          <p>{{ person.maum }}cm</p>
+        </div>
+
+      </div>
+      
+      <div class="user--eva">
+        {% if request.user != person %}
+          {% comment %} 좋아요 {% endcomment %}
+          {% if request.user.is_authenticated %}
+          <form id="user-likes-form" data-username="{{ person.username }}" class="user--like">
+              {% csrf_token %}
+              {% if request.user in person.likes.all %}
+              <button class="user--emoji" type="submit" {% if user in person.dislikes.all %} disabled style="color:gray;" {% endif %}>
+                <i class="bi bi-emoji-smile-fill" id="user-up"></i>  
+              </button>
+              {% else %}
+              <button class="user--emoji" type="submit" {% if user in person.dislikes.all %} disabled style="color:gray;" {% endif %}>
+                <i class="bi bi-emoji-smile" id="user-up"></i>
+              </button>
+              {% endif %}
+          </form>
+          {% else %}
+          <button class="user--emoji" disabled>
+            <i class="bi bi-emoji-smile" id="user-up"></i>
+          </button>
+          {% endif %}
+          <span id="user-likes-count" class="count--like">{{ person.likes.count }}</span>
+
+          {% comment %} 싫어요 {% endcomment %}
+          {% if request.user.is_authenticated %}
+          <form id="user-dislikes-form" data-username="{{ person.username }}" class="user--dislike">
+              {% csrf_token %}
+              {% if request.user in person.dislikes.all %}
+              <button class="user--emoji" type="submit" {% if user in person.likes.all %} disabled style="color:gray;" {% endif %}>
+              <i class="bi bi-emoji-neutral-fill" id="user-down"></i>  
+              </button>
+              {% else %}
+              <button class="user--emoji" type="submit" {% if user in person.likes.all %} disabled style="color:gray;" {% endif %}>
+                <i class="bi bi-emoji-neutral" id="user-down"></i>
+              </button>
+              {% endif %}
+          </form>
+          {% else %}
+          <button class="user--emoji" disabled>
+            <i class="bi bi-emoji-neutral" id="user-down"></i>
+          </button>
+          {% endif %}
+          <span id="user-dislikes-count" class="count--like">{{ person.dislikes.count }}</span>
+        {% endif %}
+      </div>
+
+    </div>
+
+    {% comment %} content {% endcomment %}
+    <div>
+      <input type="radio" name="tabmenu" id="tab01" checked>
+      <label for="tab01">프로필</label>
+      <input type="radio" name="tabmenu" id="tab02">
+      <label for="tab02">커뮤니티</label>
+      <input type="radio" name="tabmenu" id="tab03">
+      <label for="tab03">모임</label>
+      <input type="radio" name="tabmenu" id="tab04">
+      <label for="tab04">중고거래</label>
+
+      {% comment %} 첫번째 박스 {% endcomment %}
+      <div class="profile--card card1">
+        <h1>자기소개
+          {% if person == request.user %}
+            <button id="introduce-toggle"><i class="bi bi-pencil-square"></i></button>
+          {% endif %}
+        </h1>
+        <div class="introduce--txt">
+          {% if person.introduce %}
+            {{ person.introduce|safe }}
+          {% else %}
+            작성한 자기소개가 없습니다.  
+          {% endif %}
+        </div>
+        <div class="introduce--box">
+          <form method="POST" id="introduce-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            {{ form.media }}
+            <input type="submit" value="저장" class="introduce--btn">
+            <input type="submit" value="취소" onclick="window.history.back()" class="introduce--btn">
+          </form>
+        </div>
+      </div>
+
+      <div class="profile--card card2">
+        커뮤니티
+      </div>
+
+      <div class="profile--card card3">
+        모임
+      </div>
+      <div class="profile--card card4">
+        중고거래
+      </div>
+    </div>
+  </div>
+</div>
 
 
+
+
+
+{% comment %} Modal창 구역 {% endcomment %}
+<!-- 팔로워 Modal -->
+<div class="modal fade" id="followersModal" tabindex="-1" aria-labelledby="followersModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content profile--modal--box">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5"  id="followersModalLabel">팔로워</h1>
+      </div>
+      <div class="modal-body row" id = "f_follower_list">
+        {% if request.user != person %}
+          <div id="follower-list">
+            <ul id="follower-ul"></ul>
+          </div>
+        {% else %}
+          <ul id="follower-ul">
+            {% for follower in followers %}
+            <li class="follow--modal">
+                <a href="{% url 'accounts:profile' follower.username %}">
+                  {% if follower.image %}
+                    <div class="profile--image">
+                      <img src="{{ follower.image.url }}" alt="follower image" class="profile">
+                    </div>
+                  {% else %}
+                    <div class="profile--image">
+                      <img src="{% static 'image/profile-none.png' %}" alt="follower image" class="profile">
+                    </div>
+                  {% endif %}
+                  {{ follower.username }}
+                </a>
+            </li>
+            {% empty %}
+            <p>팔로워가 없습니다.</p>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="profile--followbtn" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 팔로잉 Modal -->
+<div class="modal fade" id="followingsModal" tabindex="-1" aria-labelledby="followingsModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content profile--modal--box">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="followingsModalLabel">팔로잉</h1>
+      </div>
+      <div class="modal-body row">
+          <ul id="following-ul">
+            {% for following in followings %}
+            <li class="follow--modal">
+                <a href="{% url 'accounts:profile' following.username %}">
+                  {% if following.image %}
+                    <div class="profile--image">
+                      <img src="{{ following.image.url }}" alt="following image" class="profile">
+                    </div>
+                  {% else %}
+                    <div class="profile--image">
+                      <img src="{% static 'image/profile-none.png' %}" alt="following image" class="profile">
+                    </div>
+                  {% endif %}
+                  <span>{{ following.username }}</span>
+                </a>
+            </li>
+            {% empty %}
+            <p>팔로잉이 없습니다.</p>
+            {% endfor %}
+          </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="profile--followbtn" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'js/accounts.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/profile.js' %}" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js" integrity="sha512-zYXldzJsDrNKV+odAwFYiDXV2Cy37cwizT+NkuiPGsa9X1dOz04eHvUWVuxaJ299GvcJT31ug2zO4itXBjFx4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 {% endblock content %}

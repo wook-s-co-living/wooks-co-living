@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <ul id="follower-ul">
+    {% for follower in followers %}
+    <li class="follow--modal">
+        <a href="{% url 'accounts:profile' follower.username %}">
+          {% if follower.image %}
+            <div class="profile--image">
+              <img src="{{ follower.image.url }}" alt="follower image" class="profile">
+            </div>
+          {% else %}
+            <div class="profile--image">
+              <img src="{% static 'image/profile-none.png' %}" alt="follower image" class="profile">
+            </div>
+          {% endif %}
+          {{ follower.username }}
+        </a>
+    </li>
+    {% empty %}
+    <p>팔로워가 없습니다.</p>
+    {% endfor %}
+  </ul>
+</body>
+</html>
+
+
