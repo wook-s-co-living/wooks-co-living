@@ -3,6 +3,9 @@
 {% block title %} moims_update {% endblock title %}
 {% block style %}{% endblock style %}
 {% block content %}
-
-
+<form action="{% url 'moims:update' post.pk %}" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ update_form.as_p }}
+  <input type="submit">
+</form>
 {% endblock content %}
