@@ -5,7 +5,7 @@ from django.core.validators import MinValueValidator
 from datetime import timedelta,datetime,date
 from django.utils import timezone
 from imagekit.models import ImageSpecField
-from imagekit.processors import Thumbnail
+from imagekit.processors import Thumbnail, ResizeToFill
 
 # Create your models here.
 
@@ -17,8 +17,8 @@ class Post(models.Model):
     category_Choices = (('many','정기모임'),('once','당일모임'))
     category = models.CharField(max_length=20, choices=category_Choices)
 
-    many_datetime = models.CharField(max_length=50)
-    once_datetime = models.DateTimeField()
+    many_datetime = models.CharField(max_length=50, null=True, blank=True)
+    once_datetime = models.DateTimeField(null=True, blank=True)
 
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_moims_posts')
 
@@ -26,6 +26,8 @@ class Post(models.Model):
     join_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='join_moims_posts')
 
     address = models.CharField(max_length=200)
+    town = models.CharField(max_length=100,blank=True,null=True)
+    building = models.CharField(max_length=100,blank=True,null=True)
     detail_address = models.CharField(max_length=200)
 
     price = models.IntegerField(default=0, validators=[MinValueValidator(0)])
@@ -53,7 +55,7 @@ class Post(models.Model):
 
     image_first = models.ImageField(upload_to=post_image_path, null=True, blank=True)
     image = ImageSpecField(source='image_first',
-                            processors=[Thumbnail(300, 300)],
+                            processors=[ResizeToFill(300, 300)],
                             format='JPEG',
                             options={'quality': 100}
                             )
