@@ -1,0 +1,59 @@
+footer {
+    background-color: rgb(48, 55, 64); /* Dark Gray */
+    padding: 0;
+    color: lightgray;
+}
+
+.footer--container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    font-size: medium;
+}
+
+.footer--section {
+    flex: 1;
+}
+.footer--section h1,
+.footer--section p {
+    padding: 1rem 0;
+}
+.footer--section i {
+    margin-right: 2rem; /* 아이콘 간격 조절 필요 */
+    color: #FFC93C;
+    font-size: 2rem;
+}
+
+.footer--section i:hover {
+    color: white;
+}
+
+.footer--copyright {
+    display: flex;
+    justify-content: center;
+    padding: 1rem 0;
+}
+
+@media (max-width: 768px) {
+    .footer--container {
+        flex-direction: row;
+        flex: 2;
+        display: flex;
+        justify-content: center;
+        font-size: smaller;
+    }
+
+
+    .footer--section {
+        margin-bottom: 20px; /* 각 섹션 사이의 간격 조절 */
+    }
+    .footer--section h1,
+    .footer--section p {
+    padding: 0.5rem 0;
+    }
+    .footer--section i {
+        margin-bottom: 1rem;
+    }
+}

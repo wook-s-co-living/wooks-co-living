@@ -1,0 +1,168 @@
+/* 폰트 호출 */
+@font-face {
+    font-family: 'ImcreSoojin';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.3/ImcreSoojin.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* 전체 navbar 속성 */
+.navbar {
+    width: 100%;
+    height: 60px;
+    position: sticky;
+    top: 0;
+    background-color:  white 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* navbar 하위 요소를 감싸는 컨테이너 */
+.nav--container {
+    width: 1000px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.navbar a{
+    text-decoration: none;
+}
+
+/* 로고 속성 */
+.nav--logo {
+    display: flex;
+    flex-direction: row;
+    
+}
+.nav-logo--text {
+    display: flex;
+    align-items: center;
+    margin: 0 5px;
+    font-family: 'ImcreSoojin';
+    color: #02517b;
+    font-size: larger;
+    
+}
+.nav--logo img {
+    height: 30px;
+}
+
+
+/* 메뉴 속성 */
+.nav--links {
+    position: relative;
+    justify-content: space-around;
+    display: flex;
+}
+.nav--links a {
+    padding: 0 20px;
+    text-decoration: none;
+    color: gray;
+    padding: 20px 20px;
+}
+
+.nav--links a:hover {
+    color: black;
+    font-weight: bold;
+    border-bottom: 5px solid #02517b;
+}
+.login--button {
+    margin-left: 20px;
+    padding: 10px 20px;
+    border: 1px solid #FFC93C;
+    border-radius: 35px;
+    color: black;
+    background: none;
+    cursor: pointer;
+}
+.login--button:hover {
+    color: white;
+    background: #FFC93C;
+
+}
+
+/* 임시 이미지 */
+.ex-img {
+    display: flex;
+    justify-content: center;
+}
+.ex-img img{
+    width: 1000px;
+}
+
+/* 스크롤 됐을 경우 변하는 부분 */
+.navbar.scrolled {
+    background-color: #34568b; /* 배경색 변경 */
+}
+
+.navbar.scrolled .nav-logo--text,
+.navbar.scrolled .nav--links a {
+    color: white; /* 로고와 메뉴의 텍스트 색상 변경 */
+}
+.navbar.scrolled .nav--links a:hover {
+    border-bottom: 5px solid #FFC93C;
+}
+.navbar.scrolled .login--button {
+    color: white;
+}
+
+/* 처음에 햄버거 메뉴를 숨깁니다 */
+.hamburger--menu {
+    display: none;
+    font-size: 1.5rem;
+    position: absolute;
+    right: 5vw; /* 위치 조정 필요 */
+    color: #FFC93C;
+}
+
+
+.mobile-menu {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 20rem;
+    background-color: white;
+    top: 60px; /* 네비게이션 바 높이만큼 Offset이 필요함 */
+    flex-direction: column;
+}
+
+.mobile-menu a {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+/* 어차피 작은화면에서 안보임 의미없 */
+/* .mobile-menu a:hover {
+    border-bottom: none;
+} */
+
+@media (max-width: 768px) {
+    .mobile-menu a:hover {
+        border-bottom: none;
+    }
+}
+.navbar.scrolled .mobile-menu {
+    background-color: #34568b;
+}
+.navbar.scrolled .mobile-menu a:hover {
+    border-bottom: none;
+    background-color: #FFC93C;
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        justify-content: space-between;
+    }
+    
+    /* 태블릿 사이즈가 되면 nav-links 와 login-button를 숨깁니다 */
+    .nav--links, .login--button {
+        display: none;
+    }
+    /* 햄버거 메뉴를 표시합니다 */
+    .hamburger--menu {
+        display: block;
+    }
+}
+
