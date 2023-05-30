@@ -40,4 +40,5 @@ urlpatterns = [
     path(r'^browse/', never_cache(login_required(views_ckeditor.browse)), name='ckeditor_browse'),
     path('moims/', include('moims.urls')),
     path('markets/', include('markets.urls')),
+    path('chats/', include('chats.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
