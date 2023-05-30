@@ -48,7 +48,7 @@ def signup(request):
                 'user': user,
                 'domain': current_site.domain,
                 'token': token,
-                'activate_url' : f'{current_site.domain}accounts/activate/{token}',
+                'activate_url' : f'http://127.0.0.1:8000/accounts/activate/{token}',
             })
             email = EmailMessage(mail_subject, message, to=[user.email])
             email.send()
@@ -295,7 +295,7 @@ def password_reset_request(request):
 					}
 					email = render_to_string(email_template_name, c)
 					try:
-						send_mail(subject, email, 'jeongsodam26@gmail.com' , [user.email], fail_silently=False)
+						send_mail(subject, email, '혼거동락 <jeongsodam26@gmail.com>' , [user.email], fail_silently=False)
 					except BadHeaderError:
 						return HttpResponse('Invalid header found.')
 					return redirect("/accounts/password_reset_done/")

@@ -12,8 +12,15 @@ body {
 .accounts--container {
   width: 400px;
   margin: auto;
+  min-height: 100vh;
+  padding: 5rem 1rem;
 }
 
+@media (max-width: 400px) {
+  .accounts--container {
+      width: 100%;
+  }
+}
 .accounts--btn {
   width: 100%;
   margin-top: 1rem;
@@ -28,6 +35,7 @@ body {
   display: block;
   position: relative;
 }
+
 .accounts--btn i {
   position: absolute;
   left: 10%;
@@ -37,6 +45,10 @@ body {
 .accounts--btn:hover {
   color: black;
   background-color: rgb(211, 189, 40);
+}
+.accounts--btn:disabled {
+  background-color: rgb(181, 181, 181);
+  color: black;
 }
 
 .accounts--title {
@@ -154,6 +166,27 @@ body {
 }
 
 /* signup html */
+
+.checkbox--group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.8rem;
+}
+
+.checkbox--group--box {
+  display: flex;
+  gap:10px;
+  align-items: cen;
+}
+
+.checkbox--group--box label {
+  font-size: 0.8rem;
+}
+
+.checkbox--group--box label span {
+  color: red;
+}
+
 .signup--container {
   width: 100%;
   margin: auto;
@@ -190,6 +223,7 @@ input[type=file]::file-selector-button {
   text-decoration: none;  
   text-align: center;
   margin-bottom: 0.8rem;
+  word-break: keep-all;
 }
 
 .relogin--txt {
@@ -215,12 +249,15 @@ input[type=file]::file-selector-button {
 }
 
 .id--check--btn, .email--check--btn {
-  background-color: #fff0;
+  background-color: #34568b;
   border: none;
   font-size: 0.8rem;
-  color: #34568b;
+  color: white;
   word-break:keep-all;
   height: 36px;
+  width: 100px;
+  border-radius: 0.375rem;
+  margin-left: 10px;
 }
 
 /* 탭 */
@@ -477,4 +514,61 @@ input[id="tab04"]:checked ~ .card4 {
 }
 #cke_1_resizer {
   display: none;
+}
+
+
+.reset--form {
+  margin-top: 0.8rem;
+  display: flex;
+}
+
+.reset--form label {
+  display: none;
+}
+#id_email {
+  display: block;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.375rem;
+  border: 1px solid #dee2e6;
+  appearance: none;
+  font-size: 1rem;
+  color: gray;
+  transition: border .15s ease-in-out;
+  width: 100%;
+  margin-bottom: 0.8rem !important;
+}
+
+#id_email:focus {
+  border: 1px solid #34568b !important;
+  outline: none;
+}
+
+.reset--pasword--form {
+  margin-top: 0.8rem;
+}
+
+.reset--pasword--form ul {
+  display: none;
+}
+
+.reset--pasword--form p {
+  margin-bottom: 0.8rem;
+}
+
+.reset--pasword--form input {
+  display: block;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.375rem;
+  border: 1px solid #dee2e6;
+  appearance: none;
+  font-size: 1rem;
+  color: gray;
+  transition: border .15s ease-in-out;
+  width: 100%;
+  margin-bottom: 0.8rem !important;
+}
+
+.reset--pasword--form input:focus {
+  border: 1px solid #34568b !important;
+  outline: none;
 }

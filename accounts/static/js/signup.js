@@ -31,3 +31,27 @@ $(document).ready(function() {
       });
   }
 });
+
+$(document).ready(function() {
+  var isAllChecked = $(".checkbox--group .normal").length > 0; 
+  $(".checkbox--group .normal").each(function(){
+    isAllChecked = isAllChecked && $(this).is(":checked");
+  });
+  $("#check_all").prop("checked", isAllChecked);
+  $("#submit_button").prop("disabled", !isAllChecked);
+});
+
+$(".checkbox--group").on("click", "#check_all", function () {
+  var isChecked = $(this).is(":checked");
+  $(this).parents(".checkbox--group").find('input').prop("checked", isChecked);
+  $("#submit_button").prop("disabled", !isChecked);
+});
+
+$(".checkbox--group").on("click", ".normal", function() {
+  var isAllChecked = true;
+  $(".checkbox--group .normal").each(function(){
+    isAllChecked = isAllChecked && $(this).is(":checked");
+  });
+  $("#check_all").prop("checked", isAllChecked);
+  $("#submit_button").prop("disabled", !isAllChecked);
+});
