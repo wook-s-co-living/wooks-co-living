@@ -11,7 +11,7 @@
 
 .markets--index--header {
   position: sticky;
-  top: 0;
+  top: 60px;
   background-color: white;
   z-index: 600;
   height: 56px;

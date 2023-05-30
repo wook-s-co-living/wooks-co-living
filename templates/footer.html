@@ -1,45 +1,48 @@
 {% load static %}
-{% block title %} Footer {% endblock title %}
+
 {% block header %}
-  <link rel="stylesheet" type="text/css" href="{% static 'static/css/footer.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
   <script src="https://kit.fontawesome.com/a3ecfa0309.js" crossorigin="anonymous"></script>
 {% endblock header %}
 
 {% block content %}
-<div class="footer--container">
-    <section class="footer--section">
-        <h1>Member ></h1>
-        <p>이민욱</p>
-        <p>정윤원</p>
-        <p>김소은</p>
-        <p>정소담</p>
-        <p>신상윤</p>
+<div class='footer'>
+    <div class="footer--container">
+        <section class="footer--section">
+            <h1>Member ></h1>
+            <p>이민욱</p>
+            <p>정윤원</p>
+            <p>김소은</p>
+            <p>정소담</p>
+            <p>신상윤</p>
+        </section>
+        <section class="footer--section">
+            <h1>Menu ></h1>
+            <p>메인화면</p>
+            <p>커뮤니티</p>
+            <p>플리마켓</p>
+            <p>모임</p>
+            <p>내 프로필</p>
+        </section>
+        <section class="footer--section">
+            <!-- 세번째 섹션 내용 -->
+            <a href="https://www.youtube.com" target="_blank">
+                <i class="fa-brands fa-youtube"></i>
+            </a>
+            <a href="https://www.instagram.com" target="_blank">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a href="https://www.twitter.com" target="_blank">
+                <i class="fa-brands fa-twitter"></i>
+            </a>
+    
+        </section>
+    </div>
+    <section class="footer--copyright">
+        <p>2023 © Wook's house</p>
     </section>
-    <section class="footer--section">
-        <h1>Menu ></h1>
-        <p>메인화면</p>
-        <p>커뮤니티</p>
-        <p>플리마켓</p>
-        <p>모임</p>
-        <p>내 프로필</p>
-    </section>
-    <section class="footer--section">
-        <!-- 세번째 섹션 내용 -->
-        <a href="https://www.youtube.com" target="_blank">
-            <i class="fa-brands fa-youtube"></i>
-        </a>
-        <a href="https://www.instagram.com" target="_blank">
-            <i class="fa-brands fa-instagram"></i>
-        </a>
-        <a href="https://www.twitter.com" target="_blank">
-            <i class="fa-brands fa-twitter"></i>
-        </a>
 
-    </section>
 </div>
-<section class="footer--copyright">
-    <p>2023 © Wook's house</p>
-</section>
 <script src="https://kit.fontawesome.com/a3ecfa0309.js" crossorigin="anonymous"></script>
 
 {% endblock content %}

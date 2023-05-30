@@ -1,6 +1,5 @@
 window.addEventListener("scroll", function() {
-    let navbar = document.querySelector(".navbar");
-    console.log(navbar); 
+    let navbar = document.querySelector(".nav--bar");
     navbar.classList.toggle('scrolled', window.scrollY > 10);
 });
 /* 사용자가 스크롤을 10px만큼 내리면 nav 속성이 변합니다 */
@@ -20,3 +19,4 @@ window.addEventListener("resize", function() {
         mobileMenu.style.display = "none";
     }
 });
+navbar

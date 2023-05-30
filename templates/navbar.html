@@ -1,16 +1,16 @@
 {% load static %}
-{% block title %} Navbar {% endblock title %}
+
 {% block header %}
-  <link rel="stylesheet" type="text/css" href="{% static 'static/css/navbar.css' %}"> 
+  <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}"> 
   <script src="https://kit.fontawesome.com/a3ecfa0309.js" crossorigin="anonymous"></script>
 {% endblock header %}
 
 {% block content %}
-<nav class="navbar">
+<nav class="nav--bar">
     <div class="nav--container">
         <a href="#">
             <div class="nav--logo">
-                <img src="static/css/logo_icon.png" alt="Logo">
+                <img src="{% static 'image/logo_icon.png' %}" alt="Logo">
                 <div class="nav-logo--text">혼거동락</div>
             </div>
         </a>
@@ -36,6 +36,6 @@
         <img src="https://images.unsplash.com/photo-1534336214566-c242cfe9feb0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8aW5kZXglMjBuYXJyb3d8ZW58MHwxfDB8fHww&auto=format&fit=crop&w=800&q=60" alt="">
     </div>
 </div> {% endcomment %}
-<script src="static/js/navbar.js"></script>
+<script src="{% static 'js/navbar.js' %}"></script>
 
 {% endblock content %}

@@ -1,5 +1,5 @@
-footer {
-    background-color: rgb(48, 55, 64); /* Dark Gray */
+.footer {
+    background-color: rgb(48, 55, 64); 
     padding: 0;
     color: lightgray;
 }
@@ -9,13 +9,18 @@ footer {
     justify-content: space-between;
     max-width: 1000px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 15px 20px;
     font-size: medium;
 }
 
 .footer--section {
     flex: 1;
 }
+
+.footer--section a {
+    text-decoration: none;
+}
+
 .footer--section h1,
 .footer--section p {
     padding: 1rem 0;
@@ -32,8 +37,20 @@ footer {
 
 .footer--copyright {
     display: flex;
-    justify-content: center;
-    padding: 1rem 0;
+    width: 1000px;
+    margin: auto;
+    justify-content: start;
+    padding: 15px 20px;
+}
+
+@media (max-width: 1000px) {
+    .footer--container {
+        max-width: 100%;
+    }
+
+    .footer--copyright {
+        width: 100%;
+    }
 }
 
 @media (max-width: 768px) {
