@@ -1,18 +1,212 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 {% block title %} markets_detail {% endblock title %}
 
 {% block header %}
-  <link rel="stylesheet" href="{% static 'markets/css/markets.css' %}">
+  <script src="{% static 'owlcarousel/jquery.min.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'owlcarousel/owl.carousel.css' %}">
+  <link rel="stylesheet" href="{% static 'owlcarousel/owl.theme.default.min.css' %}">
+  <script src="{% static 'owlcarousel/owl.carousel.js' %}"></script>
+
+  <link rel="stylesheet" href="{% static 'css/markets_detail.css' %}">
 {% endblock header %}
 
 {% block content %}
 
-  <div>{{ post.title }}</div>
-  {% for postimage in post.postimages.all %}
+  <div class='markets--detail'>
+    <section class='markets--detail--container'>
+      <div class='markets--carousel--dblock'>
+        <div class="owl-carousel owl-theme">
+          {% for postimage in post.postimages.all %}
+            <button class='item owl--carousel--item' value="{{ forloop.counter }}">
+              <img src="{{ postimage.image.url }}" alt="{{ post.title }}">
+            </button>
+          {% endfor %}
+        </div>
+        <a class="owl--carousel--back" href="{% url 'markets:index' %}">
+          <i class="bi bi-chevron-left"></i>
+        </a>
+      </div>
+
+      <div class='markets--carousel--dnone d-none'>
+        <div class="owl-carousel owl-theme">
+          {% for postimage in post.postimages.all %}
+            <button class='item owl--carousel--item' value="{{ forloop.counter }}">
+              <img src="{{ postimage.image_first.url }}" alt="{{ post.title }}">
+            </button>
+          {% endfor %}
+        </div>
+
+        <button class='owl--carousel--close'>
+          <i class="bi bi-x"></i>
+        </button>
+      </div>
+
+      {% comment %} 디테일 헤더 {% endcomment %}
+      <a class='markets--detail--header' href="??">
+        <div class='markets--detail--header--left'>
+          <header>
+            {% if post.user.image %}
+              <img src="{{ post.user.image.url }}" alt="{{ post.user }}">
+            {% else %}
+              <img src="{% static 'image/noimage.png' %}" alt="noimage">
+            {% endif %}
+          </header>
+
+          <div>
+            <h1>{{ post.user.first_name }}</h1>
+
+            <h2>{{ post.user.town }} {{ post.user.building }}</h2>
+          </div>
+        </div>
+
+        <div class='markets--detail--header--right'>
+          <h1>{{ post.user.maum }}cm</h1>
+
+          <h2>
+            <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+              <div class="progress-bar" style="width: {{ post.user.maum }}%"></div>
+            </div>
+          </h2>
+
+          <h3 id='markets--detail--header--info'>마음거리 <i class="bi bi-info-circle"></i></h3>
+
+          <div class='markets--detail--header--infobox d-none'>
+            <span>마음거리란?</span><br><br>
+            가까울수록<br>
+            매너가<br>
+            좋아요!
+          </div>
+        </div>
+      </a>
+
+      <section class='markets--detail--section'>
+        <h1>{{ post.title }}</h1>
+
+        <h2>
+          {% if post.price %}
+            중고<span>&nbsp;·&nbsp;</span>{{ post.created_time }}
+          {% else %}
+            나눔<span>&nbsp;·&nbsp;</span>{{ post.created_time }}
+          {% endif %}
+        </h2>
+
+        <h4>{{ post.content|linebreaksbr }}</h4>
+
+        <h5>
+          관심 <span id='markets--detail--section-likecount'>{{ post.like_users.count }}</span><span>&nbsp;·&nbsp;</span>채팅 ??<span>&nbsp;·&nbsp;</span>조회 {{ post.views }}
+        </h5>
+      </section>
+
+      {% comment %} 디테일 푸터 {% endcomment %}
+      <footer class='markets--detail--footer'>
+        <h1 class='markets--detail--footer--title'>{{ post.user.first_name }}님의 판매상품</h1>
+
+        <section class='markets--detail--footer-section'>
+          {% for user_post in user_posts %}
+            <a class='markets--detail--footer-section--item' href="{% url 'markets:detail' user_post.pk %}">
+              <header>
+                <img src="{{ user_post.postimages.first.image.url }}" alt="{{ user_post.user.username }}">
+              </header>
+
+              <section>
+                <h1>{{ user_post.title }}</h1>
+
+                <h2>
+                  {% if user_post.price %}
+                    {{ user_post.price|intcomma }}원
+                  {% else %}
+                    무료 나눔
+                  {% endif %}
+                </h2>
+
+                <h3>{{ user_post.user.town }} {{ user_post.user.building }}</h3>
+
+                <h4>관심 {{ user_post.like_users.count }}<span>&nbsp;·&nbsp;</span>조회 {{ user_post.views }}</h4>
+              </section>
+            </a>
+          {% empty %}
+            <div class='markets--detail--footer--empty'>
+              {{ post.user.first_name }}님의 다른 판매상품이 없습니다 😥
+            </div>
+          {% endfor %}
+        </section>
+      </footer>
+
+      {% comment %} 알림창 {% endcomment %}
+      <div id='markets--detail--alert'>
+        <h1>관심목록에 추가됐어요.</h1>
+        
+        <a href="??">관심목록보기</a>
+      </div>
+
+      {% comment %} 하단 네비바 {% endcomment %}
+      <nav class='markets--detail--navbar'>
+        <div class='markets--detail--navbar--left'>
+          <form id='markets--detail--like--form' data-post-id="{{ post.pk }}">
+            {% csrf_token %}
+            {% if request.user not in post.like_users.all %}
+              <button type='submit'>
+                <i class="bi bi-heart"></i>
+              </button>
+            {% else %}
+              <button type='submit'>
+                <i class="bi bi-heart-fill"></i>
+              </button>
+            {% endif %}
+          </form>
+  
+          <div>
+            {% if post.price %}
+              {{ post.price|intcomma }}원
+            {% else %}
+              무료 나눔
+            {% endif %}
+          </div>
+        </div>
+
+        <a class='markets--detail--navbar--right' href="??">
+          채팅하기
+        </a>
+      </nav>
+
+    </section>
+  </div>
+
+  {% comment %} <div>{{ post.title }}</div> {% endcomment %}
+  {% comment %} {% for postimage in post.postimages.all %}
     <div>
       <img src="{{ postimage.image.url }}" alt="{{ post.title }}">
     </div>
-  {% endfor %}
+  {% endfor %} {% endcomment %}
 
+  <script>
+    $('.owl-carousel').owlCarousel({
+        startPosition: false,
+        loop:true,
+        margin:10,
+        responsiveClass:true,
+        responsive:{
+            0:{
+                items:1,
+                nav:false,
+                loop:false
+            },
+            600:{
+                items:1,
+                nav:false,
+                loop:false
+            },
+            1000:{
+                items:1,
+                nav:false,
+                loop:false
+            }
+        }
+    })
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="{% static 'js/markets_detail.js' %}"></script>
 {% endblock content %}

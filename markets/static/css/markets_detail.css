@@ -1,0 +1,417 @@
+/* 디테일 */
+
+.markets--detail--container {
+  width: 700px;
+  padding: 0;
+  margin: 0 auto;
+  position: relative;
+}
+
+.owl--carousel--item {
+  background-color: none;
+  border: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.markets--carousel--dblock .owl-dots {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.markets--carousel--dblock .owl-carousel {
+  height: 500px;
+}
+
+.markets--carousel--dblock .owl-carousel .owl-item {
+  height: 500px;
+}
+
+.markets--carousel--dblock .owl-carousel button {
+  height: 100%;
+}
+
+.markets--carousel--dblock .owl-carousel img {
+  height: 100%;
+  object-fit: cover;
+}
+
+.markets--carousel--dnone {
+  height: 100vh;
+  max-height: 100vh;
+}
+
+.markets--carousel--dnone .item {
+  max-height: 100vh;
+}
+
+.markets--carousel--dnone .item img  {
+  max-height: 100vh;
+}
+
+.markets--carousel--dnone .owl--carousel--item {
+  width: 100%;
+  height: 800px;
+  max-height: 800px;
+  background-color: rgb(20 20 20);
+}
+
+.markets--carousel--dnone img {
+  object-fit: cover;
+  width: 100%;
+}
+
+.owl--carousel--back {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  color: rgb(240 240 240);
+  display: block;
+  font-size: 26px;
+  z-index: 50;
+}
+
+.owl--carousel--close {
+  position: absolute;
+  background-color: transparent;
+  border: 0;
+  top: 10px;
+  right: 5px;
+  color: rgb(240 240 240);
+  display: block;
+  font-size: 40px;
+  z-index: 50;
+}
+
+/* 디테일 헤더 */
+
+.markets--detail--header {
+  display: flex;
+  justify-content: space-between;
+  padding: 25px 10px;
+  border-bottom: 1px solid rgb(240 240 240);
+  text-decoration: none;
+}
+
+.markets--detail--header:hover {
+  background-color: rgb(245 245 245);
+}
+
+.markets--detail--header--left {
+  display: flex;
+}
+
+.markets--detail--header--left header {
+  width: 50px;
+}
+
+.markets--detail--header--left header img {
+  border-radius: 100px;
+  width: 100%;
+}
+
+.markets--detail--header--left div {
+  padding: 10px;
+}
+
+.markets--detail--header--left div h1 {
+  font-size: 15px;
+  color: rgb(50 50 50);
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.markets--detail--header--left div h2 {
+  font-size: 13px;
+  color: rgb(150 150 150);
+}
+
+.markets--detail--header--right {
+  position: relative;
+  width: 100px;
+  text-align: end;
+}
+
+.markets--detail--header--right h1 {
+  color: #34568b;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.progress {
+  height: 4px;
+}
+
+.progress-bar {
+  background-color: #34568b;
+}
+
+.markets--detail--header--right h3 {
+  margin-top: 10px;
+  font-size: 13px;
+  color: rgb(180 180 180);
+}
+
+.markets--detail--header--infobox {
+  position: absolute;
+  right: -110px;
+  top: 40px;
+  padding: 15px;
+  color: rgb(170 170 170);
+  font-size: 12px;
+  width: 93px;
+  border-radius: 10px;
+  border: 0.5px solid rgb(240 240 240);
+  background-color: white;
+  box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.1), 5px 5px 15px 0px rgba(0,0,0,0.1);
+  text-align: start;
+  word-break: break-word;
+  line-height: 15px;
+}
+
+.markets--detail--header--infobox span {
+  color: rgb(80 80 80);
+  font-weight: bold;
+}
+
+/* 디테일 섹션 */
+
+.markets--detail--section {
+  padding: 32px 10px;
+  border-bottom: 1px solid rgb(245 245 245);
+}
+
+.markets--detail--section h1 {
+  word-break: break-word;
+  line-height: 28px;
+  font-size: 21px;
+  font-weight: bold;
+  color: rgb(20 20 20);
+}
+
+.markets--detail--section h2 {
+  font-size: 14px;
+  color: rgb(160 160 160);
+  margin: 15px 0;
+}
+
+.markets--detail--section h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: rgb(50 50 50);
+}
+
+.markets--detail--section h4 {
+  word-break: break-word;
+  font-size: 17px;
+  font-weight: lighter;
+  line-height: 28px;
+}
+
+.markets--detail--section h5 {
+  font-size: 13px;
+  color: rgb(160 160 160);
+  margin: 20px 0;
+}
+
+/* 디테일 푸터 */
+
+.markets--detail--footer {
+  padding: 0 10px;
+  margin-bottom: 50px;
+}
+
+.markets--detail--footer--title {
+  font-size: 20px;
+  font-weight: bold;
+  color: rgb(30 30 30);
+  margin: 40px 0;
+}
+
+.markets--detail--footer-section {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.markets--detail--footer-section--item {
+  display: block;
+  padding-bottom: 30px;
+  width: 28%;
+  margin: 0 15px;
+  text-decoration: none;
+}
+
+.markets--detail--footer-section--item:hover {
+  opacity: 0.9;
+}
+
+.markets--detail--footer-section--item header {
+  width: 100%;
+  overflow: hidden;
+}
+
+.markets--detail--footer-section--item header img {
+  width: 100%;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+.markets--detail--footer-section--item header img:hover {
+  transform: scale(1.05);
+}
+
+.markets--detail--footer-section--item section h1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 16px;
+  font-weight: 500;
+  margin: 10px 0;
+  color: rgb(50 50 50);
+}
+
+.markets--detail--footer-section--item section h2 {
+  font-size: 15px;
+  font-weight: bold;
+  color: rgb(20 20 20);
+}
+
+.markets--detail--footer-section--item section h3 {
+  font-size: 13px;
+  color: rgb(80 80 80);
+  margin: 8px 0;
+  word-break: break-word;
+}
+
+.markets--detail--footer-section--item section h4 {
+  font-size: 13px;
+  color: rgb(130 130 130);
+}
+
+.markets--detail--footer--empty {
+  width: 100%;
+  height: 300px;
+  padding-top: 100px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+  color: rgb(150 150 150);
+}
+
+/* 디테일 네비바 */
+
+.markets--detail--navbar {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  height: 70px;
+  display: flex;
+  padding: 5px 10px;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgb(240 240 240);
+  background-color: white;
+  z-index: 100;
+}
+
+.markets--detail--navbar--left {
+  display: flex;
+}
+
+.markets--detail--navbar--left form {
+  padding: 5px 15px;
+  border-right: 1px solid rgb(240 240 240);
+}
+
+.markets--detail--navbar--left form button {
+  font-size: 22px;
+  background-color: white;
+  border: 0;
+  transition: scale 0.2s ease;
+}
+
+.markets--detail--navbar--left form button:hover {
+  transform: scale(1.07);
+}
+
+.markets--detail--navbar--left form .bi-heart-fill {
+  color: #FEE500;
+}
+
+.markets--detail--navbar--left div {
+  font-weight: bold;
+  line-height: 33px;
+  padding-left: 20px;
+}
+
+.markets--detail--navbar--right {
+  padding: 12px 16px;
+  border-radius: 5px;
+  background-color: #FEE500;
+  color: rgb(50 50 50);
+  font-size: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  opacity: 1;
+  transition: background-color 0.2s ease;
+  text-align: center;
+}
+
+.markets--detail--navbar--right:hover {
+  background-color: #e5cf0e;
+}
+
+#markets--detail--alert {
+  position: sticky;
+  display: none;
+  justify-content: space-between;
+  text-align: center;
+  bottom: 76px;
+  font-size: 15px;
+  width: 100%;
+  height: 50px;
+  padding: 17px 25px;
+  background-color: rgb(50 50 50);
+  border-radius: 10px;
+  color: white;
+}
+
+#markets--detail--alert a {
+  font-size: 14px;
+  color: #FEE500;
+  font-weight: bold;
+  text-decoration: none;
+  margin-top: 1px;
+}
+
+/* media 쿼리 */
+
+@media(max-width: 800px) {
+  .markets--detail--container {
+    width: 100%;
+  }
+
+  .markets--detail--footer-section--item {
+    width: 45%;
+    margin: 0 10px;
+  }
+
+  .markets--detail--footer-section {
+    justify-content: space-around;
+  }
+
+}
+
+@media(max-width: 450px) {
+  .markets--detail--footer-section--item {
+    width: 42%;
+  }
+
+  .markets--detail--footer-section {
+    justify-content: space-around;
+  }
+}

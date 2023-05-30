@@ -190,7 +190,7 @@
 #markets--index--filter--block header button {
   background-color: white;
   border: 0;
-  font-size: 35px;
+  font-size: 30px;
   padding: 20px;
   margin-right: 20px;
   color: rgb(80 80 80);
@@ -256,6 +256,16 @@
   opacity: 1!important;
 }
 
+.markets--index--empty {
+  width: 100%;
+  height: 800px;
+  padding-top: 200px;
+  text-align: center;
+  color: rgb(112 112 112);
+  font-weight: bold;
+  font-size: 24px;
+}
+
 @media(max-width: 1000px) {
   .markets--index--container {
     margin-left: 0;
@@ -266,4 +276,5 @@
   .markets--index--create {
     margin-left: 86%;
   }
+
 }

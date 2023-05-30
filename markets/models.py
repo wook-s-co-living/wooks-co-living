@@ -4,6 +4,7 @@ from django.core.validators import MinValueValidator
 from datetime import timedelta,datetime,date
 from django.utils import timezone
 from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
 from imagekit.processors import Thumbnail
 import os
 from django.conf import settings
@@ -15,6 +16,8 @@ class Post(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
     price = models.IntegerField(default=0, validators=[MinValueValidator(0)])
+
+    views = models.IntegerField(default=0)
 
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_markets_posts')
 
@@ -50,7 +53,7 @@ class Postimage(models.Model):
 
     image_first = models.ImageField(upload_to=post_image_path, null=True, blank=True)
     image = ImageSpecField(source='image_first',
-                            processors=[Thumbnail(600, 600)],
+                            processors=[ResizeToFill(800, 800)],
                             format='JPEG',
                             options={'quality': 100}
                             )

@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Post, Postimage
 from .forms import PostForm, PostImageForm, DeleteImageForm
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -31,7 +32,14 @@ def index(request):
 def detail(request, market_pk):
     post = Post.objects.get(pk=market_pk)
 
-    context = {'post': post}
+    user_posts = post.user.user_markets_posts.order_by('-pk').exclude(pk=market_pk)[:6]
+
+    if not request.session.get("post_viewed_{}".format(market_pk)):
+        post.views += 1
+        post.save()
+        request.session["post_viewed_{}".format(market_pk)] = True
+
+    context = {'post': post, 'user_posts': user_posts}
     return render(request, 'markets/detail.html', context)
 
 @login_required
@@ -99,10 +107,17 @@ def delete(request, market_pk):
 def likes(request, market_pk):
     post = Post.objects.get(pk=market_pk)
 
+    if post.user == request.user:
+        error_message = "자신의 글은 관심글로 등록할 수 없습니다."
+        return JsonResponse({'error': error_message})
+
     if request.user != post.user:
         if post.like_users.filter(pk=request.user.pk).exists():
             post.like_users.remove(request.user)
+            is_liked = False
         else:
             post.like_users.add(request.user)
-    
-    return redirect('markets:detail', market_pk)
+            is_liked = True
+
+    context = {'is_liked': is_liked}
+    return JsonResponse(context)
