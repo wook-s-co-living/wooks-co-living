@@ -4,7 +4,7 @@
 {% block title %} markets_index {% endblock title %}
 
 {% block header %}
-  <link rel="stylesheet" href="{% static 'css/markets.css' %}">
+  <link rel="stylesheet" href="{% static 'css/markets_index.css' %}">
 {% endblock header %}
 
 {% block content %}
@@ -101,14 +101,19 @@
             
             {% if post.postimages %}
               <header>
-                <img src="{{ post.postimages.first.image.url }}" alt="{{ request.user.username }}">
+                <img src="{{ post.postimages.first.image.url }}" alt="{{ post.user.username }}">
               </header>
             {% endif %}
             
             <section>
               <h1>{{ post.title }}</h1>
 
-              <h2>{{ post.user.building }}<span>&nbsp;·&nbsp;</span>{{ post.created_time }}</h2>
+              <h2>
+                {% if request.GET.dis == 'town' %}
+                  {{ request.user.town }}
+                {% else %}
+                  {{ request.user.building }} 
+                {% endif %}<span>&nbsp;·&nbsp;</span>{{ post.created_time }}</h2>
 
               {% if post.price %}
                 <h3>{{ post.price|intcomma }}원</h3>
@@ -124,6 +129,8 @@
             </section>
 
           </a>
+        {% empty %}
+          <div class='markets--index--empty'>일치하는 검색어가 없습니다 😥</div>
         {% endfor %}
       </section>
 
