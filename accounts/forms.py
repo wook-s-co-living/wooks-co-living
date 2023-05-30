@@ -14,17 +14,17 @@ class CustomUserCreationForm(UserCreationForm):
     age_Choices = (('10','20대 미만'),('20','20대'),('30','30대'),('40','40대'),('50','50대'),('60','60대 이상'))
 
     username = forms.CharField(label=False, label_suffix='', widget=forms.TextInput(
-        attrs={'class': 'signup--form','placeholder' : '아이디', 'autocomplete':'off'}))
+        attrs={'class': 'signup--form','placeholder' : '아이디', 'autocomplete':'off', 'style':'margin-bottom:0 !important;'}))
     password1 = forms.CharField(label=False, label_suffix='', widget=forms.PasswordInput(
-        attrs={'class': 'signup--form','placeholder' : '비밀번호'}))
+        attrs={'class': 'signup--form','placeholder' : '비밀번호','style':'margin-top:0.8rem !important;'}))
     password2 = forms.CharField(label=False, label_suffix='', widget=forms.PasswordInput(
         attrs={'class': 'signup--form','placeholder' : '비밀번호 확인'}))
     last_name = forms.CharField(label=False, label_suffix='', widget=forms.TextInput(
-        attrs={'class': 'signup--form','placeholder' : '이름', 'autocomplete':'off'}))
+        attrs={'class': 'signup--form','placeholder' : '이름', 'autocomplete':'off','style':'margin-top:0.8rem !important;'}))
     first_name = forms.CharField(label=False, label_suffix='', widget=forms.TextInput(
-        attrs={'class': 'signup--form','placeholder' : '닉네임', 'autocomplete':'off'}))
+        attrs={'class': 'signup--form','placeholder' : '닉네임', 'autocomplete':'off', 'style':'margin-bottom:0 !important;'}))
     email = forms.EmailField(label=False, label_suffix='', widget=forms.EmailInput(
-        attrs={'class': 'signup--form','placeholder' : '이메일', 'autocomplete':'off'}))
+        attrs={'class': 'signup--form','placeholder' : '이메일', 'autocomplete':'off', 'style':'margin-bottom:0 !important;'}))
     gender = forms.ChoiceField(label='성별', label_suffix='', choices=gender_Choices, widget=forms.Select(
         attrs={'class': 'signup--form'}))
     age = forms.ChoiceField(label='연령대', label_suffix='', choices=age_Choices, widget=forms.Select(

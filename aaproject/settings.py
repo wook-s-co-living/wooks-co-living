@@ -171,3 +171,22 @@ SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
 SOCIALACCOUNT_LOGIN_ON_GET = True
 ACCOUNT_LOGOUT_ON_GET = True
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory' 
+#none, optional(default, 보내긴하는데 인증하지않아도 됨), mandatory(이메일인증받지않으면 로그인할수없다)
+ACCOUNT_CONFIRM_EMIAL_ON_GET = True
+
+# 이메일 전송
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'jeongsodam26@gmail.com'
+EMAIL_SENDER_NAME = '혼거동락'
+EMAIL_HOST_PASSWORD = 'bsmaiatiokrqwvoo'
+EMAIL_USE_LOCALTIME = True
+DEFAULT_FROM_EMAIL = EMAIL_SENDER_NAME + ' <' + EMAIL_HOST_USER + '>'

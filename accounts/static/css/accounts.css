@@ -163,6 +163,7 @@ body {
   width: 50%;
   margin-bottom: 0;
   display: inline-block;
+  margin-top:0.8rem;
 }
 
 .signup--select--box {
@@ -211,6 +212,15 @@ input[type=file]::file-selector-button {
 .profile--container {
   display: grid;
   grid-template-columns: 300px auto;
+}
+
+.id--check--btn, .email--check--btn {
+  background-color: #fff0;
+  border: none;
+  font-size: 0.8rem;
+  color: #34568b;
+  word-break:keep-all;
+  height: 36px;
 }
 
 /* 탭 */
