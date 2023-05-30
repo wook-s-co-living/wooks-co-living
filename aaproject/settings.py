@@ -31,6 +31,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # 최상단이 아니면 충돌 위험
+    'daphne',
+
     # 앱
     'accounts',
     'chats',
@@ -190,3 +193,13 @@ EMAIL_SENDER_NAME = '혼거동락'
 EMAIL_HOST_PASSWORD = 'bsmaiatiokrqwvoo'
 EMAIL_USE_LOCALTIME = True
 DEFAULT_FROM_EMAIL = EMAIL_SENDER_NAME + ' <' + EMAIL_HOST_USER + '>'
+
+ASGI_APPLICATION = "aaproject.asgi.application"
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div>
+        {% for chatroom in chatrooms %}
+            {% if chatroom.user2 != user %}
+                <a href="{% url 'chats:room' chatroom.user2.first_name %}">
+                    <div>대화 상대 : {{ chatroom.user2.first_name }}</div>
+                    {% if chatroom.get_latest_message.sender == user %}
+                    <div>최근 대화 내용 : 나 : {{ chatroom.get_latest_message.content }}</div>
+                    {% else %}
+                    <div>최근 대화 내용 : {{ chatroom.get_latest_message.sender.first_name }} : {{ chatroom.get_latest_message.content }}</div>
+                    {% endif %}
+                </a>
+                {% else %} <!-- if chatroom.user1 != user -->
+                <a href="{% url 'chats:room' chatroom.user1.first_name %}">
+                    <div>대화 상대 : {{ chatroom.user1.first_name }}</div>
+                    {% if chatroom.get_latest_message.sender == user %}
+                    <div>최근 대화 내용 : 나 : {{ chatroom.get_latest_message.content }}</div>
+                    {% else %}
+                    <div>최근 대화 내용 : {{ chatroom.get_latest_message.sender.first_name }} : {{ chatroom.get_latest_message.content }}</div>
+                    {% endif %}
+                </a>
+            {% endif %}
+            <br>
+        {% endfor %}
+    </div>
+{% endblock content %}
