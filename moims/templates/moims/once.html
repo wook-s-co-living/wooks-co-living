@@ -12,6 +12,18 @@
   </div>
 </form>
 
+<form action="{% url 'moims:once' %}">
+  <input type="hidden" name='category' value='{{ request.GET.category }}'>
+
+  <h1>원하시는 범위를 설정해 주세요!</h1>
+  <input type='submit' name='dis' value='내 건물 친구가 개최한 모임'>
+    {{ request.user.building }}
+  </input>
+  <input type='submit' name='dis' value='우리 동네에 개최된 모임'>
+    {{ request.user.town }}
+  </input>
+</form>
+
 {% for post in posts %}
   <a href="{% url 'moims:detail' post.pk %}">DETAIL</a>
   {{ post.user }}
@@ -34,45 +46,15 @@
 {% endfor %}
 
 <!--지도-->
-<div id="map" style="width:100%;height:400px;"></div>
+<div id="map" style="width:100%;height:350px;"></div>
 
 <!--지도 생성 script-->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey={{ KAKAO_JS_KEY }}&libraries=services"></script>
 <script>
-  var positions = [];
-
-  // Perform geocoding and populate positions array with latlng data
-  {% for post in posts %}
-    geocodeAddress('{{ post.address }}', '{{ post.title }}');
-  {% endfor %}
-
-  function geocodeAddress(address, title) {
-    var geocoder = new kakao.maps.services.Geocoder();
-    geocoder.addressSearch(address, function(result, status) {
-      if (status === kakao.maps.services.Status.OK) {
-        var latlng = new kakao.maps.LatLng(result[0].y, result[0].x);
-
-        var positionData = {
-          title: title,
-          latlng: latlng
-        };
-
-        positions.push(positionData);
-        
-        // Check if all geocoding requests are complete
-        if (positions.length === {{ posts|length }}) {
-          addMarkers();
-        }
-      }
-    });
-  };
-  
-  console.log(positions)
-
   var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
       mapOption = {
           center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-          level: 5 // 지도의 확대 레벨
+          level: 6// 지도의 확대 레벨
       };  
 
   // 지도를 생성합니다    
@@ -81,13 +63,17 @@
   // 주소-좌표 변환 객체를 생성합니다
   var geocoder = new kakao.maps.services.Geocoder();
 
+  // 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
+  var bounds = new kakao.maps.LatLngBounds(); 
+
   // 주소로 좌표를 검색합니다
   geocoder.addressSearch('{{ user.address }}', function(result, status) {
 
       // 정상적으로 검색이 완료됐으면 
       if (status === kakao.maps.services.Status.OK) {
-
           var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+          bounds.extend(coords);
 
           // 결과값으로 받은 위치를 마커로 표시합니다
           var marker = new kakao.maps.Marker({
@@ -106,6 +92,37 @@
       } 
   }); 
   
+  var positions = [];
+
+  // Perform geocoding and populate positions array with latlng data
+  {% for post in posts %}
+    geocodeAddress('{{ post.address }}', '{{ post.title }}');
+  {% endfor %}
+
+  function geocodeAddress(address, title) {
+    var geocoder = new kakao.maps.services.Geocoder();
+    geocoder.addressSearch(address, function(result, status) {
+      if (status === kakao.maps.services.Status.OK) {
+        var latlng = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+        bounds.extend(latlng);
+        map.setBounds(bounds);
+
+        var positionData = {
+          title: title,
+          latlng: latlng
+        };
+
+        positions.push(positionData);
+        
+        // Check if all geocoding requests are complete
+        if (positions.length === {{ posts|length }}) {
+          addMarkers();
+        }
+      }
+    });
+  };
+
   function addMarkers() {
     // Add markers to the map
     var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";

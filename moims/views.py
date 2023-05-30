@@ -13,14 +13,17 @@ KAKAO_API_KEY = os.getenv('KAKAO_API_KEY')
 from django.utils.safestring import mark_safe
 from django.utils.html import escape
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 def many(request):
-    posts = Post.objects.filter(category = 'many').order_by('-created_at')
-    # user_building = request.user.building
-    # building_posts = Post.objects.filter(category='once', user__building = user_building).order_by('-created_at')
-    # user_town = request.user.town
-    # town_posts = Post.objects.filter(category='once', town = user_town).order_by('-created_at')
+    dis = request.GET.get('dis')
+    if dis == '우리 동네에 개최된 모임':
+        user_town = request.user.town
+        posts = Post.objects.filter(category='many', town = user_town).order_by('-created_at')
+    else:
+        user_building = request.user.building
+        posts = Post.objects.filter(category='many', user__building = user_building).order_by('-created_at')
     context = {
         'posts': posts,
         'KAKAO_JS_KEY': KAKAO_JS_KEY,
@@ -28,11 +31,13 @@ def many(request):
     return render(request, 'moims/many.html', context)
 
 def once(request):
-    posts = Post.objects.filter(category = 'once').order_by('-created_at')
-    # user_building = request.user.building
-    # building_posts = Post.objects.filter(category='once', user__building = user_building).order_by('-created_at')
-    # user_town = request.user.town
-    # town_posts = Post.objects.filter(category='once', town = user_town).order_by('-created_at')
+    dis = request.GET.get('dis')
+    if dis == '우리 동네에 개최된 모임':
+        user_town = request.user.town
+        posts = Post.objects.filter(category='once', town = user_town).order_by('-created_at')
+    else:
+        user_building = request.user.building
+        posts = Post.objects.filter(category='once', user__building = user_building).order_by('-created_at')
     context = {
         'posts': posts,
         'KAKAO_JS_KEY': KAKAO_JS_KEY,
@@ -130,30 +135,16 @@ def comment_create(request, moim_pk, parent_pk):
             if parent_pk != 0:
                 comment.parent_comment = Comment.objects.get(pk=parent_pk)
             comment.save()
-            # 비동기
-            return JsonResponse()
-            # 생성 테스트용 (비동기 적용 X)
-            # return redirect('moims:detail', post.pk)
-    else:
-        comment_form = CommentForm()
-    context = {
-        'comment_form': comment_form,
-        'post': post,
-    }
-    return render(request, 'moims/detail.html', context)
+            return redirect('moims:detail', moim_pk)
 
 @login_required
 def comment_update(request, moim_pk, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
-    if request.user == comment.user:
-        if request.method == 'POST':
-            jsonObject = json.loads(request.body)
-            comment.content = jsonObject['content']
-            comment.save()
-    context = {
-
-    }
-    return JsonResponse(context)
+    if request.method == "POST":
+        comment_update_form = CommentForm(request.POST, instance=comment)
+        if comment_update_form.is_valid():
+            comment_update_form.save()
+            return redirect('moims:detail', moim_pk)
 
 @login_required
 def comment_delete(request, moim_pk, comment_pk):

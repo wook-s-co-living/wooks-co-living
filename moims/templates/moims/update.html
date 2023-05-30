@@ -6,6 +6,28 @@
 <form action="{% url 'moims:update' post.pk %}" method="POST" enctype="multipart/form-data">
   {% csrf_token %}
   {{ update_form.as_p }}
+  <input type="text" id="s_address" placeholder="주소" name="address" class="signup--form" autocomplete="off">
+  <div class="address--box">
+    <input type="text" id="t_address" placeholder="동네" name="t_address" class="signup--form" autocomplete="off">
+    <input type="text" id="b_address" placeholder="건물명" name="b_address" class="signup--form" autocomplete="off">
+    <input type="button" onclick="search_address()" value="주소 검색" class="address--btn">
+  </div>
   <input type="submit">
 </form>
+
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+  function search_address() {
+    new daum.Postcode({
+      oncomplete: function(data) {
+        const addr = data.address;
+        document.getElementById("s_address").value = addr;
+        const addt = data.bname;
+        document.getElementById("t_address").value = addt;
+        const addb = data.buildingName;
+        document.getElementById("b_address").value = addb;
+      }
+    }).open();
+  }
+</script>
 {% endblock content %}
