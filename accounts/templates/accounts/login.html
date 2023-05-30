@@ -33,11 +33,10 @@
 
     {% comment %} another button {% endcomment %}
     <div class="accounts--btn--box">
-      <a href="">비밀번호 재설정</a>
+      <a href="{% url 'accounts:password_reset' %}">비밀번호 재설정</a>
       <a href="{% url 'accounts:signup' %}">회원가입</a>
     </div>
   </div>
 
 </div>
-
 {% endblock content %}

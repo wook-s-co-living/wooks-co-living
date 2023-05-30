@@ -13,12 +13,25 @@
     <p class="accounts--title">회원가입</p>
     <form action="{% url 'accounts:signup' %}" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
-      <p>{{ form.username }}</p>
+      <p>
+        <div class="d-flex">
+          {{ form.username }}
+          <button type="button" class="id--check--btn">중복 확인</button>
+        </div>
+        <span id="id-check-result"></span>
+      </p>
       <p>{{ form.password1 }}</p>
       <p>{{ form.password2 }}</p>
-      <p>{{ form.email }}</p>
+      <p>        
+        <div class="d-flex">
+          {{ form.email }}
+          <button type="button" class="email--check--btn">중복 확인</button>
+        </div>
+        <span id="email-check-result"></span>
+      </p>
       <p>{{ form.last_name }}</p>
       <p>{{ form.first_name }}</p>
+      <p id="first-name-error"></p>
       <p class="label--box">{{ form.gender.label}}</p><p class="label--box">{{ form.age.label}}</p>
       <div class="signup--select--box">{{ form.gender }}{{ form.age }}</div>
       <div>{{ form.image_first.label}}{{ form.image_first }}</div>
@@ -28,12 +41,19 @@
         <input type="text" id="b_address" placeholder="건물명" name="b_address" class="signup--form" autocomplete="off">
         <input type="button" onclick="search_address()" value="주소 검색" class="address--btn">
       </div>
-        <input type="submit" value="회원가입" class="accounts--btn">
-        <p class="relogin--txt">이미 아이디가 있으신가요?<a type="button" href="{% url 'accounts:login' %}">로그인</a></p>
+      <input type="submit" value="회원가입" class="accounts--btn">
+      <p class="relogin--txt">이미 아이디가 있으신가요?<a type="button" href="{% url 'accounts:login' %}">로그인</a></p>
     </form>
   </div>
 </div>
 
+<script>
+  var idOverlapCheckUrl = "{% url 'accounts:id_overlap_check' %}";
+  var emailOverlapCheckUrl = "{% url 'accounts:email_overlap_check' %}";
+</script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/check.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/signup.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/accounts.js' %}" type="text/javascript"></script>
 {% endblock content %}

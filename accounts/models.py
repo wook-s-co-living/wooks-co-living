@@ -30,6 +30,10 @@ class User(AbstractUser):
     dislikes = models.ManyToManyField('self', symmetrical=False, related_name='got_dislikes')
     
 
+    # 이메일 인증
+    is_active = models.BooleanField(default=False)
+    activation_token = models.CharField(max_length=255, blank=True, null=True)
+
     def profile_image_path(instance, filename):
         return f'accounts/{instance.username}/{filename}'
 

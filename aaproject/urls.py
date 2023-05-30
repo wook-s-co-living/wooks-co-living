@@ -21,12 +21,18 @@ from . import views
 from django.contrib.auth.decorators import login_required
 from ckeditor_uploader import views as views_ckeditor
 from django.views.decorators.cache import never_cache
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name="index"),
     path('accounts/', include('accounts.urls')),
     path('accounts/', include('allauth.urls')),
+
+    # 비밀번호 재설정
+    path('reset/<uidb64>/<token>/',auth_views.PasswordResetConfirmView.as_view(template_name='accounts/password_reset_confirm.html'),name='password_reset_confirm'),
+    path('reset/done/',auth_views.PasswordResetCompleteView.as_view(template_name='accounts/password_reset_complete.html'),name='password_reset_complete'),
+
     path('communities/', include('communities.urls')),
     # path('chats/', include('chats.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
