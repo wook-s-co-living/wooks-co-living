@@ -11,6 +11,29 @@
 <div class="accounts--container">
   <div class="signup--container">
     <p class="accounts--title">회원가입</p>
+    {% comment %} 약관동의 {% endcomment %}
+    <div class="checkbox--group">
+      <div class="checkbox--group--box">
+        <input type="checkbox" id="check_all" >
+        <label for="check_all">전체 동의</label>
+      </div>
+      
+      <div class="checkbox--group--box">
+        <input type="checkbox" id="check_1" class="normal" >
+        <label for="check_1">개인정보 처리방침 동의 <span>(필수)</span></label>
+      </div>
+
+      <div class="checkbox--group--box">
+        <input type="checkbox" id="check_2" class="normal" >
+        <label for="check_2">서비스 이용약관 동의 <span>(필수)</span></label>
+      </div>
+      
+      <div class="checkbox--group--box">
+        <input type="checkbox" id="check_3" class="normal" >
+        <label for="check_3">마케팅 수신 동의 <span>(필수)</span></label>
+      </div>
+      
+    </div>
     <form action="{% url 'accounts:signup' %}" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       <p>
@@ -41,7 +64,7 @@
         <input type="text" id="b_address" placeholder="건물명" name="b_address" class="signup--form" autocomplete="off">
         <input type="button" onclick="search_address()" value="주소 검색" class="address--btn">
       </div>
-      <input type="submit" value="회원가입" class="accounts--btn">
+      <input type="submit" value="회원가입" class="accounts--btn" id="submit_button">
       <p class="relogin--txt">이미 아이디가 있으신가요?<a type="button" href="{% url 'accounts:login' %}">로그인</a></p>
     </form>
   </div>
