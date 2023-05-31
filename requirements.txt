@@ -24,7 +24,6 @@ django-taggit==4.0.0
 fonttools==4.39.4
 hyperlink==21.0.0
 idna==3.4
-Image-Kit==0.0.3
 importlib-resources==5.12.0
 incremental==22.10.0
 kiwisolver==1.4.4
