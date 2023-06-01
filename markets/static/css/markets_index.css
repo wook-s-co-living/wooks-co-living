@@ -16,6 +16,7 @@
   z-index: 600;
   height: 56px;
   border-bottom: 1px solid rgb(240 240 240);
+  padding: 0 10px;
 }
 
 .markets--index--header .bi-chevron-down {
@@ -127,6 +128,10 @@
   background-color: rgb(245 245 245);
 }
 
+.markets--index--postitem:hover .markets--index--section--likes button {
+  background-color: rgb(245 245 245);
+}
+
 .markets--index--postitem header {
   min-width: 120px;
   width: 120px;
@@ -176,6 +181,40 @@
   position: absolute;
   bottom: 0;
   right: 10px;
+}
+
+.markets--index--section--likes button {
+  background-color: white;
+  border: 0;
+  transition: background-color 0.1s ease;
+  transition: transform 0.1s ease;
+}
+
+.markets--index--section--likes button .bi-heart-fill {
+  color: #FFC93C;
+}
+
+#markets--index--alert {
+  position: sticky;
+  justify-content: space-between;
+  text-align: center;
+  bottom: 20px;
+  margin: 0 auto;
+  font-size: 15px;
+  width: 95%;
+  height: 50px;
+  padding: 17px 25px;
+  background-color: rgb(50 50 50);
+  border-radius: 10px;
+  color: white;
+}
+
+#markets--index--alert a {
+  font-size: 14px;
+  color: #FEE500;
+  font-weight: bold;
+  text-decoration: none;
+  margin-top: 1px;
 }
 
 /* section modal */
@@ -277,4 +316,8 @@
     margin-left: 86%;
   }
 
+  #markets--index--address--block header button,
+  #markets--index--filter--block header button {
+    padding-right: 0;
+  }
 }

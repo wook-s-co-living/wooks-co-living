@@ -135,7 +135,7 @@
       </footer>
 
       {% comment %} 알림창 {% endcomment %}
-      <div id='markets--detail--alert'>
+      <div id='markets--detail--alert' style='display: none;'>
         <h1>관심목록에 추가됐어요.</h1>
         
         <a href="??">관심목록보기</a>
@@ -208,5 +208,8 @@
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script src="{% static 'js/markets_detail.js' %}"></script>
 {% endblock content %}
+
+{% block script %}
+  <script src="{% static 'js/markets_detail.js' %}"></script>
+{% endblock script %}
