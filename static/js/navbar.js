@@ -19,3 +19,42 @@ window.addEventListener("resize", function() {
         mobileMenu.style.display = "none";
     }
 });
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.querySelector('#bot_nav--modal');
+    const modalContent = modal.querySelector('.bot_nav--modal--content');
+    const profileIcon = document.querySelector('#bot_nav--profile--icon');
+    const navBar = document.querySelector('.bottom--nav');
+  
+    profileIcon.addEventListener('click', function(event) {
+      event.stopPropagation(); //이벤트 전파 방지 (이게 없으면 하단네비바 클릭시 모달 안사라짐)
+      modal.classList.toggle('show');
+      modalContent.classList.toggle('show');
+    });
+  
+  
+    // 모달창 어디든 클릭하면 비활성화 시킴
+    modal.addEventListener('click', function(e) {
+      if (e.target === this) {
+        this.classList.remove('show');
+        modalContent.classList.remove('show');
+      }
+    });
+  
+    // 모달 활성화시 하단메뉴 영역을 클릭해도 비활성화 시킴
+    navBar.addEventListener('click', function() {
+      if (modal.classList.contains('show')) {
+        modal.classList.remove('show');
+        modalContent.classList.remove('show');
+      }
+    });
+  
+    // 브라우저 크기 변경 이벤트
+    window.addEventListener('resize', function() {
+      if (modal.classList.contains('show')) {
+        modal.classList.remove('show');
+        modalContent.classList.remove('show');
+      }
+    });
+  });
