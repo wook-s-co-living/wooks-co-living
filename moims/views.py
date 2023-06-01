@@ -54,6 +54,7 @@ def create(request):
             post.town = request.POST.get('t_address')
             post.building = request.POST.get('b_address')
             post.save()
+            post.join_users.add(request.user)
             return redirect('moims:detail', post.pk)
     else:
         post_form = PostForm()
@@ -64,6 +65,7 @@ def create(request):
 
 def detail(request, moim_pk):
     post = Post.objects.get(pk=moim_pk)
+    # post.join_users.add(request.user)
     comments = post.comments.all()
     comment_form = CommentForm()
     context = {

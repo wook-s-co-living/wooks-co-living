@@ -53,9 +53,9 @@ class Post(models.Model):
     def post_image_path(instance, filename):
         return f'moims/{instance.user.username}/{filename}'
 
-    image_first = models.ImageField(upload_to=post_image_path, null=True, blank=True)
+    image_first = models.ImageField(upload_to=post_image_path, null=True)
     image = ImageSpecField(source='image_first',
-                            processors=[ResizeToFill(300, 300)],
+                            processors=[ResizeToFill(380, 380)],
                             format='JPEG',
                             options={'quality': 100}
                             )
