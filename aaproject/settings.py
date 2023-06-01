@@ -45,8 +45,8 @@ INSTALLED_APPS = [
     'imagekit',
     'ckeditor',
     'ckeditor_uploader',
-    'taggit',
-    # 'taggit_templatetags2',
+    'taggit.apps.TaggitAppConfig',
+    'taggit_templatetags2',
 
     # 카카오 소셜 로그인
     'django.contrib.sites',
@@ -64,6 +64,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+# for tags
+TAGGIT_CASE_INSENSITIVE = True
+TAGGIT_LIMIT = 50
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
