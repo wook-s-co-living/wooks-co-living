@@ -19,4 +19,3 @@ window.addEventListener("resize", function() {
         mobileMenu.style.display = "none";
     }
 });
-navbar
