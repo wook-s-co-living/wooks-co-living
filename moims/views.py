@@ -14,35 +14,30 @@ from django.utils.safestring import mark_safe
 from django.utils.html import escape
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 
 # Create your views here.
-def many(request):
-    dis = request.GET.get('dis')
-    if dis == '우리 동네에 개최된 모임':
-        user_town = request.user.town
-        posts = Post.objects.filter(category='many', town = user_town).order_by('-created_at')
+def index(request):
+    category = request.GET.get('category')
+    dis = request.GET.get('dis')    
+    q = request.GET.get('q')
+    
+    if category == 'once':
+        posts = Post.objects.filter(category=category,once_datetime__gte=timezone.now()).order_by('once_datetime')
     else:
-        user_building = request.user.building
-        posts = Post.objects.filter(category='many', user__building = user_building).order_by('-created_at')
-    context = {
-        'posts': posts,
-        'KAKAO_JS_KEY': KAKAO_JS_KEY,
-    }
-    return render(request, 'moims/many.html', context)
+        posts = Post.objects.filter(category='many').order_by('-pk')
 
-def once(request):
-    dis = request.GET.get('dis')
-    if dis == '우리 동네에 개최된 모임':
-        user_town = request.user.town
-        posts = Post.objects.filter(category='once', town = user_town).order_by('-created_at')
+    if dis == 'town':
+        posts = posts.filter(user__town=request.user.town)
     else:
-        user_building = request.user.building
-        posts = Post.objects.filter(category='once', user__building = user_building).order_by('-created_at')
-    context = {
-        'posts': posts,
-        'KAKAO_JS_KEY': KAKAO_JS_KEY,
-    }
-    return render(request, 'moims/once.html', context)
+        posts = posts.filter(user__building=request.user.building)
+
+    if q:
+        posts = posts.filter(title__icontains=q)
+
+    context = {'posts': posts,}
+
+    return render(request, 'moims/many.html', context)
 
 def create(request):
     if request.method == "POST":

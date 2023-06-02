@@ -55,7 +55,7 @@ class Post(models.Model):
 
     image_first = models.ImageField(upload_to=post_image_path, null=True)
     image = ImageSpecField(source='image_first',
-                            processors=[ResizeToFill(380, 380)],
+                            processors=[ResizeToFill(350, 250)],
                             format='JPEG',
                             options={'quality': 100}
                             )

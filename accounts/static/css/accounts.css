@@ -58,7 +58,7 @@ body {
 
 /* color 참고 */
 .yellow {
-  background-color: #FEE500; /* 연노랑*/
+  background-color: #FFC93C; /* 연노랑*/
   background-color: rgb(211, 189, 40); /* 진노랑 */
 }
 
@@ -273,7 +273,7 @@ input[type="radio"] + label {
   font-weight: 600;
 }
 input[type="radio"]:checked + label {
-  color: #FEE500;
+  color: #FFC93C;
 }
 .profile--card {
   display: none;
@@ -394,7 +394,7 @@ input[id="tab04"]:checked ~ .card4 {
   margin-top: 1rem;
 }
 .user--like {
-  background-color: #FDD20D;
+  background-color: #FFC93C;
   width: 80px;
   height: 35px;
   display: flex;

@@ -3,8 +3,7 @@ from . import views
 
 app_name='moims'
 urlpatterns = [
-    path('many/', views.many, name='many'),
-    path('once/', views.once, name='once'),
+    path('', views.index, name='index'),
     path('create/', views.create, name='create'),
     path('<int:moim_pk>/', views.detail, name='detail'),
     path('<int:moim_pk>/update/', views.update, name='update'),

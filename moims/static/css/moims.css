@@ -1,0 +1,384 @@
+.moims--container {
+  min-height: 100vh;
+  padding: 0 10px;
+  width: 100%;
+}
+
+/* moims/index/header */
+
+.moims--index--header {
+  position: sticky;
+  top: 60px;
+  background-color: white;
+  z-index: 600;
+  height: 56px;
+  border-bottom: 1px solid rgb(240 240 240);
+  padding: 0 10px;
+}
+
+.moims--index--container {
+  width: 800px;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+}
+
+@media(max-width: 800px) {
+  .moims--index--container {
+    margin-left: 0;
+    width: 100%;
+    padding: 0;
+  }
+}
+
+.moims--index--header .bi-chevron-down {
+  font-size: 22px;
+}
+
+.moims--index--header div {
+  align-items: center;
+}
+
+.moims--index--header div button {
+  background-color: white;
+  border: 0;
+  font-weight: bold;
+  color: rgb(50 50 50);
+  font-size: 18px;
+}
+
+.moims--index--search--div {
+  display: inline-block;
+}
+
+#moims--index--search--block {
+  position: relative;
+}
+
+#moims--index--search--block input {
+  padding: 8px 10px;
+  padding-right: 25px;
+  border-radius: 10px;
+  background-color: rgb(240 240 240);
+  border: 0;
+}
+
+#moims--index--search--block input:focus {
+  outline: 2px solid #FEE500;
+}
+
+#moims--index--search--block input::-webkit-search-cancel-button {
+  display: none;
+}
+
+#moims--index--search--block button {
+  position: absolute;
+  bottom: 8px;
+  right: 5px;
+  background: none;
+}
+
+.moims--index--highlight {
+  background-color: #FEE500;
+  opacity: 0.7;
+}
+
+#moims--index--filter {
+  margin-left: 5px;
+}
+
+#moims--index--filter i {
+  font-size: 1.2rem;
+}
+
+/* modal */
+
+#moims--index--address--block header,
+#moims--index--filter--block header {
+  display: flex;
+  flex-flow: row-reverse;
+}
+
+#moims--index--address--block header button,
+#moims--index--filter--block header button {
+  background-color: white;
+  border: 0;
+  font-size: 30px;
+  padding: 20px;
+  margin-right: 20px;
+  color: rgb(80 80 80);
+}
+
+#moims--index--address--block header button:hover,
+#moims--index--filter--block header button:hover {
+  color: black;
+}
+
+#moims--index--address--block,
+#moims--index--filter--block {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: white;
+  z-index: 100;
+}
+
+#moims--index--address--block form,
+#moims--index--filter--block form {
+  margin: auto;
+  margin-top: 20%;
+  text-align: center;
+}
+
+#moims--index--address--block form h1,
+#moims--index--filter--block form h1 {
+  font-size: 28px;
+  font-weight: bold;
+  color: rgb(80 80 80);
+  margin-bottom: 40px;
+}
+
+#moims--index--address--block form button,
+#moims--index--filter--block form button {
+  display: block;
+  font-size: 20px;
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+  background-color: #FEE500;
+  padding: 14px 20px;
+  border-radius: 10px;
+  width: fit-content;
+  margin: 20px auto;
+  border: 0;
+  opacity: 0.7;
+  transition: opacity 0.1s ease;
+}
+
+#moims--index--filter--block form button {
+  background-color: #34568b;
+  color: white;
+  padding: 14px 80px;
+}
+
+#moims--index--address--block form button:hover,
+#moims--index--filter--block form button:hover,
+.moims--index--opacity--100 {
+  opacity: 1!important;
+}
+
+
+/* many index */
+
+.many--moims {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  gap:10px;
+  padding: 10px;
+}
+
+.many--moim--content {
+  width: 100%;
+  border: 1px solid rgb(240, 240, 240);
+  border-radius: 20px;
+  color: black;
+  text-decoration: none;
+  display: block;
+  overflow: hidden;
+  min-height: 250px;
+  min-width: 250px;
+}
+
+.many--moim--content:hover {
+  box-shadow: 1px 1px 5px rgba(185, 185, 185, 0.8);
+}
+
+.many--moim--box {
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+}
+
+.many--image--box{
+  width: 100%;
+  height: 60%;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  overflow: hidden;
+}
+
+.many--moim--image {
+  width: 100%;
+}
+
+.many--moim--txt {
+  padding: 10px;
+  width: 100%;
+  height: 40%;
+}
+
+.many--moim--txt h1 {
+  margin-bottom: 20px;
+  width: 100%;
+  max-height: 32px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.many--moim--txt p {
+  font-size: 0.8rem;
+  margin-bottom: 5px;
+  color: gray;
+}
+.many--moim--txt p span {
+  color: black;
+}
+.user--info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.user--imgbox {
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  line-height: 50px;
+  overflow: hidden;
+}
+.user--imgbox img {
+  width: 50px;
+  height: 50px;
+}
+
+@media screen and (max-width: 560px) {
+  .many--moims {
+    display: grid;
+    grid-template-columns: 100%;
+  }
+}
+
+@media screen and (max-width: 730px) {
+  .many--moim--txt h1 {
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+  }
+  .many--moim--txt p {
+    font-size: 0.8rem;
+  }
+  .user--info {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+  }
+  .user--imgbox {
+    width: 35px;
+    height: 35px;
+    border-radius: 100%;
+    line-height: 35px;
+    overflow: hidden;
+  }
+  .user--imgbox img {
+    width: 35px;
+    height: 35px;
+  }
+}
+
+/* once */
+
+.once--moim {
+  margin-top: 15px;
+  border-bottom: 1px solid rgba(190, 190, 190, 0.6);
+}
+
+.once--moim--profile {
+  position: relative;
+  border-radius: 100%;
+  width: 50px;
+  height: 50px;
+  display: block;
+}
+
+.once--moim--profile img {
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+}
+
+.moims--member--crown {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 19px;
+  height: 19px;
+  border-radius: 100%;
+}
+
+.moims--member--crown img {
+  width: 100%;
+  height: 100%;
+}
+.once--moim--link {
+  text-decoration: none;
+  color: black;
+  display: block;
+  padding: 10px;
+}
+
+.once--moim--link:hover {
+  background-color: rgb(245, 245, 245);
+}
+
+.once--moim--link h1 {
+  font-weight: 600;
+  color: #34568b;
+  font-size: 1.1rem;
+}
+
+.once--calendar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(190, 190, 190);
+  border-radius: 5px;
+  padding: 8px;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 10px 20px;
+  margin-left: 0;
+}
+
+.once--calendar span {
+  font-size: 0.8rem;
+}
+
+.once--moim--txt {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.once--moim--txt i {
+  margin-right: 5px;
+}
+.once--moim--txt p {
+  color: rgb(27, 27, 27);
+  font-size: 0.8rem;
+}
+
+.once--moim--member {
+  font-size: 0.7rem;
+  color: rgb(192, 192, 192);
+  margin-bottom: 10px;
+}
+
+.member--box {
+  padding: 10px;
+  padding-top: 5px;
+}
