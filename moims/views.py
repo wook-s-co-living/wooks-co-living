@@ -60,6 +60,7 @@ def create(request):
 
 def detail(request, moim_pk):
     post = Post.objects.get(pk=moim_pk)
+    # post.join_users.add(request.user)
     comments = post.comments.all()
     comment_form = CommentForm()
     context = {

@@ -1,0 +1,396 @@
+.moims--detail--container {
+  width: 800px;
+  margin: 0 auto;
+}
+
+/* 디테일 헤더 */
+
+.moims--detail--header {
+  position: sticky;
+  top: 60px;
+  background-color: white;
+  z-index: 500;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgb(240 240 240);
+}
+
+.moims--detail--header div {
+  display: flex;
+  max-width: 90%;
+}
+
+.moims--detail--header div a {
+  display: block;
+  font-size: 30px;
+  color: rgb(40 40 40);
+  padding: 10px;
+  padding-left: 5px;
+}
+
+.moims--detail--header div a:hover {
+  color: rgb(80 80 80);
+}
+
+.moims--detail--header div section {
+  font-size: 18px;
+  font-weight: bold;
+  color: rgb(20 20 20);
+  padding: 16px 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.moims--detail--header button {
+  border: 0;
+  background-color: white;
+}
+
+#moims--detail--share {
+  color: black;
+}
+
+/* 디테일 메인 사진 */
+
+.moims--detail--section--header {
+  width: 100%;
+  position: relative;
+}
+
+.moims--detail--section--header::after {
+  display: block;
+  content: "";
+  padding-bottom: 60%;
+}
+
+.moims--detail--section--header img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 디테일 유저 정보 */
+
+.moims--detail--section--head {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  text-decoration: none;
+  border-bottom: 1px solid rgb(240 240 240);
+  height: 93px;
+}
+
+.moims--detail--section--head--header {
+  width: 50px;
+  min-width: 50px;
+  transition: transform 0.3s ease;
+}
+
+.moims--detail--section--head--header:hover {
+  transform: scale(1.05);
+}
+
+.moims--detail--section--head--header img {
+  width: 100%;
+  border-radius: 100px;
+}
+
+.moims--detail--section--head div {
+  margin-left: 10px;
+}
+
+.moims--detail--section--head div h1 {
+  font-size: 16px;
+  font-weight: bold;
+  color: rgb(30 30 30);
+  margin-bottom: 10px;
+}
+
+.moims--detail--section--head div h2 {
+  font-size: 14px;
+  color: rgb(120 120 120);
+  margin: 5px;
+}
+
+.moims--detail--section--head footer {
+  flex-grow: 1;
+  height: 100%;
+  display: flex;
+  flex-flow: row-reverse;
+  align-items: end;
+}
+
+.moims--detail--section--head footer section {
+  display: flex;
+}
+
+.moims--detail--section--head footer h3,
+.moims--detail--section--head footer a,
+.moims--detail--section--head footer button {
+  color: rgb(150 150 150);
+  font-size: 12px;
+  margin-bottom: 5px;
+  padding-top: 5px;
+}
+
+.moims--detail--section--head footer a {
+  text-decoration: none;
+}
+
+.moims--detail--section--head footer button {
+  background-color: white;
+  border: 0;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.moims--detail--section--head footer a:hover,
+.moims--detail--section--head footer button:hover {
+  color: black;
+}
+
+/* 디테일 정보 */
+
+.moims--detail--section--information {
+  padding: 15px 20px;
+  border-bottom: 1px solid rgb(240 240 240);
+}
+
+.moims--detail--section--information h1,
+.moims--detail--section--information h2,
+.moims--detail--section--information h3,
+.moims--detail--section--information h4 {
+  font-size: 15px;
+  font-weight: 500;
+  color: black;
+  margin: 15px 0;
+  word-break: break-word;
+}
+
+.moims--detail--section--information h1 i,
+.moims--detail--section--information h2 i,
+.moims--detail--section--information h3 i,
+.moims--detail--section--information h4 i {
+  margin-right: 10px;
+  color: black;
+}
+
+.moims--detail--section--information h2 i,
+.moims--detail--section--information h4 i {
+  margin-left: 1px;
+}
+
+.moims--detail--section--information h1 i,
+.moims--detail--section--information h3 i {
+  font-size: 18px;
+}
+
+/* 디테일 컨텐트 */
+
+.moims--detail--section--content {
+  font-size: 17px;
+  padding: 20px;
+  line-height: 30px;
+}
+
+/* 디테일 맵 */
+
+.moims--detail--section--map {
+  width: 100%;
+  height: 500px;
+  padding: 20px;
+}
+
+.moims--detail--section--map #map {
+  width: 100%;
+  height: 100%;
+}
+
+/* 디테일 참여자 정보 */
+
+.moims--detail--section--member {
+  color: rgb(50 50 50);
+  font-size: 18px;
+  font-weight: bold;
+  padding: 20px;
+}
+
+.moims--detail--section--member h1 {
+  margin-bottom: 20px;
+}
+
+.moims--detail--section--member--item {
+  display: block;
+  position: relative;
+}
+
+.moims--detail--section--member--item img {
+  border-radius: 100%;
+}
+
+.moims--detail--section--member--crown {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 23px;
+  border-radius: 100%;
+}
+
+.moims--detail--section--member--crown img {
+  width: 100%;
+}
+
+/* 디테일 댓글 */
+
+.moims--detail--section--comment {
+  width: 100%;
+  padding: 20px;
+  border-bottom: 1px solid rgb(240 240 240);
+}
+
+.moims--detail--section--comment h2 {
+  color: rgb(70 70 70);
+  font-weight: bold;
+  font-size: 17px;
+  margin-bottom: 20px;
+}
+
+.moims--detail--section--comment h2 span {
+  color: #34568b;
+}
+
+.moims--detail--section--commentcreate--btn {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border: 1px solid rgb(210 210 210);
+  border-radius: 5px;
+  padding: 12px 16px;
+  margin-top: 10px;
+  width: 100%;
+  transition: background-color 0.2s ease;
+}
+
+.moims--detail--section--commentcreate--btn:hover {
+  background-color: rgb(245 245 245);
+}
+
+.moims--detail--section--commentcreate--btn div {
+  width: 22px;
+}
+
+.moims--detail--section--commentcreate--btn img {
+  width: 100%;
+  border-radius: 100%;
+  margin-top: 2px;
+}
+
+.moims--detail--section--commentcreate--btn h1 {
+  font-size: 16px;
+  color: rgb(173 181 189);
+  margin-left: 10px;
+}
+
+#moims--detail--section--commentcreate textarea {
+  width: 100%;
+  height: 158px;
+  border: 1px solid rgb(220 220 220);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 5px;
+}
+
+#moims--detail--section--commentcreate textarea:focus {
+  outline: 1px solid #FEE500;
+  color: rgb(80 80 80);
+}
+
+#moims--detail--section--commentcreate .comment-submit {
+  padding: 6px 12px;
+  height: 42px;
+  background-color: #FEE500;
+  font-weight: bold;
+  font-size: 14px;
+  color: white;
+  border: 0;
+  border-radius: 5px;
+  transition: background-color 0.2s ease;
+}
+
+#moims--detail--section--commentcreate .comment-submit:hover {
+  background-color: #c9b506;
+}
+
+#moims--detail--section--commentcreate .comment-cancle {
+  padding: 6px 12px;
+  height: 42px;
+  background-color: white;
+  border: 1px solid rgb(230 230 230);
+  font-weight: bold;
+  font-size: 14px;
+  color: rgb(50 50 50);
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+#moims--detail--section--commentcreate .comment-cancle:hover {
+  background-color: rgb(240 240 240);
+}
+
+/* 디테일 댓글 리스트 */
+
+.moims--detail--section--commentlist {
+  width: 100%;
+  padding: 20px;
+  border-bottom: 1px solid rgb(240 240 240);
+}
+
+.moims--detail--section--commentlist header {
+  display: flex;
+  align-items: center;
+}
+
+.moims--detail--section--commentlist header header {
+  width: 28px;
+}
+
+.moims--detail--section--commentlist header header img {
+  width: 100%;
+  border-radius: 100%;
+}
+
+.moims--detail--section--commentlist header section {
+  font-size: 15px;
+  color: rgb(50 50 50);
+  font-weight: bold;
+  margin: 0 20px;
+  margin-left: 10px;
+}
+
+.moims--detail--section--commentlist header footer {
+  font-size: 13px;
+  color: rgb(150 150 150);
+}
+
+.moims--detail--section--commentlist--content {
+  color: rgb(50 50 50);
+  padding-top: 20px;
+  font-size: 16px;
+  word-break: break-word;
+}
+
+@media(max-width: 800px) {
+  .moims--detail--container {
+    width: 100%;
+  }
+}
+
+@media(max-width: 600px) {
+  .moims--detail--section--map {
+    height: calc(100vw - 40px);
+  }
+}

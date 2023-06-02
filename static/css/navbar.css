@@ -168,3 +168,125 @@
     }
 }
 
+/* 하단 nav 영역 */
+.bottom--nav {
+    width: 100%;
+    height: 80px;
+    position: fixed;
+    bottom: 0;
+    display: none;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #02517b;
+    z-index: 10;
+    border-radius: 1rem 1rem 0 0;
+  }
+  /* 하단 내부 요소 */
+  .bottom--nav__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    position: relative;
+  }
+  
+  /* 요소 이미지 */
+  .bottom--nav__item i {
+    font-size: 1.5rem;
+    color: lightgray;
+    transition: background-color 0.5s ease-in-out;
+  }
+  .bottom--nav__item i:hover {
+    font-size: 1.5rem;
+    color: white;
+    transform: translate(0%, 30%);
+  }
+  .icon-title {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translate(-50%);
+    background: #fff;
+    padding: 5px 10px;
+    border-radius: 7px;
+    transition: 0.5s;
+    opacity: 0;
+    visibility: hidden;
+    color: #02517b;
+    white-space: nowrap; 
+}
+/* 말꼬리 역할 하는 삼각형 부분 */
+.icon-title::before {
+  content: "";
+  position: absolute;
+  bottom: -5px;  /* 삼각형의 위치 */
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid white;  /* 삼각형의 색상 */
+}
+
+.bottom--nav__item:hover .icon-title {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -10%);
+}
+
+  /* 모달 영역 */
+  .bot_nav--modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0); /* 초기엔 투명 */
+    transition: background-color 0.5s ease-in-out;
+  }
+  .bot_nav--modal.show {
+    display: block;
+    background-color: rgba(0,0,0,0.5);
+}
+  /* 모달 내용 */
+  .bot_nav--modal--content {
+    background-color: #fefefe;
+    position: fixed;
+    bottom: 0; 
+    right: 20px;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    width: 150px;
+    height: 300px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    transform: translateY(100%);
+    transition: transform 0.2s ease-in-out;
+  }
+  .bot_nav--modal--content.show {
+    transform: translateY(0%);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  
+  @media screen and (min-width: 800px) {
+    .bottom--nav {
+      display: none;
+    }
+    .bot_nav--modal {
+      display: none; 
+    }
+  }
+    
+  @media screen and (max-width: 799px) {
+    .bottom--nav {
+      display: flex;
+    }
+    .bot_nav--modal {
+      display: flex;
+    }
+  }
+  

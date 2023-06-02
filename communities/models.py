@@ -11,13 +11,13 @@ class Post(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user_communities_posts')
     title = models.CharField(max_length=100)
     content = RichTextUploadingField(blank=True,null=True)
-    category = models.CharField(max_length=40)
-    views = models.IntegerField(default=0)
+    category = models.CharField(max_length=40, blank=True)
+    views = models.PositiveIntegerField(default=0, verbose_name='조회수')
 
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_communities_posts')
     dislike_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='dislike_communities_posts')
 
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     @property

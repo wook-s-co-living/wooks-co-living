@@ -1,40 +1,193 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 {% block title %} moims_detail {% endblock title %}
-{% block style %}{% endblock style %}
+
 {% block header %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+  <link rel="stylesheet" href="{% static 'css/moims_detail.css' %}">
+
+  <link rel="stylesheet" href="{% static 'owlcarousel/owl.carousel.css' %}">
+  <link rel="stylesheet" href="{% static 'owlcarousel/owl.theme.default.min.css' %}">
+  <script src="{% static 'owlcarousel/owl.carousel.js' %}"></script>
+  
+  <link rel="stylesheet" href="{% static 'css/markets_detail.css' %}">
 {% endblock header %}
+
 {% block content %}
-<!--모임 정보-->
-{{ post.user }}
-{{ post.title }}
-{{ post.content }}
-{{ post.category }}
-{% if post.category == "many" %}
-  {{ post.many_datetime }}
-{% else %}
-  {{ post.once_datetime }}
-{% endif %}
-{{ post.limit }}
-{{ post.address }}
-{{ post.detail_address }}
-{{ post.price }}
-{{ post.created_time }}
-{% comment %} <img src="{{ post.image_first.url }}" alt=""> {% endcomment %}
-<img src="{{ post.image.url }}" alt="">
-<a href="{% url 'moims:update' post.pk %}">UPDATE</a>
-<a href="{% url 'moims:delete' post.pk %}">DELETE</a>
 
-<!--지도-->
-<div id="map" style="width:100%;height:350px;"></div>
+  <div class='moims--detail'>
+    <div class='moims--detail--container'>
+      <header class='moims--detail--header'>
+        <div>
+          <a {% if post.category == 'once' %}href="{% url 'moims:once' %}"{% else %}href="{% url 'moims:moims' %}"{% endif %}>
+            <i class="bi bi-arrow-left-short"></i>
+          </a>
+  
+          <section>{{ post.title }}</section>
+        </div>
 
-<!--댓글 생성-->
-<form action="{% url 'moims:comment_create' post.pk 0 %}" method="POST">
-  {% csrf_token %}
-  {{ comment_form.as_p }}
-  <input type="submit" value="CREATE">
-</form> 
+        <button id='moims--detail--share'>
+          <i class="bi bi-share"></i>
+        </button>
+      </header>
+
+      <section class='moims--detail--section'>
+        <header class='moims--detail--section--header'>
+          <img src="{{ post.image_first.url }}" alt="{{ post.image }}">
+        </header>
+
+        <section class='moims--detail--section--head'>
+          <a class='moims--detail--section--head--header' href="??">
+            {% if post.user.image %}
+              <img src="{{ post.user.image.url }}" alt="{{ post.user }}">
+            {% else %}
+              <img src="{% static 'image/noimage.png' %}" alt="noimage">
+            {% endif %}
+          </a>
+
+          <div>
+            <h1>{{ post.title }}</h1>
+
+            <h2>
+              {{ post.user.first_name }}<span>&nbsp;·&nbsp;</span>{{ post.user.town }}<span>&nbsp;·&nbsp;</span>멤버 {{ post.join_users.count }}
+            </h2>
+          </div>
+
+          <footer>
+            <section>
+              {% if request.user == post.user %}
+                <a href="{% url 'moims:update' post.pk %}">수정</a>
+                <form action="{% url 'moims:delete' post.pk %}" method="POST">
+                  {% csrf_token %}
+                  <button type='submit'>삭제</button>
+                </form>
+              {% endif %}
+              <h3>{{ post.created_time }}</h3>
+            </section>
+          </footer>
+        </section>
+
+        <div class='moims--detail--section--information'>
+          <h1>
+            <i class="bi bi-geo-alt"></i> 
+            {{ post.address }} {{ post.detail_address }}
+          </h1>
+
+          <h2>
+            <i class="bi bi-calendar"></i> 
+            {% if post.category == 'once' %}
+              {{ post.once_datetime|date:"D H:i n/j"|lower }}
+            {% else %}
+              {{ post.many_datetime }}
+            {% endif %}
+          </h2>
+
+          <h3>
+            <i class="bi bi-person"></i> 
+            1~{{ post.limit }}명
+          </h3>
+
+          <h4>
+            <i class="fas fa-won-sign"></i> 
+            {% if post.price %}
+              {{ post.price|intcomma }}원
+            {% else %}
+              무료
+            {% endif %}
+          </h4>
+        </div>
+
+        <div class='moims--detail--section--content'>
+          {{ post.content|linebreaksbr }}
+        </div>
+
+        <div class='moims--detail--section--map'>
+          <div id="map"></div>
+        </div>
+
+        <div class='moims--detail--section--member'>
+          <h1>참여 멤버 ({{ post.join_users.count }}/{{ post.limit }})</h1>
+
+          <div class="owl-carousel owl-theme">
+            {% for join_user in post.join_users.all %}
+              <a class='moims--detail--section--member--item' href="??">
+                {% if join_user.image %}
+                  <img src="{{ join_user.image.url }}" alt="{{ join_user }}">
+                {% else %}
+                  <img src="{% static 'image/noimage.png' %}" alt="noimage">
+                {% endif %}
+                {% if forloop.counter == 1 %}
+                  <div class='moims--detail--section--member--crown'>
+                    <img src="{% static 'image/crown.png' %}" alt="crown">
+                  </div>
+                {% endif %}
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class='moims--detail--section--comment'>
+          <h2>댓글 <span>{{ post.comments.count }}</span></h2>
+
+          {% if user.is_authenticated %}
+            <button class='moims--detail--section--commentcreate--btn'>
+              <div>
+                {% if request.user.image %}
+                  <img src="{{ request.user.image.url }}" alt="{{ request.user.username }}">
+                {% else %}
+                  <img src="{% static 'image/noimage.png' %}" alt="noimage">
+                {% endif %}
+              </div>
+  
+              <h1>
+                {{ request.user.first_name }}님, 질문을 작성해 보세요.
+              </h1>
+            </button>
+  
+            <form id='moims--detail--section--commentcreate' style='display: none;' action="{% url 'moims:comment_create' post.pk 0 %}" method="POST">
+              {% csrf_token %}
+              {{ comment_form.content }}
+              <div class='d-flex flex-row-reverse'>
+                <button class='comment-submit' type='submit'>등록</button>
+                <button class='comment-cancle'>취소</button>
+              </div>
+            </form> 
+          {% endif %}
+        </div>
+
+        <div class='moims--detail--section--commentlist'>
+          {% for comment in comments %}
+            <header>
+              <header>
+                {% if comment.user.image %}
+                  <img src="{{ comment.user.image.url }}" alt="{{ comment.user.username }}">
+                {% else %}
+                  <img src="{% static 'image/noimage.png' %}" alt="noimage">
+                {% endif %}
+              </header>
+
+              <section>
+                {{ comment.user.first_name }}
+              </section>
+
+              <footer>
+                {{ comment.created_time }}
+              </footer>
+            </header>
+
+            <section class='moims--detail--section--commentlist--content'>
+              {{ comment.content|linebreaksbr }}
+            </section>
+
+          {% endfor %}
+        </div>
+      </section>
+
+      <div style='height: 400px;'></div>
+    </div>
+  </div>
+
 
 <!--댓글 목록 수정 삭제-->
 <ul>
@@ -54,45 +207,91 @@
 {% endfor %}
 </ul>
 
+
+<script src="{% static 'js/moims_detail.js' %}"></script>
 <!--지도 생성 script-->
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey={{ KAKAO_JS_KEY }}&libraries=services"></script>
 <script>
-  var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-      mapOption = {
-          center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-          level: 3 // 지도의 확대 레벨
-      };  
+  $('.owl-carousel').owlCarousel({
+      startPosition: false,
+      loop:true,
+      margin:20,
+      responsiveClass:true,
+      responsive:{
+          0:{
+              items:5,
+              nav:false,
+              loop:false
+          },
+          600:{
+              items:7,
+              nav:false,
+              loop:false
+          },
+          1000:{
+              items:9,
+              nav:false,
+              loop:false
+          }
+      }
+  })
 
-  // 지도를 생성합니다    
-  var map = new kakao.maps.Map(mapContainer, mapOption); 
+  var mapContainer = document.getElementById('map')
+  var mapOption = {
+    center: new kakao.maps.LatLng(33.450701, 126.570667),
+    level: 3
+  }
+  var map = new kakao.maps.Map(mapContainer, mapOption)
 
-  // 주소-좌표 변환 객체를 생성합니다
-  var geocoder = new kakao.maps.services.Geocoder();
-
-  // 주소로 좌표를 검색합니다
-  geocoder.addressSearch('{{ post.address }}', function(result, status) {
-
-      // 정상적으로 검색이 완료됐으면 
+  // 주소로 좌표를 검색하고 맵을 업데이트하는 함수
+  function updateMap(address, detailAddress) {
+    var geocoder = new kakao.maps.services.Geocoder()
+    geocoder.addressSearch(address, function(result, status) {
       if (status === kakao.maps.services.Status.OK) {
+        var coords = new kakao.maps.LatLng(result[0].y, result[0].x)
 
-          var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-          console.log(coords)
-          // 결과값으로 받은 위치를 마커로 표시합니다
-          var marker = new kakao.maps.Marker({
-              map: map,
-              position: coords
-          });
+        // 결과값으로 받은 위치를 마커로 표시합니다
+        var marker = new kakao.maps.Marker({
+          map: map,
+          position: coords
+        });
 
-          // 인포윈도우로 장소에 대한 설명을 표시합니다
-          var infowindow = new kakao.maps.InfoWindow({
-              content: '<div style="width:150px;text-align:center;padding:6px 0;">{{ post.detail_address }}</div>'
-          });
-          infowindow.open(map, marker);
+        // 인포윈도우로 장소에 대한 설명을 표시합니다
+        var infowindow = new kakao.maps.InfoWindow({
+          content: '<div style="width:150px;text-align:center;padding:6px 0;">' + detailAddress + '</div>'
+        });
+        infowindow.open(map, marker);
 
-          // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-          map.setCenter(coords);
-      } 
+        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+        map.setCenter(coords);
+      }
+    });
+  }
+
+  // 맵 크기가 변경될 때 중심 위치 업데이트하기
+  function resizeMap() {
+    var mapContainer = document.getElementById('map');
+    var parentContainer = document.querySelector('.moims--detail--section--map');
+    mapContainer.style.width = parentContainer.clientWidth - 40 + 'px';
+    mapContainer.style.height = parentContainer.clientHeight - 40 + 'px';
+    map.relayout();
+
+    // 주소와 상세 주소를 가져와서 맵 업데이트
+    var address = '{{ post.address }}';
+    var detailAddress = '{{ post.detail_address }}';
+    updateMap(address, detailAddress);
+  }
+
+  // 페이지 로드 후 맵 크기 조정 및 중심 위치 업데이트
+  window.addEventListener('load', function() {
+    resizeMap();
   });
+
+  // 윈도우 리사이즈 이벤트 발생 시 맵 크기 조정 및 중심 위치 업데이트
+  window.addEventListener('resize', function() {
+    resizeMap();
+  });
+  
 </script>
 {% endblock content %}

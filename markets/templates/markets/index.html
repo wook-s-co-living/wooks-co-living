@@ -28,6 +28,8 @@
         <div>
           <div class='markets--index--search--div'>
             <form id='markets--index--search--block' class='d-none'>
+              <input type="hidden" name='dis' value='{{ request.GET.dis }}'>
+              <input type="hidden" name='category' value='{{ request.GET.category }}'>
               <input name='q' type="search">
 
               <button type='submit'>
@@ -122,9 +124,18 @@
               {% endif %}
 
               <h4>
-                <div>
-                  <i class="bi bi-heart"></i> {{ post.like_users.count }}
-                </div>
+                <form class='markets--index--section--likes' method="POST" data-post-id="{{ post.pk }}">
+                  {% csrf_token %}
+                  {% if request.user not in post.like_users.all %}
+                    <button type='submit' id='like-{{ post.pk }}'>
+                      <i class="bi bi-heart"></i> <span>{{ post.like_users.count }}</span>
+                    </button>
+                  {% else %}
+                    <button type='submit' id='like-{{ post.pk }}'>
+                      <i class="bi bi-heart-fill"></i> <span>{{ post.like_users.count }}</span>
+                    </button>
+                  {% endif %}
+                </form>
               </h4>
             </section>
 
@@ -140,8 +151,15 @@
           <img class='w-100' src="{% static 'image/plus.svg' %}" alt="plus">
         </a>
       </footer>
+
+      <div id='markets--index--alert' style='display: none;'>
+        <h1>관심목록에 추가됐어요.</h1>
+        
+        <a href="??">관심목록보기</a>
+      </div>
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="{% static 'js/markets_index.js' %}"></script>
 {% endblock content %}

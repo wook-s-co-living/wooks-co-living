@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Search {% endblock title %}
+
+{% block content %}
+
+<div class="container-md my-5">
+  <form action="{% url 'communities:search' %}" method='GET'>
+    <div class="search_container input-group flex-nowrap">
+      <span class="search-icon"><i class="bi bi-search"></i></span>
+      <input type="text" class="search_text" placeholder="검색어를 입력하세요" name="search">
+      <input type="submit" class="search_submit" value="검 색">
+    </div>
+  </form>
+  {% if search_text %}
+    <h3 class="m-3">검색하신 <span>{{ search_text }}</span>에 대한 검색 결과입니다.</h3>
+    {% for post in search_list %}
+      <a href="{% url 'communities:detail' post.pk %}" class="d-flex p-2 text-decoration-none text-dark">
+        <ul>
+          <a href="{% url 'communities:detail' post.pk %}">
+            <li>{{ post.user.username }}</li>
+            <li>{{ post.title }}</li>
+            <li>{{ post.category }}</li>
+          </a>
+        </ul>
+      </a>
+    {% empty %}
+      <h3><span>{{ search_text }}</span>에 대한 결과가 없습니다.</h3>
+    {% endfor %}
+  {% else %}
+    <h3>검색어를 입력해주세요.</h3>
+  {% endif %}
+</div>
+
+{% endblock content %}

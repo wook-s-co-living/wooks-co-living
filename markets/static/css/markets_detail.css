@@ -367,12 +367,12 @@
 
 #markets--detail--alert {
   position: sticky;
-  display: none;
   justify-content: space-between;
   text-align: center;
   bottom: 76px;
+  margin: 0 auto;
   font-size: 15px;
-  width: 100%;
+  width: 95%;
   height: 50px;
   padding: 17px 25px;
   background-color: rgb(50 50 50);
