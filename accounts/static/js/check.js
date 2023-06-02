@@ -23,7 +23,6 @@ $(document).ready(function() {
           usernameInput.focus();
           $('#id-check-result').text('');
         } else {
-          alert("사용 가능한 아이디입니다.");
           $('#id-check-result').text('사용 가능한 아이디입니다.').css('color', 'green');
         }
       }
@@ -52,7 +51,6 @@ $(document).ready(function() {
           emailInput.focus();
           $('#email-check-result').text('');
         } else {
-          alert("사용 가능한 이메일입니다.");
           $('#email-check-result').text('사용 가능한 이메일입니다.').css('color', 'green');
         }
       }

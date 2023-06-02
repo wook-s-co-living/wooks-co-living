@@ -21,6 +21,19 @@
       <div class="accounts--login--box">
         {{ form.username }}
         {{ form.password }}
+        {% if form.errors.username %}
+          <p class="error-message">{{ form.errors.username }}</p>
+        {% endif %}
+        {% if form.errors.password %}
+          <p class="error-message">{{ form.errors.password }}</p>
+        {% endif %}
+        {% if messages %}
+          <ul class="messages">
+            {% for message in messages %}
+              <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
       </div>
       <input type="submit" value="로그인" class="accounts--btn">
     </form>

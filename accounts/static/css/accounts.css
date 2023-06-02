@@ -572,3 +572,8 @@ input[id="tab04"]:checked ~ .card4 {
   border: 1px solid #34568b !important;
   outline: none;
 }
+
+.errorlist li, .error {
+  font-size: 0.8rem;
+  color: rgba(124, 0, 0, 0.8);
+}

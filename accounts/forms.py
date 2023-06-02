@@ -79,28 +79,6 @@ class CustomPasswordChangeForm(PasswordChangeForm):
     new_password2 = forms.CharField(label=False, label_suffix='', widget=forms.PasswordInput(
         attrs={'class': 'signup--form','placeholder' : '새 비밀번호 확인'}))
     
-class CustomAuthenticationForm(AuthenticationForm):
-    username = forms.CharField(
-        label=False,
-        widget=forms.TextInput(
-            attrs = {
-                'class': 'login--form ',
-                'placeholder' : '아이디',
-                'style': 'border-bottom: none;border-top-left-radius: 0.375rem;border-top-right-radius: 0.375rem;',
-            }
-        )
-    )
-    password = forms.CharField(
-        label=False,
-        widget=forms.PasswordInput(
-            attrs = {
-                'class': 'login--form ',
-                'placeholder' : '비밀번호',
-                'style': 'border-bottom-left-radius: 0.375rem;border-bottom-right-radius: 0.375rem;',
-            }
-        )
-    )
-    
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = User
@@ -110,3 +88,42 @@ class ProfileForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         self.fields['introduce'].label = False
+
+User = get_user_model()
+
+class CustomAuthenticationForm(AuthenticationForm):
+    username = forms.CharField(
+        label=False,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'login--form ',
+                'placeholder': '아이디',
+                'style': 'border-bottom: none;border-top-left-radius: 0.375rem;border-top-right-radius: 0.375rem;',
+            }
+        )
+    )
+    password = forms.CharField(
+        label=False,
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'login--form ',
+                'placeholder': '비밀번호',
+                'style': 'border-bottom-left-radius: 0.375rem;border-bottom-right-radius: 0.375rem;',
+            }
+        )
+    )
+
+    def clean(self):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+        if username and password:
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                self.add_error('username', '가입되어있지 않은 ID입니다. 다시 확인해주세요.')
+                return
+
+            if not user.check_password(password):
+                self.add_error('password', '비밀번호가 올바르지 않습니다. 다시 확인해주세요.')
+
+        return self.cleaned_data

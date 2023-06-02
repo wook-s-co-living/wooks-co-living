@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import update_session_auth_hash,get_user_model,login as auth_login, logout as auth_logout
+from django.contrib.auth import authenticate,update_session_auth_hash,get_user_model,login as auth_login, logout as auth_logout
 from .forms import CustomAuthenticationForm, CustomUserCreationForm, CustomUserChangeForm, CustomPasswordChangeForm, ProfileForm
 from django.contrib.auth.forms import PasswordResetForm
 from django.http import JsonResponse, HttpResponse
+from django.contrib import messages
 from django.core.mail import EmailMessage, send_mail, BadHeaderError
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
@@ -122,16 +123,24 @@ def login(request):
     if request.method == 'POST':
         form = CustomAuthenticationForm(request, request.POST)
         if form.is_valid():
-            auth_login(request, form.get_user())
-            prev_url = request.session.get('prev_url')
-            if prev_url:          
-                del request.session['prev_url']
-                return redirect(prev_url)
-            return redirect('index')
-        return redirect('accounts:login')
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(request, username=username, password=password)
+
+            if user is not None:
+                if user.is_active:
+                    auth_login(request, user)
+                    prev_url = request.session.get('prev_url')
+                    if prev_url:
+                        del request.session['prev_url']
+                        return redirect(prev_url)
+                    return redirect('index')
+            else:
+                messages.error(request, '이메일 인증이 필요합니다. 인증 후 다시 시도해주세요.')
     else:
         form = CustomAuthenticationForm()
         request.session['prev_url'] = request.META.get('HTTP_REFERER')
+
     context = {
         'form': form,
     }
@@ -233,23 +242,23 @@ def followers_list(request, username):
 
 @login_required
 def user_likes(request, username):
-  User = get_user_model()
-  person = User.objects.get(username=username)
-  if request.user in person.likes.all():
-      person.likes.remove(request.user)
-      u_is_liked = False
-  else:
-      person.likes.add(request.user)
-      u_is_liked = True
-  person.update_maum()
-  context = {
-      'u_is_liked': u_is_liked,
-      'user_likes_count': person.likes.count(),
-      'u_is_disliked': request.user in person.dislikes.all(),
-      'user_dislikes_count': person.dislikes.count(),
-      'maum': person.maum,
-  }
-  return JsonResponse(context)
+    User = get_user_model()
+    person = User.objects.get(username=username)
+    if request.user in person.likes.all():
+        person.likes.remove(request.user)
+        u_is_liked = False
+    else:
+        person.likes.add(request.user)
+        u_is_liked = True
+    person.update_maum()
+    context = {
+        'u_is_liked': u_is_liked,
+        'user_likes_count': person.likes.count(),
+        'u_is_disliked': request.user in person.dislikes.all(),
+        'user_dislikes_count': person.dislikes.count(),
+        'maum': person.maum,
+    }
+    return JsonResponse(context)
 
 @login_required
 def user_dislikes(request, username):
