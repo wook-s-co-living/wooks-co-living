@@ -1,12 +1,9 @@
 {% load static %}
 
-{% block header %}
-  <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
-  <script src="https://kit.fontawesome.com/a3ecfa0309.js" crossorigin="anonymous"></script>
-{% endblock header %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
+<script src="https://kit.fontawesome.com/a3ecfa0309.js" crossorigin="anonymous"></script>
 
-{% block content %}
-<div class='footer'>
+<div class='footer' style="font-family: 'SpoqaHanSansNeo-Regular';">
     <div class="footer--container">
         <section class="footer--section">
             <h1>Member ></h1>
@@ -24,16 +21,10 @@
             <p>모임</p>
             <p>내 프로필</p>
         </section>
-        <section class="footer--section">
+        <section class="footer--section footer--section--textend">
             <!-- 세번째 섹션 내용 -->
             <a href="https://www.youtube.com" target="_blank">
-                <i class="fa-brands fa-youtube"></i>
-            </a>
-            <a href="https://www.instagram.com" target="_blank">
-                <i class="fa-brands fa-instagram"></i>
-            </a>
-            <a href="https://www.twitter.com" target="_blank">
-                <i class="fa-brands fa-twitter"></i>
+                <i class="fa-brands fa-github"></i>
             </a>
     
         </section>
@@ -44,5 +35,3 @@
 
 </div>
 <script src="https://kit.fontawesome.com/a3ecfa0309.js" crossorigin="anonymous"></script>
-
-{% endblock content %}

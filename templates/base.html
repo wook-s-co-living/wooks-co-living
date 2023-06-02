@@ -24,9 +24,10 @@
 </head>
 <body>
   {% block navbar %}
-  {% include 'navbar.html' %}
+    {% include 'navbar.html' %}
   {% endblock navbar %}
-  <div id="loginstatus" style="display: inline-block;">
+  
+  {% comment %} <div id="loginstatus" style="display: inline-block;">
     <div>유저의 로그인 상태</div>
     <div>-------------------------</div>
     {% for user in all_users %}
@@ -64,8 +65,8 @@
     <div>-------------------------</div>
   <!-- 만약 소켓이 활성화 돼있으면 알림을 나타내고 사라진다. -->
   </div>
+  <br> {% endcomment %}
 
-  <br>
   <div style="font-family: 'SpoqaHanSansNeo-Regular';">
     {% block content %}
     {% endblock content %}

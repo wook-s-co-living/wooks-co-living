@@ -17,6 +17,10 @@
     flex: 1;
 }
 
+.footer--section--textend {
+    text-align: end;
+}
+
 .footer--section a {
     text-decoration: none;
 }
@@ -28,7 +32,7 @@
 .footer--section i {
     margin-right: 2rem; /* 아이콘 간격 조절 필요 */
     color: #FFC93C;
-    font-size: 2rem;
+    font-size: 2.5rem;
 }
 
 .footer--section i:hover {
@@ -52,7 +56,7 @@
         width: 100%;
     }
 }
-
+/* 
 @media (max-width: 768px) {
     .footer--container {
         flex-direction: row;
@@ -61,16 +65,21 @@
         justify-content: center;
         font-size: smaller;
     }
-
-
-    .footer--section {
-        margin-bottom: 20px; /* 각 섹션 사이의 간격 조절 */
-    }
     .footer--section h1,
     .footer--section p {
     padding: 0.5rem 0;
     }
     .footer--section i {
         margin-bottom: 1rem;
+    }
+
+    .footer--section--textend {
+        padding-right: 0;
+    }
+} */
+
+@media (max-width: 800px) {
+    .footer {
+        display: none;
     }
 }

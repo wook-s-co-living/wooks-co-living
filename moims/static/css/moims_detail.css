@@ -387,6 +387,10 @@
   .moims--detail--container {
     width: 100%;
   }
+
+  .moims--detail--header {
+    top: 0;
+  }
 }
 
 @media(max-width: 600px) {

@@ -20,7 +20,7 @@
     <div class='moims--detail--container'>
       <header class='moims--detail--header'>
         <div>
-          <a {% if post.category == 'once' %}href="{% url 'moims:once' %}"{% else %}href="{% url 'moims:moims' %}"{% endif %}>
+          <a {% if post.category == 'once' %}href="{% url 'moims:index' %}?category=once"{% else %}href="{% url 'moims:index' %}"{% endif %}>
             <i class="bi bi-arrow-left-short"></i>
           </a>
   
