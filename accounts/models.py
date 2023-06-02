@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from imagekit.models import ImageSpecField
-from imagekit.processors import Thumbnail
+from imagekit.processors import ResizeToFill
 import os
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -39,7 +39,7 @@ class User(AbstractUser):
 
     image_first = models.ImageField(upload_to=profile_image_path, null=True, blank=True)
     image = ImageSpecField(source='image_first',
-                            processors=[Thumbnail(300, 300)],
+                            processors=[ResizeToFill(300, 300)],
                             format='JPEG',
                             options={'quality': 100}
                             )

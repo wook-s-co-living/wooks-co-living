@@ -6,10 +6,10 @@
 <form action="{% url 'moims:update' post.pk %}" method="POST" enctype="multipart/form-data">
   {% csrf_token %}
   {{ update_form.as_p }}
-  <input type="text" id="s_address" placeholder="주소" name="address" class="signup--form" autocomplete="off">
+  <input type="text" id="s_address" placeholder="주소" name="address" class="signup--form" autocomplete="off" value="{{ post.address }}">
   <div class="address--box">
-    <input type="text" id="t_address" placeholder="동네" name="t_address" class="signup--form" autocomplete="off">
-    <input type="text" id="b_address" placeholder="건물명" name="b_address" class="signup--form" autocomplete="off">
+    <input type="text" id="t_address" placeholder="동네" name="t_address" class="signup--form" autocomplete="off" value="{{ post.town }}">
+    <input type="text" id="b_address" placeholder="건물명" name="b_address" class="signup--form" autocomplete="off" value="{{ post.building }}">
     <input type="button" onclick="search_address()" value="주소 검색" class="address--btn">
   </div>
   <input type="submit">

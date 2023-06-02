@@ -1,165 +1,192 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %} moims_many {% endblock title %}
-{% block style %}{% endblock style %}
+{% block title %}
+  {% if request.GET.category == 'once' %}
+    moims_once
+  {% else %}
+    moims_many
+  {% endif %}
+{% endblock title %}
+
+{% block header %}
+  <link rel="stylesheet" href="{% static 'css/moims.css' %}">
+  <script src="{% static 'owlcarousel/jquery.min.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'owlcarousel/owl.carousel.css' %}">
+  <link rel="stylesheet" href="{% static 'owlcarousel/owl.theme.default.min.css' %}">
+  <script src="{% static 'owlcarousel/owl.carousel.js' %}"></script>
+{% endblock header %}
+
 {% block content %}
 
-<form action="{% url 'moims:search' %}" method='GET'>
-  <div class="search_container input-group flex-nowrap">
-    <span class="search-icon"><i class="bi bi-search"></i></span>
-    <input type="text" class="search_text" placeholder="검색어를 입력하세요" name="search">
-    <input type="submit" class="search_submit" value="검 색">
-    <input type="hidden" name="category" value="many">
-  </div>
-</form>
 
-<form action="{% url 'moims:many' %}">
-  <input type="hidden" name='category' value='{{ request.GET.category }}'>
+{% comment %} moims 네브바 {% endcomment %}
+<header class='moims--index--header'>
+  <section class='moims--index--container'>
+    <div>
+        <button id='moims--index--address'>
+          {% if request.GET.dis == 'town' %}
+            {{ request.user.town }}
+          {% else %}
+            {{ request.user.building }} 
+          {% endif %}
+          <i class="bi bi-chevron-down"></i>
+        </button>
+      </div>
+      
+      <div class="d-flex align-items-center">
+        <div class='moims--index--search--div'>
+          <form id='moims--index--search--block' class='d-none'>
+            <input type="hidden" name='dis' value='{{ request.GET.dis }}'>
+            <input type="hidden" name='category' value='{{ request.GET.category }}'>
+            <input name='q' type="search">
 
-  <h1>원하시는 범위를 설정해 주세요!</h1>
-  <input type='submit' name='dis' value='내 건물 친구가 개최한 모임'>
-  {{ request.user.building }}
-  </input>
-  <input type='submit' name='dis' value='우리 동네에 개최된 모임'>
-    {{ request.user.town }}
-  </input>
-</form>
-
-{% for post in posts %}
-  <a href="{% url 'moims:detail' post.pk %}">DETAIL</a>
-  {{ post.user }}
-
-  <!--참가 유저 순회-->
-  {% for user in post.join_users.all %}
-    {{ user }}
-  {% endfor %}
-
-  {{ post.title }}
-  {{ post.once_datetime }}
-
-  <!--참가 정원-->
-  {{ post.limit }}
-
-  {{ post.address }}
-  {{ post.detail_address }}
-  {{ post.price }}
-  <img src="{{ post.image.url }}" alt="">
-{% endfor %}
-
-<!--지도-->
-<div id="map" style="width:100%;height:400px;"></div>
-
-<!--지도 생성 script-->
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey={{ KAKAO_JS_KEY }}&libraries=services"></script>
-<script>
-  var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-      mapOption = {
-          center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-          level: 6// 지도의 확대 레벨
-      };  
-
-  // 지도를 생성합니다    
-  var map = new kakao.maps.Map(mapContainer, mapOption); 
-
-  // 주소-좌표 변환 객체를 생성합니다
-  var geocoder = new kakao.maps.services.Geocoder();
-
-  // 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
-  var bounds = new kakao.maps.LatLngBounds(); 
-
-  // 주소로 좌표를 검색합니다
-  geocoder.addressSearch('{{ user.address }}', function(result, status) {
-
-      // 정상적으로 검색이 완료됐으면 
-      if (status === kakao.maps.services.Status.OK) {
-          var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-          bounds.extend(coords);
-          // 결과값으로 받은 위치를 마커로 표시합니다
-          var marker = new kakao.maps.Marker({
-              map: map,
-              position: coords
-          });
-
-          // 인포윈도우로 장소에 대한 설명을 표시합니다
-          var infowindow = new kakao.maps.InfoWindow({
-              content: '<div style="width:150px;text-align:center;padding:6px 0;">우리집</div>'
-          });
-          infowindow.open(map, marker);
-
-          // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-          map.setCenter(coords);
-      } 
-  }); 
-  
-  var positions = [];
-
-  // Perform geocoding and populate positions array with latlng data
-  {% for post in posts %}
-    geocodeAddress('{{ post.address }}', '{{ post.title }}');
-  {% endfor %}
-
-  function geocodeAddress(address, title) {
-    var geocoder = new kakao.maps.services.Geocoder();
-    geocoder.addressSearch(address, function(result, status) {
-      if (status === kakao.maps.services.Status.OK) {
-        var latlng = new kakao.maps.LatLng(result[0].y, result[0].x);
-
-        bounds.extend(latlng);
-        map.setBounds(bounds);
-
-        var positionData = {
-          title: title,
-          latlng: latlng
-        };
-
-        positions.push(positionData);
+            <button type='submit'>
+              <i class="bi bi-search"></i>
+            </button>
+          </form>
+          
+          <button id='moims--index--search'><i class="bi bi-search"></i></button>
+        </div>
         
-        // Check if all geocoding requests are complete
-        if (positions.length === {{ posts|length }}) {
-          addMarkers();
+        <button id='moims--index--filter'>
+          {% if request.GET.category == 'once' %}
+            <i class="bi bi-calendar-event"></i>
+          {% else %}
+            <i class="bi bi-calendar-week"></i>
+          {% endif %}
+        </button>
+      </div>
+    </section>
+  </header>
+
+  <div class='moims--index--container'>
+
+    {% comment %} 모달 {% endcomment %}
+    <div id="moims--index--filter--block" class='d-none'>
+      <header>
+        <button id='moims--index--filter--close'>
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </header>
+
+      <form action="{% url 'moims:index' %}">
+        <input type="hidden" name='dis' value='{{ request.GET.dis }}'>
+
+        <h1>원하시는 카테고리가 뭔가요?</h1>
+
+        <button type='submit' {% if not request.GET.category %}class='moims--index--opacity--100'{% endif %}>
+          정기모임
+        </button>
+
+        <button type='submit' name='category' value='once' {% if request.GET.category == 'once' %}class='moims--index--opacity--100'{% endif %}>
+          당일모임
+        </button>
+      </form>
+    </div>
+
+    <div id="moims--index--address--block" class='d-none'>
+      <header>
+        <button id='moims--index--address--close'>
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </header>
+
+      <form action="{% url 'moims:index' %}">
+        <input type="hidden" name='category' value='{{ request.GET.category }}'>
+
+        <h1>원하시는 범위를 설정해 주세요!</h1>
+        <button type='submit' name='dis' value='town' {% if request.GET.dis == 'town' %}class='moims--index--opacity--100'{% endif %}>
+          <i class="bi bi-geo-alt me-2"></i>
+          <span>{{ request.user.town }}</span>
+        </button>
+
+        <button type='submit' name='dis' value='building' {% if request.GET.dis == 'building' or not request.GET.dis %}class='moims--index--opacity--100'{% endif %}>
+          <i class="bi bi-building me-2"></i>
+          {{ request.user.building }}
+        </button>
+      </form>
+    </div>
+
+
+
+    <div class="moims--container">
+      {% if request.GET.category == 'once' %}
+        {% include "moims/once.html" %}
+      {% else %}
+        <section class="moims--index--section">
+          <div class="many--moims">
+            {% for post in posts %}
+              <a href="{% url 'moims:detail' post.pk %}" class="many--moim--content ratio ratio-1x1">
+                <div class="many--moim--box">
+                  <div class="many--image--box">
+                    <img src="{{ post.image.url }}" alt="{{ post.title }} 이미지" class="many--moim--image ratio ratio-4x3">
+                  </div>
+                  <div class="many--moim--txt">
+                    <div class="user--info">
+                      <div class="user--imgbox">
+                        {% if post.user.image %}
+                          <img src="{{ post.user.image.url }}" alt="image">
+                        {% else %}
+                          <img src="{% static 'image/noimage.png' %}" alt="blank-profile-image">
+                        {% endif %} 
+                      </div>
+                      {{ post.user }}
+                    </div>
+
+                    <h1>{{ post.title }}</h1>
+                    <p>
+                      <span>{{ post.town }} {{ post.many_datetime }}</span>
+                    </p>
+                    <p>
+                      참여멤버({{ post.join_users.all|length }}/{{ post.limit }})
+                    </p>
+
+                  </div>
+                </div>
+              </a>
+            {% endfor %}
+          </div>
+        </section>
+      {% endif %}
+    </div>
+
+  </div>
+
+<script src="{% static 'js/moims.js' %}"></script>
+<script>
+  $('.owl-carousel').owlCarousel({
+    startPosition: false,
+    loop:true,
+    margin:10,
+    responsiveClass:true,
+    responsive:{
+        0:{
+            items:5,
+            nav:false,
+            loop:false
+        },
+        400:{
+            items:7,
+            nav:false,
+            loop:false
+        },
+        500:{
+          items:9,
+          nav:false,
+          loop:false
+        },
+        600:{
+          items:11,
+          nav:false,
+          loop:false
+        },
+        800:{
+            items:13,
+            nav:false,
+            loop:false
+            }
         }
-      }
-    });
-  };
-  
-  function addMarkers() {
-    // Add markers to the map
-    var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-    var imageSize = new kakao.maps.Size(24, 35);
-    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-
-    positions.forEach(function(position) {
-      var marker = new kakao.maps.Marker({
-        map: map,
-        position: position.latlng,
-        title: position.title,
-        image: markerImage
-      });
-
-
-      // 마커를 지도에 표시합니다.
-      marker.setMap(map);
-
-      // 마커에 커서가 오버됐을 때 마커 위에 표시할 인포윈도우를 생성합니다
-      var iwContent = '<div style="padding:5px;">'+ position.title +'</div>'; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-
-      // 인포윈도우를 생성합니다
-      var infowindow = new kakao.maps.InfoWindow({
-          content : iwContent
-      });
-
-      // 마커에 마우스오버 이벤트를 등록합니다
-      kakao.maps.event.addListener(marker, 'mouseover', function() {
-        // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
-          infowindow.open(map, marker);
-      });
-
-      // 마커에 마우스아웃 이벤트를 등록합니다
-      kakao.maps.event.addListener(marker, 'mouseout', function() {
-          // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
-          infowindow.close();
-      });
-    });
-  }
+    })
 </script>
+
 {% endblock content %}

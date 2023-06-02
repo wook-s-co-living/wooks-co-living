@@ -1,165 +1,50 @@
-{% extends 'base.html' %}
 {% load static %}
-{% block title %} moims_once {% endblock title %}
-{% block style %}{% endblock style %}
-{% block content %}
-<form action="{% url 'moims:search' %}" method='GET'>
-  <div class="search_container input-group flex-nowrap">
-    <span class="search-icon"><i class="bi bi-search"></i></span>
-    <input type="text" class="search_text" placeholder="검색어를 입력하세요" name="search">
-    <input type="submit" class="search_submit" value="검 색">
-    <input type="hidden" name="category" value="once">
-  </div>
-</form>
+{% load humanize %}
 
-<form action="{% url 'moims:once' %}">
-  <input type="hidden" name='category' value='{{ request.GET.category }}'>
-
-  <h1>원하시는 범위를 설정해 주세요!</h1>
-  <input type='submit' name='dis' value='내 건물 친구가 개최한 모임'>
-    {{ request.user.building }}
-  </input>
-  <input type='submit' name='dis' value='우리 동네에 개최된 모임'>
-    {{ request.user.town }}
-  </input>
-</form>
-
-{% for post in posts %}
-  <a href="{% url 'moims:detail' post.pk %}">DETAIL</a>
-  {{ post.user }}
-
-  <!--참가 유저 순회-->
-  {% for user in post.join_users.all %}
-    {{ user }}
-  {% endfor %}
-
-  {{ post.title }}
-  {{ post.once_datetime }}
-
-  <!--참가 정원-->
-  {{ post.limit }}
-
-  {{ post.address }}
-  {{ post.detail_address }}
-  {{ post.price }}
-  <img src="{{ post.image.url }}" alt="">
-{% endfor %}
-
-<!--지도-->
-<div id="map" style="width:100%;height:350px;"></div>
-
-<!--지도 생성 script-->
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey={{ KAKAO_JS_KEY }}&libraries=services"></script>
-<script>
-  var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-      mapOption = {
-          center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-          level: 6// 지도의 확대 레벨
-      };  
-
-  // 지도를 생성합니다    
-  var map = new kakao.maps.Map(mapContainer, mapOption); 
-
-  // 주소-좌표 변환 객체를 생성합니다
-  var geocoder = new kakao.maps.services.Geocoder();
-
-  // 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
-  var bounds = new kakao.maps.LatLngBounds(); 
-
-  // 주소로 좌표를 검색합니다
-  geocoder.addressSearch('{{ user.address }}', function(result, status) {
-
-      // 정상적으로 검색이 완료됐으면 
-      if (status === kakao.maps.services.Status.OK) {
-          var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-
-          bounds.extend(coords);
-
-          // 결과값으로 받은 위치를 마커로 표시합니다
-          var marker = new kakao.maps.Marker({
-              map: map,
-              position: coords
-          });
-
-          // 인포윈도우로 장소에 대한 설명을 표시합니다
-          var infowindow = new kakao.maps.InfoWindow({
-              content: '<div style="width:150px;text-align:center;padding:6px 0;">우리집</div>'
-          });
-          infowindow.open(map, marker);
-
-          // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-          map.setCenter(coords);
-      } 
-  }); 
-  
-  var positions = [];
-
-  // Perform geocoding and populate positions array with latlng data
+<section class="moims--index--section">
   {% for post in posts %}
-    geocodeAddress('{{ post.address }}', '{{ post.title }}');
+    <div class="once--moim">
+      <a href="{% url 'moims:detail' post.pk %}" class="once--moim--link">
+        <h1>{{ post.title }}</h1>
+        <div class="d-flex align-items-center">
+          <div class="once--calendar">
+            <span>{{ post.once_datetime|date:'l' }}</span>
+            <p>{{ post.once_datetime|date:'d' }}</p>
+          </div>
+          <div class="once--moim--txt">
+            <p><i class="bi bi-calendar"></i>{{ post.once_datetime|date:'F j일 A g:i' }}</p>
+            <p><i class="bi bi-geo-alt"></i>{{ post.address }} {{ post.detail_address }}</p>
+            <p><i class="bi bi-cash-coin"></i>{{ post.price|intcomma }}</p>
+          </div>
+        </div>
+      </a>
+      <div class="member--box">
+        <p class="once--moim--member">
+          참여멤버({{ post.join_users.all|length }}/{{ post.limit }})
+        </p>
+
+        <div class="owl-carousel owl-theme">
+          {% for join_user in post.join_users.all %}
+            <a class='once--moim--profile' href="{% url 'accounts:profile' join_user.username %}">
+              {% if join_user.image %}
+                <img src="{{ join_user.image.url }}" alt="{{ join_user }}">
+              {% else %}
+                <img src="{% static 'image/noimage.png' %}" alt="noimage">
+              {% endif %}
+              {% if forloop.counter == 1 %}
+                <div class='moims--member--crown'>
+                  <img src="{% static 'image/crown.png' %}" alt="crown">
+                </div>
+              {% endif %}
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    
+  {% empty %}
+
   {% endfor %}
 
-  function geocodeAddress(address, title) {
-    var geocoder = new kakao.maps.services.Geocoder();
-    geocoder.addressSearch(address, function(result, status) {
-      if (status === kakao.maps.services.Status.OK) {
-        var latlng = new kakao.maps.LatLng(result[0].y, result[0].x);
-
-        bounds.extend(latlng);
-        map.setBounds(bounds);
-
-        var positionData = {
-          title: title,
-          latlng: latlng
-        };
-
-        positions.push(positionData);
-        
-        // Check if all geocoding requests are complete
-        if (positions.length === {{ posts|length }}) {
-          addMarkers();
-        }
-      }
-    });
-  };
-
-  function addMarkers() {
-    // Add markers to the map
-    var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-    var imageSize = new kakao.maps.Size(24, 35);
-    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-
-    positions.forEach(function(position) {
-      var marker = new kakao.maps.Marker({
-        map: map,
-        position: position.latlng,
-        title: position.title,
-        image: markerImage
-      });
-
-      // 마커를 지도에 표시합니다.
-      marker.setMap(map);
-
-      // 마커에 커서가 오버됐을 때 마커 위에 표시할 인포윈도우를 생성합니다
-      var iwContent = '<div style="padding:5px;">'+ position.title +'</div>'; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-
-      // 인포윈도우를 생성합니다
-      var infowindow = new kakao.maps.InfoWindow({
-          content : iwContent
-      });
-
-      // 마커에 마우스오버 이벤트를 등록합니다
-      kakao.maps.event.addListener(marker, 'mouseover', function() {
-        // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
-          infowindow.open(map, marker);
-      });
-
-      // 마커에 마우스아웃 이벤트를 등록합니다
-      kakao.maps.event.addListener(marker, 'mouseout', function() {
-          // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
-          infowindow.close();
-      });
-    });
-  }
-</script>
-{% endblock content %}
+</section>
