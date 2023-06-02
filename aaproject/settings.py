@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'moims',
 
     # 모듈
+    'django_extensions',
     'imagekit',
     'ckeditor',
     'ckeditor_uploader',
@@ -92,6 +93,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'aaproject.context_processors.all_users',
             ],
         },
     },
