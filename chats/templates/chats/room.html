@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
+
+{% block header %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/room.css' %}"> 
+{% endblock header %}
+
 {% block content %}
 <div id="chat-log">
     {% for message in messages %}
