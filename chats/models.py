@@ -15,3 +15,8 @@ class Message(models.Model):
     sender = models.ForeignKey(User, related_name='messages_as_sender', null=True, on_delete=models.SET_NULL)
     retriever = models.ForeignKey(User, related_name='messages_as_retriever', null=True, on_delete=models.SET_NULL)
     
+class Alarm(models.Model):
+    sender = models.ForeignKey(User, related_name='alarms_as_sender', on_delete=models.CASCADE)
+    retriever = models.ForeignKey(User, related_name='alarms_as_retriever', on_delete=models.CASCADE)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)  # 메시지 작성일시

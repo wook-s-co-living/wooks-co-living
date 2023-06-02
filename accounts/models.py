@@ -65,3 +65,5 @@ class User(AbstractUser):
         dislike_count = self.dislikes.count()
         self.maum = 46.0 - (0.1 * like_count) + (0.1 * dislike_count)
         self.save()
+
+    is_login = models.BooleanField(default=False)
