@@ -5,25 +5,58 @@
 
 <nav class="nav--bar" style="font-family: 'SpoqaHanSansNeo-Regular';">
     <div class="nav--container">
-        <a href="#">
+        <a href="{% url 'index' %}">
             <div class="nav--logo">
                 <img src="{% static 'image/logo_icon.png' %}" alt="Logo">
                 <div class="nav-logo--text">혼거동락</div>
             </div>
         </a>
         <div class="nav--links">
-            <a href="#">커뮤니티</a>
-            <a href="#">플리마켓</a>
-            <a href="#">모임</a>
+            <a href="{% url 'communities:index' %}">커뮤니티</a>
+            <a href="{% url 'markets:index' %}">플리마켓</a>
+            <a href="{% url 'moims:index' %}">모임</a>
         </div>
         <div class="nav--links mobile-menu">
-          <a href="#">마이 페이지</a>
-          <a href="#">커뮤니티</a>
-          <a href="#">플리마켓</a>
-          <a href="#">모임</a>
+          {% comment %} <a href="{% url 'accounts:profile' request.user.username %}">마이 페이지</a> {% endcomment %}
+          <a href="{% url 'communities:index' %}">커뮤니티</a>
+          <a href="{% url 'markets:index' %}">플리마켓</a>
+          <a href="{% url 'moims:index' %}">모임</a>
         </div>             
-        <div>
-          <button class="login--button">로그인</button>
+        <div class='nav--bar--right'>
+          {% if user.is_authenticated %}
+            <a class='nav--bar--bell--a' href="{% url 'chats:index' %}">
+              <i class="bi bi-bell"></i>
+              <header class='nav--bar--bell--red d-none'></header>
+            </a>
+
+            <form action="{% url 'accounts:profile' request.user.username %}">
+              <button class='nav--bar--right--image'>
+                {% if request.user.image %}
+                  <img src="{{ request.user.image.url }}" alt="{{ request.user.username }}">
+                {% else %}
+                  <img src="{% static 'image/noimage.png' %}" alt="noimage">
+                {% endif %}
+              </button>
+            </form>
+
+            <section id='nav--bar--right--collapse' class='d-none'>
+              <h1><span>{{ request.user.first_name }}</span> 님</h1>
+              
+              <a href="{% url 'accounts:profile' request.user.username %}" style='padding-top: 11px;'>내 프로필</a>
+
+              <a href="{% url 'accounts:update' %}">회원정보</a>
+
+              <form action="{% url 'accounts:logout' %}" method="POST">
+                {% csrf_token %}
+                <button>로그아웃</button>
+              </form>
+
+            </section>
+          {% else %}
+            <form action="{% url 'accounts:login' %}">
+              <button class="login--button">로그인</button>
+            </form>
+          {% endif %}
         </div>
         <a class="hamburger--menu">
             <i class="fa-solid fa-bars"></i>
@@ -36,31 +69,74 @@
     </div>
 </div> {% endcomment %}
 
-<div id="bot_nav--modal" class="bot_nav--modal">
+  <div id="bot_nav--modal" class="bot_nav--modal">
     <div class="bot_nav--modal--content">
-      <p>로그인 하세요 ></p>
-      <p>임시 텍스트</p>
+      <header>
+        <h1>
+          <section>
+            {% if request.user.image %}
+              <img src="{{ request.user.image.url }}" alt="{{ request.user.username }}">
+            {% else %}
+              <img src="{% static 'image/noimage.png' %}" alt="noimage">
+            {% endif %}
+          </section>
+          <div>{{ request.user.first_name }}</div> 님
+        </h1>
+
+        <a class='bot--nav--bar--bell--a' href="{% url 'chats:index' %}">
+          <i class="bi bi-bell"></i>
+          <div class='nav--bar--bell--red d-none'></div>
+        </a>
+      </header>
+
+      {% if user.is_authenticated %}
+        <section class='bot_nav--modal--content--section'>
+          <a href="{% url 'accounts:profile' request.user.username %}" style="padding-top: 17px;">프로필</a>
+
+          <a href="{% url 'accounts:update' %}">회원정보</a>
+
+          <form action="{% url 'accounts:logout' %}" method="POST">
+            {% csrf_token %}
+            <button type='submit'>로그아웃</button>
+          </form>
+        </section>
+      {% endif %}
     </div>
   </div>
   
   <div class="bottom--nav">
-    <a href="#" class="bottom--nav__item">
+    <a href="{% url 'communities:index' %}" class="bottom--nav__item">
       <i class="fa-solid fa-people-roof"></i>
       <span class="icon-title">커뮤니티</span> 
     </a>
-    <a href="#" class="bottom--nav__item">
+
+    <a href="{% url 'markets:index' %}" class="bottom--nav__item">
       <i class="fa-solid fa-cart-shopping"></i>
       <span class="icon-title">플리마켓</span> 
     </a>
-    <a href="#" class="bottom--nav__item">
+
+    <a href="{% url 'index' %}" class="bottom--nav__item">
+      <i class='fas fa-home'></i>
+      <span class='icon-title'>홈</span>
+    </a>
+
+    <a href="{% url 'moims:index' %}" class="bottom--nav__item">
       <i class="fa-solid fa-mug-hot"></i>
-      <span class="icon-title">소모임</span> 
+      <span class="icon-title">모임</span> 
     </a>
-    <a id="bot_nav--profile--icon" for="modal-toggle" class="bottom--nav__item">
-      <i class="fa-solid fa-user"></i>
-      <span class="icon-title">프로필</span> 
-    </a>
+
+    {% if user.is_authenticated %}
+      <a id="bot_nav--profile--icon" for="modal-toggle" class="bottom--nav__item">
+        <i class="fa-solid fa-user"></i>
+        <span class="icon-title">내 메뉴</span> 
+      </a>
+    {% else %}
+      <a href="{% url 'accounts:login' %}" class="bottom--nav__item">
+        <i class="fa-solid fa-right-to-bracket"></i>
+        <span class="icon-title">로그인</span> 
+      </a>
+    {% endif %}
   </div>
-  {% comment %} <div id="bot_nav--modal"></div> {% endcomment %}
+  <div id="bot_nav--modal"></div>
    
 <script src="{% static 'js/navbar.js' %}"></script>
