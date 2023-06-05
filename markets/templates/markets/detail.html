@@ -94,9 +94,16 @@
 
         <h4>{{ post.content|linebreaksbr }}</h4>
 
-        <h5>
-          관심 <span id='markets--detail--section-likecount'>{{ post.like_users.count }}</span><span>&nbsp;·&nbsp;</span>채팅 ??<span>&nbsp;·&nbsp;</span>조회 {{ post.views }}
-        </h5>
+        <div class="markets--detail--info">
+          <div>
+            <h5>관심 <span id='markets--detail--section-likecount'>{{ post.like_users.count }}</span><span>&nbsp;·&nbsp;</span>채팅 ??<span>&nbsp;·&nbsp;</span>조회 {{ post.views }}</h5>
+          </div>
+          {% if request.user == post.user %}
+            <div>
+              <h5><a href="{% url 'markets:update' post.pk %}" style="margin-right:8px;">수정</a> <a href="{% url 'markets:delete' post.pk %}"  onclick="return confirm('삭제하시겠습니까?')">삭제</a></h5>
+            </div>
+          {% endif %}
+        </div>
       </section>
 
       {% comment %} 디테일 푸터 {% endcomment %}

@@ -86,8 +86,10 @@ def update(request, market_pk):
     else:
         post_form = PostForm(instance=post)
         delete_form = DeleteImageForm(post=post)
+    if post.postimages.exists():
+        postimage_form = PostImageForm(instance=post.postimages.first())
+    else:
         postimage_form = PostImageForm()
-
     context = {
         'post': post,
         'post_form': post_form,
@@ -101,7 +103,7 @@ def delete(request, market_pk):
     post = Post.objects.get(pk=market_pk)
     if request.user == post.user:
         post.delete()
-    return redirect('markets:detail', market_pk)
+    return redirect('markets:index')
 
 @login_required
 def likes(request, market_pk):

@@ -8,7 +8,7 @@
 
 {% block content %}
 <div class="moims--create--container">
-  <div class="moims--title">모임 생성</div>
+  <div class="moims--title">모임 수정</div>
   <form action="{% url 'moims:update' post.pk%}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <p>{{ update_form.title }}</p>

@@ -3,17 +3,33 @@
 {% block title %} markets_update {% endblock title %}
 
 {% block header %}
-  <link rel="stylesheet" href="{% static 'markets/css/markets.css' %}">
+  <link rel="stylesheet" href="{% static 'css/market.css' %}">
 {% endblock header %}
 
 {% block content %}
 
+<div class="market--create">
+  <h1>상품 수정</h1>
   <form action="{% url 'markets:update' post.pk %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ post_form.as_p }}
-    {{ delete_form.as_p }}
+    <p class="delete--image--title">삭제 할 이미지 선택</p>
+    <div id="delete--image--container">
+      {% for value, label in delete_form.delete_images.field.choices %}
+        <div class="image--preview">
+          <input type="checkbox" name="delete_images" value="{{ value }}">
+          <img src="{{ label }}" alt="Image Preview">
+        </div>
+      {% endfor %}
+    </div>
     {{ postimage_form.as_p }}
-    <button type='submit'>등록</button>
+    <div id="preview-container" class="preview--image"></div>
+    <button type='submit' class="create--btn">등록</button>
   </form>
+</div>
 
 {% endblock content %}
+
+{% block script %}
+  <script src="{% static 'js/markets_create.js' %}"></script>
+{% endblock script %}
