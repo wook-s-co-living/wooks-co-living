@@ -5,32 +5,36 @@
 
 <div class='footer' style="font-family: 'SpoqaHanSansNeo-Regular';">
     <div class="footer--container">
-        <section class="footer--section">
-            <h1>Member ></h1>
-            <p>이민욱</p>
-            <p>정윤원</p>
-            <p>김소은</p>
-            <p>정소담</p>
-            <p>신상윤</p>
+        <section class="footer--section footer--section--list">
+            <h1><i class="bi bi-people"></i> Member ></h1>
+            <a href="https://github.com/Code-Sloth">이민욱</a>
+            <a href="https://github.com/jeongyun11">정윤원</a>
+            <a href="https://github.com/ssongnoss66">김소은</a>
+            <a href="https://github.com/sodamjeong">정소담</a>
+            <a href="https://github.com/Sysynn">신상윤</a>
         </section>
-        <section class="footer--section">
-            <h1>Menu ></h1>
-            <p>메인화면</p>
-            <p>커뮤니티</p>
-            <p>플리마켓</p>
-            <p>모임</p>
-            <p>내 프로필</p>
+        <section class="footer--section footer--section--list">
+            <h1><i class="bi bi-box-arrow-up-right"></i> Menu ></h1>
+            <a href="{% url 'index' %}">메인화면</a>
+            <a href="{% url 'communities:index' %}">커뮤니티</a>
+            <a href="{% url 'markets:index' %}">플리마켓</a>
+            <a href="{% url 'moims:index' %}">모임</a>
+            {% if user.is_authenticated %}
+              <a href="{% url 'accounts:profile' request.user.username %}">내 프로필</a>
+            {% else %}
+              <a href="{% url 'accounts:login' %}">로그인</a>
+            {% endif %}
         </section>
         <section class="footer--section footer--section--textend">
             <!-- 세번째 섹션 내용 -->
-            <a href="https://www.youtube.com" target="_blank">
+            <a href="https://github.com/wook-s-co-living/wooks-co-living" target="_blank">
                 <i class="fa-brands fa-github"></i>
             </a>
     
         </section>
     </div>
     <section class="footer--copyright">
-        <p>2023 © Wook's house</p>
+        <p>2023 © Team8 Wook's house</p>
     </section>
 
 </div>

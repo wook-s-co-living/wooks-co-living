@@ -1,3 +1,10 @@
+@font-face {
+  font-family: 'ImcreSoojin';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.3/ImcreSoojin.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .footer {
     background-color: rgb(48, 55, 64); 
     padding: 0;
@@ -83,4 +90,35 @@
     .footer {
         display: none;
     }
+}
+
+/* 수정 */
+
+.footer--section--list {
+  flex: 0.3;
+}
+
+.footer--section--list h1 {
+  color:white;
+}
+
+.footer--section--list h1 i {
+  font-size: 17px;
+  color: white;
+  margin-right: 5px;
+}
+
+.footer--section--list h1 .bi-box-arrow-up-right {
+  font-size: 16px;
+}
+
+.footer--section--list a {
+  display: block;
+  padding: 5px 0;
+  color: lightgray;
+  font-size: 15px;
+}
+
+.footer--section--list a:hover {
+  color: white;
 }
