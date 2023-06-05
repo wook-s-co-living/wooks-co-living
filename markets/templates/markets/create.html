@@ -3,16 +3,24 @@
 {% block title %} markets_create {% endblock title %}
 
 {% block header %}
-  <link rel="stylesheet" href="{% static 'markets/css/markets.css' %}">
+  <link rel="stylesheet" href="{% static 'css/market.css' %}">
 {% endblock header %}
 
 {% block content %}
 
-  <form action="{% url 'markets:create' %}" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ post_form.as_p }}
-    {{ postimage_form.as_p }}
-    <button type='submit'>등록</button>
-  </form>
+  <div class="market--create">
+    <h1>상품 등록</h1>
+    <form action="{% url 'markets:create' %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ post_form.as_p }}
+      {{ postimage_form.as_p }}
+      <div id="preview-container" class="preview--image"></div>
+      <button type='submit' class="create--btn">상품 등록</button>
+    </form>
+  </div>
 
 {% endblock content %}
+
+{% block script %}
+  <script src="{% static 'js/markets_create.js' %}"></script>
+{% endblock script %}

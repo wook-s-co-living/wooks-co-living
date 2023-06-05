@@ -218,6 +218,11 @@
   margin: 20px 0;
 }
 
+.markets--detail--section h5 a{
+  color: rgb(160 160 160);
+  text-decoration: none;
+}
+
 /* 디테일 푸터 */
 
 .markets--detail--footer {
@@ -414,4 +419,9 @@
   .markets--detail--footer-section {
     justify-content: space-around;
   }
+}
+
+.markets--detail--info {
+  display: flex;
+  justify-content: space-between;
 }
