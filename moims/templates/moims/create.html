@@ -1,33 +1,49 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %} moims_create {% endblock title %}
-{% block style %}{% endblock style %}
+
+{% block header %}
+  <link rel="stylesheet" href="{% static 'css/moims.css' %}">
+{% endblock header %}
+
 {% block content %}
-<form action="{% url 'moims:create' %}" method="POST" enctype="multipart/form-data">
-  {% csrf_token %}
-  {{ post_form.as_p }}
-  <input type="text" id="s_address" placeholder="주소" name="address" class="signup--form" autocomplete="off">
-  <div class="address--box">
-    <input type="text" id="t_address" placeholder="동네" name="t_address" class="signup--form" autocomplete="off">
-    <input type="text" id="b_address" placeholder="건물명" name="b_address" class="signup--form" autocomplete="off">
-    <input type="button" onclick="search_address()" value="주소 검색" class="address--btn">
-  </div>
-  <input type="submit">
-</form>
+<div class="moims--create--container">
+  <div class="moims--title">모임 생성</div>
+  <form action="{% url 'moims:create' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <p>{{ post_form.title }}</p>
+    {{ post_form.content }}
+    <p class="moims--label">{{ post_form.category.label }}</p>
+    {{ post_form.category }}
+    <div id="many-moim-date">
+      {{ post_form.many_datetime }}
+    </div>
+    <div id="once-moim-date">
+      <p class="moims--label">{{ post_form.once_datetime.label }}</p>
+      {{ post_form.once_datetime }}
+    </div>
+    <div class="d-flex gap-1">
+      <p class="moims--label">{{ post_form.limit.label }}</p>
+      <p class="moims--label">{{ post_form.price.label }}</p>
+    </div>
+    <div class="d-flex gap-1">
+      {{ post_form.limit }}
+      {{ post_form.price }}
+    </div>
+    <p class="moims--label">{{ post_form.image_first.label }}</p>
+    {{ post_form.image_first }}
+    <img id="preview-image" src="#" alt="미리보기" style="display: none; width: 100%; margin-bottom:10px;">
+    <input type="text" id="s_address" placeholder="주소" name="address" class="moims--form" autocomplete="off">
+    <div class="address--box">
+      <input type="text" id="t_address" placeholder="동네" name="t_address" class="moims--form" autocomplete="off">
+      <input type="text" id="b_address" placeholder="건물명" name="b_address" class="moims--form" autocomplete="off">
+      <input type="button" onclick="search_address()" value="주소 검색" class="address--btn">
+    </div>
+    {{ post_form.detail_address }}
+    <input type="submit" value="모임 생성" class="create--btn">
+  </form>
+</div>
 
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script>
-  function search_address() {
-    new daum.Postcode({
-      oncomplete: function(data) {
-        const addr = data.address;
-        document.getElementById("s_address").value = addr;
-        const addt = data.bname;
-        document.getElementById("t_address").value = addt;
-        const addb = data.buildingName;
-        document.getElementById("b_address").value = addb;
-      }
-    }).open();
-  }
-</script>
+<script src="{% static 'js/moims_create.js' %}"></script>
 {% endblock content %}
