@@ -313,7 +313,7 @@
   }
 
   .markets--index--create {
-    margin-left: 86%;
+    margin-left: 90%;
   }
 
   #markets--index--address--block header button,
@@ -325,5 +325,16 @@
 @media(max-width: 800px) {
   .markets--index--header {
     top: 0;
+  }
+
+  .markets--index--create {
+    bottom: 80px;
+    margin-left: 88%;
+  }
+}
+
+@media(max-width: 600px) {
+  .markets--index--create {
+    margin-left: 84%;
   }
 }

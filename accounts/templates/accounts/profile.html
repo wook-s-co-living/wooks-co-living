@@ -110,13 +110,13 @@
 
     {% comment %} content {% endcomment %}
     <div>
-      <input type="radio" name="tabmenu" id="tab01" checked>
+      <input type="radio" name="tabmenu" id="tab01" {% if not request.GET.cate %}checked{% endif %}>
       <label for="tab01">프로필</label>
-      <input type="radio" name="tabmenu" id="tab02">
+      <input type="radio" name="tabmenu" id="tab02" {% if request.GET.cate == "communities" %}checked{% endif %}>
       <label for="tab02">커뮤니티</label>
-      <input type="radio" name="tabmenu" id="tab03">
+      <input type="radio" name="tabmenu" id="tab03" {% if request.GET.cate == "moims" %}checked{% endif %}>
       <label for="tab03">모임</label>
-      <input type="radio" name="tabmenu" id="tab04">
+      <input type="radio" name="tabmenu" id="tab04" {% if request.GET.cate == "markets" %}checked{% endif %}>
       <label for="tab04">중고거래</label>
 
       {% comment %} 첫번째 박스 {% endcomment %}

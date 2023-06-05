@@ -155,7 +155,7 @@
       <div id='markets--index--alert' style='display: none;'>
         <h1>관심목록에 추가됐어요.</h1>
         
-        <a href="??">관심목록보기</a>
+        <a href="{% url 'accounts:profile' request.user.username %}?cate=markets">관심목록보기</a>
       </div>
     </div>
   </div>
