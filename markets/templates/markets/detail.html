@@ -44,7 +44,7 @@
       </div>
 
       {% comment %} 디테일 헤더 {% endcomment %}
-      <a class='markets--detail--header' href="??">
+      <a class='markets--detail--header' href="{% url 'accounts:profile' post.user.username %}">
         <div class='markets--detail--header--left'>
           <header>
             {% if post.user.image %}
@@ -145,7 +145,7 @@
       <div id='markets--detail--alert' style='display: none;'>
         <h1>관심목록에 추가됐어요.</h1>
         
-        <a href="??">관심목록보기</a>
+        <a href="{% url 'accounts:profile' request.user.username %}?cate=markets">관심목록보기</a>
       </div>
 
       {% comment %} 하단 네비바 {% endcomment %}
@@ -173,7 +173,7 @@
           </div>
         </div>
 
-        <a class='markets--detail--navbar--right' href="??">
+        <a class='markets--detail--navbar--right' href="{% url 'chats:room' post.user.username %}">
           채팅하기
         </a>
       </nav>

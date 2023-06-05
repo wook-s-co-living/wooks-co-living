@@ -230,6 +230,11 @@
 
 .moims--detail--section--member--item img {
   border-radius: 100%;
+  transition: transform 0.2s ease;
+}
+
+.moims--detail--section--member--item img:hover {
+  transform: scale(0.95);
 }
 
 .moims--detail--section--member--crown {
