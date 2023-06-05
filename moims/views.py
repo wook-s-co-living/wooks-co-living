@@ -76,7 +76,11 @@ def update(request, moim_pk):
     if request.method == "POST":
         update_form = PostForm(request.POST, request.FILES, instance=post)
         if update_form.is_valid():
-            post = update_form.save()
+            post = update_form.save(commit=False)
+            post.address = request.POST.get('address')
+            post.town = request.POST.get('t_address')
+            post.building = request.POST.get('b_address')
+            post.save()
             return redirect('moims:detail', post.pk)
     else:
         update_form = PostForm(instance=post)
@@ -90,7 +94,7 @@ def delete(request, moim_pk):
     post = Post.objects.get(pk=moim_pk)
     if request.user == post.user:
         post.delete()
-    return redirect('moims:many')
+    return redirect('moims:index')
 
 @login_required
 def likes(request, moim_pk):

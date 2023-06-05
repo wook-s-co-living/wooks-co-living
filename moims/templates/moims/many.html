@@ -149,8 +149,13 @@
         </section>
       {% endif %}
     </div>
-
   </div>
+  
+  <footer class='moims--index--create'>
+    <a href="{% url 'moims:create' %}">
+      <img class='w-100' src="{% static 'image/plus.svg' %}" alt="plus">
+    </a>
+  </footer>
 
 <script src="{% static 'js/moims.js' %}"></script>
 <script>
