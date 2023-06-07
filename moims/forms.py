@@ -42,6 +42,9 @@ class PostForm(forms.ModelForm):
     widget=CustomClearableFileInput(attrs={'class': 'moims--form'}),
     )
 
+    kakao_url = forms.CharField(label=False, label_suffix='', widget=forms.TextInput(
+    attrs={'class': 'moims--form','placeholder' : '카카오 오픈채팅방 주소', 'autocomplete':'off'}))
+
     detail_address = forms.CharField(label=False, label_suffix='', widget=forms.TextInput(
     attrs={'class': 'moims--form','placeholder' : '상세주소', 'autocomplete':'off'}))
 
@@ -54,6 +57,7 @@ class PostForm(forms.ModelForm):
             "many_datetime",
             "once_datetime",
             "limit",
+            "kakao_url",
             "detail_address",
             "price",
             "image_first",

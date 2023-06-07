@@ -29,6 +29,7 @@ class Post(models.Model):
     town = models.CharField(max_length=100,blank=True,null=True)
     building = models.CharField(max_length=100,blank=True,null=True)
     detail_address = models.CharField(max_length=200)
+    kakao_url = models.CharField(null=True, max_length=300)
 
     price = models.IntegerField(default=0, validators=[MinValueValidator(0)])
 
@@ -83,6 +84,8 @@ class Comment(models.Model):
     content = models.TextField()
 
     created_at = models.DateTimeField(auto_now_add=True)
+
+    depth = models.IntegerField(default=0, validators=[MinValueValidator(0)])
 
     @property
     def created_time(self):

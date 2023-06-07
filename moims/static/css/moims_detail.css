@@ -113,7 +113,7 @@
 .moims--detail--section--head div h2 {
   font-size: 14px;
   color: rgb(120 120 120);
-  margin: 5px;
+  margin-top: 5px;
 }
 
 .moims--detail--section--head footer {
@@ -310,14 +310,14 @@
 }
 
 #moims--detail--section--commentcreate textarea:focus {
-  outline: 1px solid #FEE500;
+  outline: 1px solid #34568b;
   color: rgb(80 80 80);
 }
 
 #moims--detail--section--commentcreate .comment-submit {
   padding: 6px 12px;
   height: 42px;
-  background-color: #FEE500;
+  background-color: #34568b;
   font-weight: bold;
   font-size: 14px;
   color: white;
@@ -327,7 +327,7 @@
 }
 
 #moims--detail--section--commentcreate .comment-submit:hover {
-  background-color: #c9b506;
+  background-color: #112b56;
 }
 
 #moims--detail--section--commentcreate .comment-cancle {
@@ -386,6 +386,208 @@
   padding-top: 20px;
   font-size: 16px;
   word-break: break-word;
+}
+
+/* 대댓글 */
+
+.fa-reply {
+  transform: rotate(180deg);
+  margin-right: 5px;
+}
+
+.moims--detail--recomment--tag {
+  font-weight: bold;
+  font-size: 15px;
+  background-color: rgb(240 240 240);
+  color: rgb(120 120 120);
+  margin-right: 5px;
+}
+
+/* 댓글 수정,삭제,답글 */
+
+.moims--detail--section--commentlist--headerend {
+  flex-grow: 1;
+}
+
+.moims--detail--section--commentlist--headerend div {
+  display: flex;
+  flex-flow: row-reverse;
+}
+
+.moims--detail--section--commentlist--headerend div button {
+  background-color: white;
+  color: rgb(140 140 140);
+  border: 0;
+  font-size: 13px;
+}
+
+.moims--detail--section--commentlist--headerend div button:hover {
+  color: black;
+}
+
+.moims--detail--section--commentlist--headerend div form button {
+  padding-bottom: 2px;
+}
+
+/* 수정,삭제 */
+
+.moims--detail--section--comment--updateform,
+.moims--detail--section--comment--createform {
+  padding: 20px;
+  border-bottom: 1px solid rgb(240 240 240);
+}
+
+.moims--detail--section--comment--updateform form textarea,
+.moims--detail--section--comment--createform form textarea {
+  width: 100%;
+  height: 100px;
+  border: 1px solid rgb(220 220 220);
+  border-radius: 10px;
+  margin-bottom: 5px;
+  padding: 20px;
+}
+
+.moims--detail--section--comment--updateform form textarea:focus,
+.moims--detail--section--comment--createform form textarea:focus {
+  outline: 1px solid #34568b;
+  color: rgb(80 80 80);
+}
+
+.moims--detail--section--comment--updateform .comment-submit,
+.moims--detail--section--comment--createform .comment-submit {
+  padding: 6px 12px;
+  height: 30px;
+  background-color: #34568b;
+  font-weight: bold;
+  font-size: 14px;
+  color: white;
+  border: 0;
+  border-radius: 5px;
+  transition: background-color 0.2s ease;
+}
+
+.moims--detail--section--comment--updateform .comment-submit:hover,
+.moims--detail--section--comment--createform .comment-submit:hover {
+  background-color: #112b56;
+}
+
+.moims--detail--section--comment--updateform .comment-cancle,
+.moims--detail--section--comment--createform .comment-cancle {
+  padding: 6px 12px;
+  height: 30px;
+  background-color: white;
+  border: 1px solid rgb(230 230 230);
+  font-weight: bold;
+  font-size: 14px;
+  color: rgb(50 50 50);
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.moims--detail--section--comment--updateform .comment-cancle:hover,
+.moims--detail--section--comment--createform .comment-cancle:hover {
+  background-color: rgb(240 240 240);
+}
+
+.moims--detail--section--comment--updateform label {
+  display: none;
+}
+
+.moims--detail--comment--content--text {
+  line-height: 30px;
+}
+
+/* 모임 디테일 하단 네비바 */
+
+.moims--detail--section--botnavbar {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  height: 70px;
+  display: flex;
+  padding: 5px 10px;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgb(240 240 240);
+  background-color: white;
+  z-index: 100;
+}
+
+.moims--detail--section--botnavbar-left form {
+  padding: 5px 15px;
+}
+
+.moims--detail--section--botnavbar-left form button {
+  font-size: 22px;
+  background-color: white;
+  border: 0;
+  transition: scale 0.2s ease;
+}
+
+.moims--detail--section--botnavbar-left form button:hover {
+  transform: scale(1.07);
+}
+
+.moims--detail--section--botnavbar-left form .bi-heart-fill {
+  color: #FEE500;
+}
+
+.moims--detail--section--botnavbar-right {
+  flex-grow: 1;
+  padding: 5px 10px;
+  height: 100%;
+}
+.moims--detail--section--botnavbar-right form {
+  padding: 0;
+  height: 100%;
+  display: flex;
+}
+
+.moims--detail--section--botnavbar-right button {
+  width: 100%;
+  height: 100%;
+  background-color: #34568b;
+  border: 0;
+  border-radius: 10px;
+  color: white;
+  margin: 0 10px;
+}
+
+.moims--detail--section--botnavbar-right button:hover {
+  background-color: #1c3e75;
+}
+
+.moims--detail--botnavbar--kakao {
+  background-color: #FEE500!important;
+  color: #3A1D1D!important;
+}
+
+.moims--detail--botnavbar--kakao:hover {
+  background-color: #cfbb04!important;
+}
+
+#moims--detail--alert {
+  position: sticky;
+  justify-content: space-between;
+  text-align: center;
+  bottom: 76px;
+  margin: 0 auto;
+  font-size: 15px;
+  width: 95%;
+  height: 50px;
+  padding: 17px 25px;
+  background-color: rgb(50 50 50);
+  border-radius: 10px;
+  color: white;
+  z-index: 700;
+}
+
+#moims--detail--alert a {
+  font-size: 14px;
+  color: #FEE500;
+  font-weight: bold;
+  text-decoration: none;
+  margin-top: 1px;
 }
 
 @media(max-width: 800px) {
