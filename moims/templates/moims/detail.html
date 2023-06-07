@@ -351,6 +351,41 @@
   }
   var map = new kakao.maps.Map(mapContainer, mapOption)
 
+  // 마커를 표시할 위치와 title 객체 배열입니다 
+  var positions = [];
+
+  // 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
+  var bounds = new kakao.maps.LatLngBounds(); 
+
+  // HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
+  if (navigator.geolocation) {
+      
+    // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+    navigator.geolocation.getCurrentPosition(function(position) {
+        
+        var lat = position.coords.latitude, // 위도
+            lon = position.coords.longitude; // 경도
+        
+        var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+            message = '<div style="width:150px;text-align:center;padding:6px 0;">현재 위치</div>'; // 인포윈도우에 표시될 내용입니다
+        
+        bounds.extend(locPosition);
+        bounds.extend(new kakao.maps.LatLng(lat + 0.00065, lon + 0.00065)); // Extend bounds by adding 0.00065 to latitude and longitude
+        map.setBounds(bounds);
+        // Append the object to the positions array
+        positions.push({ title: '현재 위치', latlng: locPosition });
+
+        displayMarkers();
+      });
+    
+  } else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
+    
+    var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
+        message = '<div style="width:150px;text-align:center;padding:6px 0;">현재 위치를 사용할수 없어요</div>'
+        
+    displayMarker(locPosition, message);
+  }
+
   // 주소로 좌표를 검색하고 맵을 업데이트하는 함수
   function updateMap(address, detailAddress) {
     var geocoder = new kakao.maps.services.Geocoder()
@@ -358,23 +393,67 @@
       if (status === kakao.maps.services.Status.OK) {
         var coords = new kakao.maps.LatLng(result[0].y, result[0].x)
 
-        // 결과값으로 받은 위치를 마커로 표시합니다
-        var marker = new kakao.maps.Marker({
-          map: map,
-          position: coords
-        });
 
-        // 인포윈도우로 장소에 대한 설명을 표시합니다
-        var infowindow = new kakao.maps.InfoWindow({
-          content: '<div style="width:150px;text-align:center;padding:6px 0;">' + detailAddress + '</div>'
-        });
-        infowindow.open(map, marker);
+        bounds.extend(coords);
+        bounds.extend(new kakao.maps.LatLng(coords.getLat() + 0.00065, coords.getLng() + 0.00065)); // Extend bounds by adding 0.00065 to latitude and longitude
+        map.setBounds(bounds);
+        // Append the object to the positions array
+        positions.push({ title: detailAddress, latlng: coords });
 
-        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-        map.setCenter(coords);
+        displayMarkers();
       }
     });
   }
+
+  // 마커 이미지의 이미지 주소입니다
+  var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
+      
+  // Function to display the markers on the map
+  function displayMarkers() {
+    for (var i = 0; i < positions.length; i++) {
+      // 마커 이미지의 이미지 크기 입니다
+      var imageSize = new kakao.maps.Size(24, 35);
+
+      // 마커 이미지를 생성합니다
+      var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+      // 마커를 생성합니다
+      var marker = new kakao.maps.Marker({
+        map: map, // 마커를 표시할 지도
+        position: positions[i].latlng, // 마커를 표시할 위치
+        title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+        image: markerImage // 마커 이미지
+      });
+
+      // Create the content for the infowindow
+      var lat = positions[i].latlng.getLat();
+      var lng = positions[i].latlng.getLng();
+
+      var iwContent = '<div style="width:150px;text-align:center;padding:6px 0;">' +
+        positions[i].title + '<br>';
+  
+      // Add the link if title is not '현재위치'
+      if (positions[i].title !== '현재 위치') {
+        iwContent += '<a href="https://map.kakao.com/link/to/' +
+          positions[i].title + ',' + lat + ',' + lng +
+          '" style="color:blue" target="_blank">길찾기</a>';
+      }
+  
+      iwContent += '</div>';
+  
+      // Create the infowindow
+      var infowindow = new kakao.maps.InfoWindow({
+        position: positions[i].latlng,
+        content: iwContent
+      });
+  
+      // Open the infowindow on the marker
+      infowindow.open(map, marker);
+    }
+  }
+
+  // Call the displayMarkers function once to show the initial markers
+  displayMarkers();
 
   // 맵 크기가 변경될 때 중심 위치 업데이트하기
   function resizeMap() {

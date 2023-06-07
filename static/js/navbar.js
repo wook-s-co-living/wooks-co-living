@@ -1,6 +1,14 @@
 window.addEventListener("scroll", function() {
-    let navbar = document.querySelector(".nav--bar");
-    navbar.classList.toggle('scrolled', window.scrollY > 10);
+  let navbar = document.querySelector(".nav--bar");
+  let svgPaths = document.querySelectorAll(".nav--logo svg path");
+
+  navbar.classList.toggle('scrolled', window.scrollY > 10);
+
+  if (window.scrollY > 10) {
+    svgPaths.forEach(path => path.setAttribute("stroke", "#ffffff"));
+  } else {
+    svgPaths.forEach(path => path.setAttribute("stroke", "#34568b"));
+  }
 });
 /* 사용자가 스크롤을 10px만큼 내리면 nav 속성이 변합니다 */
 

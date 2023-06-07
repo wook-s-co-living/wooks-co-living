@@ -97,11 +97,9 @@ body {
   justify-content: center;
   gap: 10px;
 }
-
-.login--logo img {
-  width: 20%;
+.login--logo svg {
+  margin-bottom: 8px;
 }
-
 .login--form--box {
   text-align: center;
   width: 100%;

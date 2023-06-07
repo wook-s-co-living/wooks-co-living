@@ -3,44 +3,46 @@ from .forms import PostForm, CommentForm
 from .models import Post, Comment
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.utils.safestring import mark_safe
 from django.db.models import Q, Count
-from django.utils.html import escape
-from django.views.generic import ListView, TemplateView
 from taggit.models import Tag
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
 
 # Create your views here.
-class TagCloudTV(TemplateView):
-    template_name = 'communities/index.html'
-
-
-class TaggedObjectLV(ListView):
-    template_name = 'communities/tag_with_post.html'
-    model = Post
-
-    def get_queryset(self):
-        return Post.objects.filter(tags__name=self.kwargs.get('tag'))
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['tagname'] = self.kwargs['tag']
-        return context
-    
 def index(request):
+    all_posts = Post.objects.all()
     categories = Post.objects.values_list('category', flat=True).distinct()
-    cate = request.GET.get('cate')
-    if cate:
-        posts = Post.objects.filter(category=cate).order_by('-created_at')
+
+    category = request.GET.get('category')
+    q = request.GET.get('q')
+    tag = request.GET.get('tag')
+
+    if category:
+        posts = Post.objects.filter(category=category).order_by('-created_at')
     else:
         posts = Post.objects.all().order_by('-created_at')
-    popular_tags = Tag.objects.annotate(num_times=Count('taggit_taggeditem_items')).filter(num_times__gt=5)
+
+    if q:
+        posts = posts.filter(
+            Q(title__icontains=q) |
+            Q(content__icontains=q) |
+            Q(user__username__icontains=q)
+        ).distinct()
+        
+    if tag:
+        posts = posts.filter(tags__name=tag)
+
+    # Get the tags related to the filtered posts
+    filtered_tags = Tag.objects.filter(post__in=all_posts).annotate(num_times=Count('taggit_taggeditem_items')).order_by('-num_times')[:10]
+
     context = {
-        'posts': posts,
-        'popular_tags': popular_tags,
         'categories': categories,
+        'posts': posts,
+        'filtered_tags': filtered_tags,
+        'category': category,
+        'all_posts': all_posts,
     }
     return render(request, 'communities/index.html', context)
+
 
 def category(request, category):
     posts = Post.objects.filter(category=category).order_by('-created_at')
@@ -75,13 +77,15 @@ def detail(request, post_pk):
     post = Post.objects.get(pk=post_pk)
     comments = post.comments.all()
     comment_form = CommentForm()
-    login_session = request.session.get('login_session', '')
+    if not request.session.get("post_viewed_{}".format(post_pk)):
+        post.views += 1
+        post.save()
+        request.session["post_viewed_{}".format(post_pk)] = True
     
     context = {
         'post': post,
         'comments': comments,
         'comment_form': comment_form,
-        'login_session': login_session,
     }
     response = render(request, 'communities/detail.html', context)
 
@@ -213,27 +217,3 @@ def comment_dislikes(request, post_pk, comment_pk):
         'comment_is_disliked': comment_is_disliked
     }
     return JsonResponse(context)
-
-def search(request):
-    post_list = Post.objects.all()
-    search_text = request.GET.get('search')
-    search_list = []
-    if search_text:
-        search_list = post_list.filter(
-            Q(title__icontains=search_text) |
-            Q(content__icontains=search_text) |
-            Q(user__username__icontains=search_text) |
-            Q(tags__name__icontains=search_text) |
-            Q(category__icontains=search_text)
-        ).distinct()
-    
-        for search_item in search_list:
-            search_item.title = mark_safe(search_item.title.replace(search_text, '<span style="color:red;">{}</span>'.format(escape(search_text))))
-            search_item.content = mark_safe(search_item.content.replace(search_text, '<span style="color:red;">{}</span>'.format(escape(search_text))))
-            search_item.user.username = mark_safe(search_item.user.username.replace(search_text, '<span style="color:red;">{}</span>'.format(escape(search_text))))
-
-    context = {
-        'search_list': search_list,
-        'search_text': search_text,
-    }
-    return render(request,'communities/search.html', context)
