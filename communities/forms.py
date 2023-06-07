@@ -5,8 +5,13 @@ from django.db.models import Count
 
 
 class PostForm(forms.ModelForm):
+    title = forms.CharField(label="")
+    category = forms.CharField(label="")
+    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['content'].label = ""
+        
         
         # Get the available category choices from the database
         category_choices = list(Post.objects.exclude(category__isnull=True).exclude(category='').values_list('category', 'category'))
@@ -25,7 +30,7 @@ class PostForm(forms.ModelForm):
         
         category_choices = arr
         
-        self.fields['category'] = forms.ChoiceField(choices=category_choices, required=False)
+        self.fields['category'] = forms.ChoiceField(choices=category_choices, required=False, label="")
 
     class Meta:
         model = Post

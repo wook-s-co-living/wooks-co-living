@@ -1,3 +1,229 @@
-* {
+.cmty--container {
+  display: flex;
+}
+
+.cmty--board_wrap {
+  width: 100%;
+  margin: 10px auto;
+}
+
+.cmty--main {
+  flex: 1 1 auto;
+  padding: 20px;
+}
+
+.cmty--board_main_title {
+  margin-bottom: 30px;
+}
+
+.cmty--board_main_title strong {
+  font-size: 1.5rem;
+}
+
+.cmty--board_main_title p {
+  margin-top: 5px;
+  font-size: 1rem;
+}
+
+/* 삭제 요망 */
+/* 
+.cmty--btn_wrap {
+  margin-top: 30px;
   text-align: center;
+  font-size: 0;
+}
+.cmty--btn_wrap a {
+  display: inline-block;
+  min-width: 80px;
+  margin-left: 10px;
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: 2px;
+  font-size: 1.4rem;
+}
+
+.cmty--btn_wrap a:first-child {
+  margin-left: 0;
+}
+
+.cmty--btn_wrap a.on {
+  background: #000;
+  color: #fff;
+}
+
+.cmty--board_list {
+  width: 100%;
+  border-top: 2px solid #000;
+}
+.cmty--board_list > div {
+  border-bottom: 1px solid #ddd;
+  font-size: 0;
+}
+.cmty--board_list > div.cmty--board_top {
+  border-bottom: 1px solid #999;
+}
+.cmty--board_list > div:last-child {
+  border-bottom: 1px solid #000;
+}
+
+.cmty--board_list > div > div {
+  display: inline-block;
+  padding: 15px 0;
+  text-align: center;
+  font-size: 1.4rem;
+} */
+/* 각각의 칸 */
+/* 
+.cmty--board_list > div.cmty--board_top > div {
+  font-weight: 600;
+}
+.cmty--board_list .cmty--board_num {
+  width: 10%;
+}
+.cmty--board_list .cmty--board_title {
+  width: 60%;
+  text-align: left;
+}
+.cmty--board_list .cmty--board_top .cmty--board_title  {
+  text-align: center;
+}
+.cmty--board_list .cmty--board_writer {
+  width: 10%;
+}
+.cmty--board_list .cmty--board_date {
+  width: 10%;
+}
+.cmty--board_list .cmty--board_hit {
+  width: 10%;
+}
+
+
+.cmty--board_page {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 0;
+}
+
+.cmty--board_page a {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  box-sizing: border-box;
+  vertical-align: middle;
+  border: 1px solid #ddd;
+  border-left: 0;
+  line-height: 100%;
+
+  
+}
+.cmty--board_page a.cmty--page_btn {
+  font-size: 1.2rem;
+  padding-top: 10px;
+  letter-spacing: -1px;
+} 
+.cmty--board_page a.cmty--page_num {
+  font-size: 1.4rem;
+  padding-top: 9px;
+}
+.cmty--board_page a.cmty--page_num.on {
+  border-color: #000;
+  background: #000;
+  color: #fff;
+} 
+.cmty--board_page a:first-child {
+  border-left: 1px solid #ddd;
+}
+
+.cmty--board_detail {
+  width: 100%;
+  border-top: 2px solid #000;
+  font-size: 1.4rem;
+}
+
+.cmty--board_detail .cmty--board_detail_title {
+  padding: 20px 15px;
+  border-bottom: 1px dashed #ddd;
+}
+
+.cmty--board_detail .cmty--board_detail_info {
+  padding: 15px;
+  border-bottom: 1px solid #999;
+  font-size: 0;
+}
+
+.cmty--board_detail .cmty--board_detail_info dl {
+  position: relative;
+  display: inline-block;
+  padding: 0 20px;
+}
+.cmty--board_detail .cmty--board_detail_info dl:first-child {
+  padding-left: 0;
+}
+.cmty--board_detail .cmty--board_detail_info dl::before {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 0;
+  display: block;
+  width: 1px;
+  height: 13px;
+  background: #ddd;
+}
+
+.cmty--board_detail .cmty--board_detail_info dl:first-child::before{
+  display: none;
+} 
+.cmty--board_detail .cmty--board_detail_info dl dt,
+.cmty--board_detail .cmty--board_detail_info dl dd {
+  display: inline-block;
+  font-size: 1.4rem;
+} */
+/* .cmty--board_detail .cmty--board_detail_info dl dt {
+
+} */
+/* .cmty--board_detail .cmty--board_detail_info dl dd {
+  margin-left: 10px;
+  color: #777;
+}
+
+.cmty--board_detail .cmty--board_detail_cont {
+  padding: 15px;
+  border-bottom: 1px solid #000;
+  line-height: 160%;
+  font-size: 1.4rem;
+} */
+
+@media (max-width: 800px) {
+  .cmty--left_sec, .cmty--right_sec {
+      display: none;
+  }
+  .cmty--main {
+    width: 50%;
+  }
+}
+
+.cmty--form input {
+  width: 100%;
+  max-width: 837px;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  line-height: 2rem;
+
+}
+.cmty--form input:focus {
+  outline: 1px solid #34568b;
+}
+.cmty--title {
+  margin: 1rem 0;
+}
+
+.cmty--submit {
+  text-align: right;
+}
+.cmty--submit input[type="submit"] {
+  background-color: #FEE500;
+  margin-top: 1rem;
+  padding: 0.5rem 1.5rem; 
+  border: none;
+  border-radius: 5px;
 }
