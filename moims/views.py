@@ -167,7 +167,7 @@ def comment_create(request, moim_pk, parent_pk):
             request.session['comment_pk'] = comment.pk
 
             return redirect('moims:detail', moim_pk=moim_pk)
-
+ 
 @login_required
 def comment_update(request, moim_pk, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
