@@ -35,7 +35,7 @@
   <li>{{ post.created_time }}</li>
   {% if post.tags.all %}
     {% for tag in post.tags.all %}
-    <a style="text-decoration: none" href="{% url 'communities:tagged_object_list' tag.name %}">
+    <a style="text-decoration: none" href="#">
       <span class="badge rounded-pill bg-success">{{ tag.name }}</span>
     </a>
     {% endfor %}
@@ -243,23 +243,29 @@
     .tag-4 {font-size: 18px}
     .tag-5 {font-size: 20px}
     .tag-6 {font-size: 24px}
+
+    input.underline {
+      border-left-width:0;
+      border-right-width:0;
+      border-top-width:0;
+      border-bottom-width:1;
+      background: none;
+      }
 {% endblock style %}
 {% block content %}
-<form action="{% url 'communities:search' %}" method='GET'>
+
+<form action="{% url 'communities:index' %}">
   <div class="search_container input-group flex-nowrap">
     <span class="search-icon"><i class="bi bi-search"></i></span>
-    <input type="text" class="search_text" placeholder="검색어를 입력하세요" name="search">
+    <input type="text" class="search_text" placeholder="검색어를 입력하세요" name="q">
     <input type="submit" class="search_submit" value="검 색">
   </div>
 </form>
 
 <form action="{% url 'communities:index' %}">
+  <input type='submit' value='전체'>
   {% for category in categories %}
-    {% if category %}
-    <input type='submit' name='cate' value='{{ category }}'>
-    {% else %}
-    <input type='submit' value='전체'>
-    {% endif %}
+    <input type='submit' name='category' value='{{ category }}'>
   {% endfor %}
 </form>
 
@@ -273,24 +279,25 @@
   <li>댓글 수 : {{ post.comments.count }}</li>
   <li>좋아요 수 : {{ post.like_users.count }}</li>
   {% if post.tags.all %}
-    {% for tag in post.tags.all %}
-    <a style="text-decoration: none" href="{% url 'communities:tagged_object_list' tag.name %}">
-      <span class="badge rounded-pill bg-success">{{ tag.name }}</span>
-    </a>
-    {% endfor %}
+    <form action="{% url 'communities:index' %}">
+      {% for tag in post.tags.all %}
+      <input type="hidden" name='category' value='{{ request.GET.category }}'>
+      <input type='submit' name='tag' value='{{ tag.name }}' class="rounded-pill bg-success" style="color: white; border: 0;">
+      {% endfor %}
+    </form>
   {% endif %}
 </ul>
 {% endfor %}
 
-<div class="tag-cloud">
-  {% load taggit_templatetags2_tags %}
-  {% get_tagcloud as tags %} <!--모든 태그 추출해서 tags변수에 할당-->
-  {% for tag in tags %}
-    {% if tag.num_times != 0 %}
-    <span class="tag-{{tag.weight|floatformat:0}}"> <!-- style 관련-->
-        <a href="{% url 'communities:tagged_object_list' tag.name %}"> {{tag.name}}({{tag.num_times}})</a>
-    </span>
-    {% endif %}
+<div>
+  {% for tag in filtered_tags %}
+    <form action="{% url 'communities:index' %}">
+      {% if tag.num_times != 0 %}
+        <input type="hidden" name='category' value='{{ request.GET.category }}'>
+        <input type="hidden" name='tag' value='{{ tag.name }}'>
+        <input  class="underline" type="submit" value="{{tag.name}}({{tag.num_times}})">
+      {% endif %}
+    </form>
   {% endfor %}
 </div>
 {% endcomment %}

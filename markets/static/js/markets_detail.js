@@ -8,6 +8,7 @@ const detailBody = document.querySelector('.markets--detail')
 const detailNavbar = document.querySelector('.markets--detail--navbar')
 const navbar = document.querySelector('.nav--bar')
 const footer = document.querySelector('.footer')
+const botNavbar = document.querySelector('.bottom--nav')
 
 carouselBtns.forEach((btn) => {
   btn.addEventListener('click', (event) => {
@@ -28,6 +29,7 @@ carouselBtns.forEach((btn) => {
     owlCarousel.trigger('to.owl.carousel', [btnValue - 1])
     navbar.style.display = 'none'
     footer.style.display = 'none'
+    botNavbar.style.display = 'none'
   })
 })
 
@@ -53,8 +55,26 @@ closeBtn.addEventListener('click', (event) => {
   })
   
   owlCarousel.trigger('to.owl.carousel', [itemValue - 1])
-  navbar.style.display = 'flex'
-  footer.style.display = 'block'
+  if (window.innerWidth > 800) {
+    navbar.style.display = 'flex'
+    footer.style.display = 'block'
+  }
+})
+
+window.addEventListener('DOMContentLoaded', function() {
+  function handleResize() {
+    if (window.innerWidth > 800) {
+      navbar.style.display = 'flex'
+      footer.style.display = 'block'
+    } else {
+      navbar.style.display = 'none'
+      footer.style.display = 'none'
+    }
+  }
+
+  handleResize()
+  
+  window.addEventListener('resize', handleResize)
 })
 
 // detail info

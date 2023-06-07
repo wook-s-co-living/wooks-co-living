@@ -11,8 +11,9 @@ class Post(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user_communities_posts')
     title = models.CharField(max_length=100)
     content = RichTextUploadingField(blank=True,null=True)
-    category = models.CharField(max_length=40, blank=True)
-    views = models.PositiveIntegerField(default=0, verbose_name='조회수')
+    category_Choices = (('일상 이야기', '일상 이야기'), ('건물 소식', '건물 소식'), ('자취 꿀팁', '자취 꿀팁'), ('같이 사요', '같이 사요'))
+    category = models.CharField(max_length=40, choices=category_Choices)
+    views = models.IntegerField(default=0) #models.PositiveIntegerField(default=0, verbose_name='조회수')
 
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_communities_posts')
     dislike_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='dislike_communities_posts')

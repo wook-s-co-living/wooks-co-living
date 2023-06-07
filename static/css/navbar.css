@@ -36,19 +36,16 @@
 .nav--logo {
     display: flex;
     flex-direction: row;
-    
+    margin-bottom: 3px;
 }
 .nav-logo--text {
     display: flex;
     align-items: center;
     margin: 0 5px;
     font-family: 'ImcreSoojin';
-    color: #02517b;
+    color: #34568b;
     font-size: 21px;
     padding-top: 7px;
-}
-.nav--logo img {
-    height: 30px;
 }
 
 
@@ -62,7 +59,7 @@
     padding: 0 20px;
     text-decoration: none;
     color: gray;
-    padding: 20px 20px;
+    padding: 16px 20px;
     border-bottom: 3px solid #fff0;
 }
 

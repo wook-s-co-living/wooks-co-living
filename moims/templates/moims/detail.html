@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load humanize %}
+{% load customtags %}
+
 {% block title %} moims_detail {% endblock title %}
 
 {% block header %}
@@ -50,7 +52,7 @@
             <h1>{{ post.title }}</h1>
 
             <h2>
-              {{ post.user.first_name }}<span>&nbsp;·&nbsp;</span>{{ post.user.town }}<span>&nbsp;·&nbsp;</span>멤버 {{ post.join_users.count }}
+              {{ post.user.first_name }}<span>&nbsp;·&nbsp;</span>{{ post.user.town }}<span>&nbsp;·&nbsp;</span>멤버 <span class='join--users--count'>{{ post.join_users.count }}</span>
             </h2>
           </div>
 
@@ -107,10 +109,10 @@
         </div>
 
         <div class='moims--detail--section--member'>
-          <h1>참여 멤버 ({{ post.join_users.count }}/{{ post.limit }})</h1>
+          <h1>참여 멤버 (<span>{{ post.join_users.count }}</span>/{{ post.limit }})</h1>
 
           <div class="owl-carousel owl-theme">
-            {% for join_user in post.join_users.all %}
+            {% for join_user in post.join_users.all reversed %}
               <a class='moims--detail--section--member--item' href="{% url 'accounts:profile' join_user.username %}">
                 {% if join_user.image %}
                   <img src="{{ join_user.image.url }}" alt="{{ join_user }}">
@@ -124,6 +126,14 @@
                 {% endif %}
               </a>
             {% endfor %}
+
+            <a class='moims--detail--section--member--item request--user--carousel d-none' href="{% url 'accounts:profile' request.user.username %}">
+              {% if request.user.image %}
+                <img src="{{ request.user.image.url }}" alt="{{ request.user }}">
+              {% else %}
+                <img src="{% static 'image/noimage.png' %}" alt="noimage">
+              {% endif %}
+            </a>
           </div>
         </div>
 
@@ -150,69 +160,166 @@
               {{ comment_form.content }}
               <div class='d-flex flex-row-reverse'>
                 <button class='comment-submit' type='submit'>등록</button>
-                <button class='comment-cancle'>취소</button>
+                <button class='comment-cancle' type='button'>취소</button>
               </div>
             </form> 
           {% endif %}
         </div>
 
-        <div class='moims--detail--section--commentlist'>
+        <div class='moims--detail--section--commentcontainer'>
           {% for comment in comments %}
-            <header>
-              <header>
-                {% if comment.user.image %}
-                  <img src="{{ comment.user.image.url }}" alt="{{ comment.user.username }}">
-                {% else %}
-                  <img src="{% static 'image/noimage.png' %}" alt="noimage">
-                {% endif %}
-              </header>
+            <div class='moims--detail--section--commentitem' id='comment-{{ comment.pk }}'>
+              <div class='moims--detail--section--commentlist'>
+                <header>
+                  <header>
+                    {% if comment.user.image %}
+                      <img src="{{ comment.user.image.url }}" alt="{{ comment.user.username }}">
+                    {% else %}
+                      <img src="{% static 'image/noimage.png' %}" alt="noimage">
+                    {% endif %}
+                  </header>
+    
+                  <section>
+                    {{ comment.user.first_name }}
+                  </section>
+    
+                  <footer>
+                    {{ comment.created_time }}
+                  </footer>
+  
+                  <div class='moims--detail--section--commentlist--headerend'>
+                    <div>
+                      <button class='recomment--create--button'>
+                        <i class="bi bi-chat-fill"></i> 
+                        댓글
+                      </button>
+                      
+                      {% if request.user == comment.user %}
+                        <form action="{% url 'moims:comment_delete' post.pk comment.pk %}" method="POST">
+                          {% csrf_token %}
+                          <button type='submit'>삭제</button>
+                        </form>
+  
+                        <button class='comment--update--button'>
+                          수정
+                        </button>
+                      {% endif %}
+                    </div>
+                  </div>
+                </header>
+    
+                <section class='moims--detail--section--commentlist--content'>
+                  <span class='moims--detail--comment--content--text'>
+                    {{ comment.content|linebreaksbr }}
+                  </span>
+                </section>
+    
+              </div>
+  
+              <div class='moims--detail--section--comment--updateform d-none' style='padding-left: calc(20px + 2 * {{ comment.depth }}px);'>
+                <form data-post-id="{{ post.pk }}" data-comment-id="{{ comment.pk }}">
+                  {% csrf_token %}
+                  {{ comment|get_comment_update_form|safe }}
+                  <div class='d-flex flex-row-reverse'>
+                    <button class='comment-submit' type='submit'>등록</button>
+                    <button class='comment-cancle' type='button'>취소</button>
+                  </div>
+                </form>
+              </div>
 
-              <section>
-                {{ comment.user.first_name }}
-              </section>
+              <div class='moims--detail--section--comment--createform d-none' style='padding-left: calc(20px + 2 * {{ comment.depth }}px);'>
+                <form action="{% url 'moims:comment_create' post.pk comment.pk %}" method="POST">
+                  <div class='mb-2'>
+                    <i class="fa-sharp fa-solid fa-reply"></i>
+                    <span class='moims--detail--recomment--tag'>@{{ comment.user.first_name }}</span>
+                  </div>
+                  {% csrf_token %}
+                  {{ comment_form.content }}
+                  <div class='d-flex flex-row-reverse'>
+                    <button class='comment-submit' type='submit'>등록</button>
+                    <button class='comment-cancle' type='button'>취소</button>
+                  </div>
+                </form>
+              </div>
+            </div>
 
-              <footer>
-                {{ comment.created_time }}
-              </footer>
-            </header>
-
-            <section class='moims--detail--section--commentlist--content'>
-              {{ comment.content|linebreaksbr }}
-            </section>
-
+            {% if comment.child_comments.all %}
+              <div class='moims--detail--section--recomment'>
+                {% for c in comment.child_comments.all %}
+                  {% include "moims/recursive_comment.html" with recursive_comment=c %}
+                {% endfor %}
+              </div>
+            {% endif %}
+              
           {% endfor %}
         </div>
-      </section>
 
-      <div style='height: 400px;'></div>
+        {% comment %} 알림창 {% endcomment %}
+        <div id='moims--detail--alert' style='display: none;'>
+          <h1>관심목록에 추가됐어요.</h1>
+          
+          <a href="{% url 'accounts:profile' request.user.username %}?cate=moims">관심목록보기</a>
+        </div>
+        
+        <div class='moims--detail--section--botnavbar'>
+          <div class='moims--detail--section--botnavbar-left'>
+            <form id='moims--detail--like--form' data-post-id="{{ post.pk }}">
+              {% csrf_token %}
+              {% if request.user not in post.like_users.all %}
+                <button type='submit'>
+                  <i class="bi bi-heart"></i>
+                </button>
+              {% else %}
+                <button type='submit'>
+                  <i class="bi bi-heart-fill"></i>
+                </button>
+              {% endif %}
+            </form>
+          </div>
+
+          <div class='moims--detail--section--botnavbar-right'>
+            <form id='moims--detail--join--form' data-post-id='{{ post.pk }}'>
+              {% csrf_token %}
+                {% if request.user not in post.join_users.all %}
+                  <button type='submit'>참여하기</button>
+                {% else %}
+                  {% if request.user != post.user %}
+                    <button type='submit'>탈퇴하기</button>
+                    <button class='moims--detail--botnavbar--kakao kakao--btn--1' type='button' data-kakao-url='{{ post.kakao_url }}'>
+                      <i class="bi bi-chat-fill"></i> 
+                      카카오톡
+                    </button>
+                  {% endif %}
+                {% endif %}
+                <button class='moims--detail--botnavbar--kakao kakao--btn--2 d-none' type='button' data-kakao-url='{{ post.kakao_url }}'>
+                  <i class="bi bi-chat-fill"></i> 
+                  카카오톡
+                </button>
+              </form>
+            </div>
+        </div>
+      </section>
     </div>
   </div>
 
 
-<!--댓글 목록 수정 삭제-->
-<ul>
-{% for comment in comments %}
-  <li>{{ comment.user }} : {{ comment.content }}</li>
-  {% if comment.user == user %}
-  <form action="{% url 'moims:comment_update' post.pk comment.pk %}" method="POST">
-    {% csrf_token %}
-    {{ comment_form.as_p }}
-    <input type="submit" value="UPDATE">
-  </form>
-  <form action="{% url 'moims:comment_delete' post.pk comment.pk %}" method="POST">
-    {% csrf_token %}
-    <input type="submit" value="DELETE">
-  </form>
-  {% endif %}
-{% endfor %}
-</ul>
-
-
+{% comment %} <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> {% endcomment %}
 <script src="{% static 'js/moims_detail.js' %}"></script>
 <!--지도 생성 script-->
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey={{ KAKAO_JS_KEY }}&libraries=services"></script>
 <script>
+  
+  {% if comment %}
+    $(document).ready(function() {
+      var targetScrollPosition = $('#{{ comment_section_id }}').offset().top - 100;
+
+      $('html, body').animate({
+        scrollTop: targetScrollPosition
+      }, 500);
+    });
+  {% endif %}
+
   $('.owl-carousel').owlCarousel({
       startPosition: false,
       loop:true,
@@ -244,6 +351,41 @@
   }
   var map = new kakao.maps.Map(mapContainer, mapOption)
 
+  // 마커를 표시할 위치와 title 객체 배열입니다 
+  var positions = [];
+
+  // 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
+  var bounds = new kakao.maps.LatLngBounds(); 
+
+  // HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
+  if (navigator.geolocation) {
+      
+    // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+    navigator.geolocation.getCurrentPosition(function(position) {
+        
+        var lat = position.coords.latitude, // 위도
+            lon = position.coords.longitude; // 경도
+        
+        var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+            message = '<div style="width:150px;text-align:center;padding:6px 0;">현재 위치</div>'; // 인포윈도우에 표시될 내용입니다
+        
+        bounds.extend(locPosition);
+        bounds.extend(new kakao.maps.LatLng(lat + 0.00065, lon + 0.00065)); // Extend bounds by adding 0.00065 to latitude and longitude
+        map.setBounds(bounds);
+        // Append the object to the positions array
+        positions.push({ title: '현재 위치', latlng: locPosition });
+
+        displayMarkers();
+      });
+    
+  } else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
+    
+    var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
+        message = '<div style="width:150px;text-align:center;padding:6px 0;">현재 위치를 사용할수 없어요</div>'
+        
+    displayMarker(locPosition, message);
+  }
+
   // 주소로 좌표를 검색하고 맵을 업데이트하는 함수
   function updateMap(address, detailAddress) {
     var geocoder = new kakao.maps.services.Geocoder()
@@ -251,23 +393,67 @@
       if (status === kakao.maps.services.Status.OK) {
         var coords = new kakao.maps.LatLng(result[0].y, result[0].x)
 
-        // 결과값으로 받은 위치를 마커로 표시합니다
-        var marker = new kakao.maps.Marker({
-          map: map,
-          position: coords
-        });
 
-        // 인포윈도우로 장소에 대한 설명을 표시합니다
-        var infowindow = new kakao.maps.InfoWindow({
-          content: '<div style="width:150px;text-align:center;padding:6px 0;">' + detailAddress + '</div>'
-        });
-        infowindow.open(map, marker);
+        bounds.extend(coords);
+        bounds.extend(new kakao.maps.LatLng(coords.getLat() + 0.00065, coords.getLng() + 0.00065)); // Extend bounds by adding 0.00065 to latitude and longitude
+        map.setBounds(bounds);
+        // Append the object to the positions array
+        positions.push({ title: detailAddress, latlng: coords });
 
-        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-        map.setCenter(coords);
+        displayMarkers();
       }
     });
   }
+
+  // 마커 이미지의 이미지 주소입니다
+  var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
+      
+  // Function to display the markers on the map
+  function displayMarkers() {
+    for (var i = 0; i < positions.length; i++) {
+      // 마커 이미지의 이미지 크기 입니다
+      var imageSize = new kakao.maps.Size(24, 35);
+
+      // 마커 이미지를 생성합니다
+      var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+      // 마커를 생성합니다
+      var marker = new kakao.maps.Marker({
+        map: map, // 마커를 표시할 지도
+        position: positions[i].latlng, // 마커를 표시할 위치
+        title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+        image: markerImage // 마커 이미지
+      });
+
+      // Create the content for the infowindow
+      var lat = positions[i].latlng.getLat();
+      var lng = positions[i].latlng.getLng();
+
+      var iwContent = '<div style="width:150px;text-align:center;padding:6px 0;">' +
+        positions[i].title + '<br>';
+  
+      // Add the link if title is not '현재위치'
+      if (positions[i].title !== '현재 위치') {
+        iwContent += '<a href="https://map.kakao.com/link/to/' +
+          positions[i].title + ',' + lat + ',' + lng +
+          '" style="color:blue" target="_blank">길찾기</a>';
+      }
+  
+      iwContent += '</div>';
+  
+      // Create the infowindow
+      var infowindow = new kakao.maps.InfoWindow({
+        position: positions[i].latlng,
+        content: iwContent
+      });
+  
+      // Open the infowindow on the marker
+      infowindow.open(map, marker);
+    }
+  }
+
+  // Call the displayMarkers function once to show the initial markers
+  displayMarkers();
 
   // 맵 크기가 변경될 때 중심 위치 업데이트하기
   function resizeMap() {
