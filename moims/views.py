@@ -60,14 +60,25 @@ def create(request):
 
 def detail(request, moim_pk):
     post = Post.objects.get(pk=moim_pk)
-    # post.join_users.add(request.user)
-    comments = post.comments.all()
+    comments = post.comments.filter(parent_comment=None)
     comment_form = CommentForm()
+
+    comment_pk = request.session.pop('comment_pk', None)
+
+    if comment_pk:
+        comment = Comment.objects.get(pk=comment_pk)
+        comment_section_id = f'comment-{comment.pk}'
+    else:
+        comment = None
+        comment_section_id = None
+
     context = {
         'post': post,
         'comments': comments,
         'comment_form': comment_form,
         'KAKAO_JS_KEY': KAKAO_JS_KEY,
+        'comment': comment,
+        'comment_section_id': comment_section_id,
     }
     return render(request, 'moims/detail.html', context)
 
@@ -99,29 +110,41 @@ def delete(request, moim_pk):
 @login_required
 def likes(request, moim_pk):
     post = Post.objects.get(pk=moim_pk)
-    if request.user in post.like_users.all():
-        post.like_users.remove(request.user)
-        is_liked = False
-    else:
-        post.like_users.add(request.user)
-        is_liked = True
-    context = {
-        'is_liked': is_liked
-    }
+
+    if post.user == request.user:
+        error_message = "자신의 모임은 관심모임으로 등록할 수 없습니다."
+        return JsonResponse({'error': error_message})
+
+    if request.user != post.user:
+        if request.user in post.like_users.all():
+            post.like_users.remove(request.user)
+            is_liked = False
+        else:
+            post.like_users.add(request.user)
+            is_liked = True
+    context = {'is_liked': is_liked}
     return JsonResponse(context)
 
 @login_required
 def joins(request, moim_pk):
     post = Post.objects.get(pk=moim_pk)
-    if request.user in post.join_users.all():
-        post.join_users.remove(request.user)
-        is_joined = False
-    else:
-        post.join_users.add(request.user)
-        is_joined = True
-    context = {
-        'is_joined': is_joined
-    }
+    print(request.GET.get('out'))
+    if post.user == request.user:
+        error_message = "자신의 모임은 참여할 수 없습니다."
+        return JsonResponse({'error': error_message})
+    elif post.limit == post.join_users.count() and request.GET.get('out') == 'null':
+        error_message = "참여인원이 가득 찼습니다."
+        return JsonResponse({'error': error_message})
+    
+    if request.user != post.user:
+        if request.user in post.join_users.all():
+            post.join_users.remove(request.user)
+            is_joined = False
+        else:
+            post.join_users.add(request.user)
+            is_joined = True
+
+    context = {'is_joined': is_joined}
     return JsonResponse(context)
 
 @login_required
@@ -129,15 +152,22 @@ def comment_create(request, moim_pk, parent_pk):
     post = Post.objects.get(pk=moim_pk)
     if request.method == 'POST':
         comment_form = CommentForm(request.POST)
+
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
             comment.user = request.user
             comment.post = post
             if parent_pk != 0:
-                comment.parent_comment = Comment.objects.get(pk=parent_pk)
+                parent_comment = Comment.objects.get(pk=parent_pk)
+                comment.parent_comment = parent_comment
+                comment.depth = parent_comment.depth + 10
+                if comment.depth > 50:
+                    comment.depth = 10
             comment.save()
-            return redirect('moims:detail', moim_pk)
+            request.session['comment_pk'] = comment.pk
 
+            return redirect('moims:detail', moim_pk=moim_pk)
+ 
 @login_required
 def comment_update(request, moim_pk, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
@@ -145,13 +175,24 @@ def comment_update(request, moim_pk, comment_pk):
         comment_update_form = CommentForm(request.POST, instance=comment)
         if comment_update_form.is_valid():
             comment_update_form.save()
-            return redirect('moims:detail', moim_pk)
+            context = {'commentContent': request.POST.get('comment-content')}
+            return JsonResponse(context)
+        else:
+            print(comment_update_form.errors)
 
 @login_required
 def comment_delete(request, moim_pk, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
+
     if request.user == comment.user:
         comment.delete()
+
+    post = Post.objects.get(pk=moim_pk)
+    comments = post.comments.filter(parent_comment=None)
+    first_comment = comments.first()
+
+    request.session['comment_pk'] = first_comment.pk
+
     return redirect('moims:detail', moim_pk=moim_pk)
 
 def search(request):

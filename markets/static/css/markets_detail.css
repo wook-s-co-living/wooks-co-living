@@ -383,6 +383,7 @@
   background-color: rgb(50 50 50);
   border-radius: 10px;
   color: white;
+  z-index: 700;
 }
 
 #markets--detail--alert a {

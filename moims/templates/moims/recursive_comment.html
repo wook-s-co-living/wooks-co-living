@@ -1,0 +1,85 @@
+{% load static %}
+{% load customtags %}
+
+<div class='moims--detail--section--commentitem' id='comment-{{ recursive_comment.pk }}'>
+  <div class='moims--detail--section--commentlist' style='padding-left: calc(20px + 2 * {{ recursive_comment.depth }}px);'>
+    <header>
+      <header>
+        {% if recursive_comment.user.image %}
+          <img src="{{ recursive_comment.user.image.url }}" alt="{{ recursive_comment.user.username }}">
+        {% else %}
+          <img src="{% static 'image/noimage.png' %}" alt="noimage">
+        {% endif %}
+      </header>
+
+      <section>
+        {{ recursive_comment.user.first_name }}
+      </section>
+
+      <footer>
+        {{ recursive_comment.created_time }}
+      </footer>
+
+      <div class='moims--detail--section--commentlist--headerend'>
+        <div>
+          <button class='recomment--create--button'>
+            <i class="bi bi-chat-fill"></i> 
+            댓글
+          </button>
+          
+          {% if request.user == recursive_comment.user %}
+            <form action="{% url 'moims:comment_delete' post.pk recursive_comment.pk %}" method="POST">
+              {% csrf_token %}
+              <button type='submit'>삭제</button>
+            </form>
+
+            <button class='comment--update--button'>
+              수정
+            </button>
+          {% endif %}
+        </div>
+      </div>
+    </header>
+
+    <section class='moims--detail--section--commentlist--content'>
+      <i class="fa-sharp fa-solid fa-reply"></i> <span class='moims--detail--recomment--tag'>@{{ recursive_comment.parent_comment.user.first_name }}</span> <span class='moims--detail--comment--content--text'>{{ recursive_comment.content|linebreaksbr }}</span>
+    </section>
+
+  </div>
+
+  <div class='moims--detail--section--comment--updateform d-none' style='padding-left: calc(20px + 2 * {{ recursive_comment.depth }}px);'>
+    <form data-post-id="{{ post.pk }}" data-comment-id="{{ recursive_comment.pk }}">
+      {% csrf_token %}
+      {{ recursive_comment|get_comment_update_form|safe }}
+      <div class='d-flex flex-row-reverse'>
+        <button class='comment-submit' type='submit'>등록</button>
+        <button class='comment-cancle' type='button'>취소</button>
+      </div>
+    </form>
+  </div>
+
+  <div class='moims--detail--section--comment--createform d-none' style='padding-left: calc(20px + 2 * {{ recursive_comment.depth }}px);'>
+    <form action="{% url 'moims:comment_create' post.pk recursive_comment.pk %}" method="POST">
+      <div class='mb-2'>
+        <i class="fa-sharp fa-solid fa-reply"></i>
+        <span class='moims--detail--recomment--tag'>@{{ recursive_comment.user.first_name }}</span>
+      </div>
+      {% csrf_token %}
+      {{ comment_form.content }}
+      <div class='d-flex flex-row-reverse'>
+        <button class='comment-submit' type='submit'>등록</button>
+        <button class='comment-cancle' type='button'>취소</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+{% if recursive_comment.child_comments.all %}
+  <div class='moims--detail--section--recomment'>
+    {% for reply in recursive_comment.child_comments.all %}
+      {% include "moims/recursive_comment.html" with recursive_comment=reply %}
+    {% endfor %}
+  </div>
+{% endif %}
+  
