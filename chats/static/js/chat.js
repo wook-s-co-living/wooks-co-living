@@ -46,13 +46,7 @@ chatSocket.onmessage = function(e) {
         if (previousSender !== sender) {
             const image = document.createElement('img');
             image.alt = 'profile_image';
-
-            if (imageUrl) {
-                image.src = imageUrl;
-            } else {
-                image.src = staticImagePath;
-            }
-
+						image.src = imageUrl;
             profileSub.appendChild(image);
         }
 

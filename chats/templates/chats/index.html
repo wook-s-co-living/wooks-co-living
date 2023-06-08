@@ -42,9 +42,15 @@
           {% else %}
             <a href="{% url 'chats:room' chatroom.user1.first_name %}" class="chat--link">
               <div class="chat--box">
-                <div class="chat--profile">
-                  <img src="{{chatroom.user1.image.url}}" alt="">
-                </div>
+                {% if chatroom.user1.image %}
+                  <div class="chat--profile">
+                    <img src="{{chatroom.user1.image.url}}" alt="profile_image">
+                  </div>
+                {% else %}
+                  <div class="chat--profile">
+                    <img src="{% static 'image/noimage.png' %}" alt="noimage">
+                  </div>
+                {% endif %}
                 <div class="chat--txt">
                   <div>
                     {% if chatroom.user1 == chatroom.user2 %}
