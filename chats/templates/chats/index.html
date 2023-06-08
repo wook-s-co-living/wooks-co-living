@@ -1,29 +1,65 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/room.css' %}"> 
+{% endblock header %}
 
 {% block content %}
-    <div>
+    <div class="chats--container">
+      <div class="chats--title">채팅 리스트</div>
         {% for chatroom in chatrooms %}
-            {% if chatroom.user2 != user %}
-                <a href="{% url 'chats:room' chatroom.user2.first_name %}">
-                    <div><img src="{{chatroom.user2.image.url}}" alt=""></div>
-                    <div>대화 상대 : {{ chatroom.user2.first_name }}</div>
-                    {% if chatroom.get_latest_message.sender == user %}
-                    <div>최근 대화 내용 : {{ chatroom.get_latest_message.content }}</div>
-                    {% else %}
-                    <div>최근 대화 내용 : {{ chatroom.get_latest_message.sender.first_name }} : {{ chatroom.get_latest_message.content }}</div>
+          {% if chatroom.user2 != user %}
+            <a href="{% url 'chats:room' chatroom.user2.first_name %}" class="chat--link">
+              <div class="chat--box">
+                {% if chatroom.user2.image %}
+                  <div class="chat--profile">
+                    <img src="{{chatroom.user2.image.url}}" alt="profile_image">
+                  </div>
+                {% else %}
+                  <div class="chat--profile">
+                    <img src="{% static 'image/noimage.png' %}" alt="noimage">
+                  </div>
+                {% endif %}
+                <div class="chat--txt">
+                  <div>
+                    {% if chatroom.user1 == chatroom.user2 %}
+                    <i class="bi bi-person-circle"></i>
                     {% endif %}
-                </a>
-                {% else %} <!-- if chatroom.user1 != user -->
-                <a href="{% url 'chats:room' chatroom.user1.first_name %}">
-                    <div>대화 상대 : {{ chatroom.user1.first_name }}</div>
-                    {% if chatroom.get_latest_message.sender == user %}
-                    <div>최근 대화 내용 : {{ chatroom.get_latest_message.content }}</div>
-                    {% else %}
-                    <div>최근 대화 내용 : {{ chatroom.get_latest_message.sender.first_name }} : {{ chatroom.get_latest_message.content }}</div>
+                    {{ chatroom.user2.first_name }}
+                  </div>
+                  {% comment %} {% if chatroom.get_latest_message.sender == user %} {% endcomment %}
+                  <div class="chat--txt--info">
+                    <span class="chat--message">{{ chatroom.get_latest_message.content }}</span>
+                    <span class="chat--created">{{ chatroom.get_latest_message.created_time }}</span>
+                  </div>
+                  {% comment %} {% else %}
+                  <div>최근 대화 내용 : {{ chatroom.get_latest_message.sender.first_name }} : {{ chatroom.get_latest_message.content }}</div>
+                  {% endif %} {% endcomment %}
+                </div>
+              </div>
+            </a>
+          {% else %}
+            <a href="{% url 'chats:room' chatroom.user1.first_name %}" class="chat--link">
+              <div class="chat--box">
+                <div class="chat--profile">
+                  <img src="{{chatroom.user1.image.url}}" alt="">
+                </div>
+                <div class="chat--txt">
+                  <div>
+                    {% if chatroom.user1 == chatroom.user2 %}
+                    <i class="bi bi-person-circle"></i>
                     {% endif %}
-                </a>
-            {% endif %}
-            <br>
+                    {{ chatroom.user1.first_name }}
+                  </div>
+                  <div class="chat--txt--info">
+                    <span class="chat--message">{{ chatroom.get_latest_message.content }}</span>
+                    <span class="chat--created">{{ chatroom.get_latest_message.created_time }}</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          {% endif %}
         {% endfor %}
     </div>
 {% endblock content %}

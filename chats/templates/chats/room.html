@@ -1,27 +1,83 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load my_filters %}
 
 {% block header %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/room.css' %}"> 
 {% endblock header %}
 
 {% block content %}
-<div id="chat-log">
+<div class="chats--container">
+  <div class="room--title">
+    <a href="{% url 'chats:index' %}" class="back--btn" type="button">〈</a>
+    <a href="{% url 'accounts:profile' user2.username%}" class="room--title--link">
+      {% if user2.image %}
+      <div class="title--profile">
+        <img src="{{ user2.image.url }}" alt="profile_image">
+      </div>
+      {% else %}
+      <div class="title--profile">
+        <img src="{% static 'image/noimage.png' %}" alt="noimage">
+      </div>
+      {% endif %}
+      {{ retriever_name }}
+    </a>
+  </div>
+  <div id="chat-log">
     {% for message in messages %}
-        {% if message.sender == user %}
-            <div class="chat-bubble chat-right"> 나 : {{ message.content }}</div>
-        {% elif message.retriever == user %}
-            <div class="chat-bubble chat-left"> {{ message.sender.first_name }} : {{message.content}}</div>
-        {% endif %}
+      {% if forloop.first or message.created_at.date != messages|get_sender_date:forloop.counter0 %}
+        <p class="message--date"> {{ message.created_at|date:"Y년 m월 d일" }} </p>
+      {% endif %}
+      {% if message.sender == user %}
+        <div class="chat-bubble chat-right">
+          <span data-sender="{{ message.sender }}"></span>
+          <div class="d-flex align-items-end">
+            <span class="right--time">{{ message.created_at|time:"H:i" }}</span>
+            <p>{{ message.content }}</p>
+          </div>
+        </div>
+      {% elif message.retriever == user %}
+        <div class="message--box">
+          <span data-sender="{{ message.sender }}"></span>
+          {% if message.sender.image %}
+            <div class="chat--profile--sub">
+              {% if forloop.first or message.sender != messages|get_val:forloop.counter0 %}
+                <img src="{{ message.sender.image.url }}" alt="profile_image">
+              {% endif %}
+            </div>
+          {% else %}
+            <div class="chat--profile--sub">
+              {% if forloop.first or message.sender != messages|get_val:forloop.counter0 %}
+                <img src="{% static 'image/noimage.png' %}" alt="noimage">
+              {% endif %}
+            </div>
+          {% endif %}
+          <div class="chat-bubble chat-left">
+            <p>{{ message.content }}</p>
+            <span class="left--time">{{ message.created_at|time:"H:i" }}</span>
+          </div>
+        </div>
+      {% endif %}
     {% endfor %}
+  </div>
+  <div class="input--box">
+    <input id="chat-message-input" type="text">
+    <input id="chat-message-submit" type="button" class="send--icon">
+  </div>
+  {{ room_name|json_script:"room-name" }}
+
+  <input type="hidden" id="currentUser" value="{{request.user.username}}">
+  <input type="hidden" id="retriever" value="{{ retriever }}">
+  <input type="hidden" id="retriever_name" value="{{ retriever_name }}">
 </div>
-<input id="chat-message-input" type="text" size="100"><br>
-<input id="chat-message-submit" type="button" value="Send">
-{{ room_name|json_script:"room-name" }}
-
-<input type="hidden" id="currentUser" value="{{request.user.username}}">
-<input type="hidden" id="retriever" value="{{ retriever }}">
-<input type="hidden" id="retriever_name" value="{{ retriever_name }}">
 <script type="text/javascript" src="{% static 'js/chat.js' %}"></script>
-
+<script>
+  const imageUrl = '{{ user2_image_url }}';
+  const staticImagePath = "{% static 'image/noimage.png' %}";
+  const chatLog = document.getElementById('chat-log');
+  function scrollToBottom() {
+    chatLog.scrollTop = chatLog.scrollHeight;
+  }
+  scrollToBottom();
+</script>
 {% endblock content %}
