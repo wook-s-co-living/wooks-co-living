@@ -18,16 +18,63 @@ chatSocket.onmessage = function(e) {
     const sender = data.sender;  // 발신자 정보를 받아옵니다.
 
     // 현재 사용자와 발신자가 동일한지 확인합니다.
-    const isCurrentUser = (sender === currentUser);  // currentUser는 현재 사용자의 정보입니다.
+    const isCurrentUser = (sender === currentUser);
     
     if (isCurrentUser) {
         // 발신자가 현재 사용자인 경우 오른쪽에 채팅을 배치합니다.
-        document.querySelector('#chat-log').innerHTML += '<div class="chat-bubble chat-right"> 나 : ' + message + '</div>';
+        document.querySelector('#chat-log').innerHTML += '<div class="chat-bubble chat-right"><span data-sender="' + sender + '"></span><div class="d-flex align-items-end"><span class="right--time">' + getCurrentTime() + '</span><p>' + message + '</p></div></div>';
     } else {
-        // 발신자가 현재 사용자가 아닌 경우 왼쪽에 채팅을 배치합니다.
-        document.querySelector('#chat-log').innerHTML += '<div class="chat-bubble chat-left"> ' + retrieverName + ' : ' + message + '</div>';
+        const chatLog = document.querySelector('#chat-log');
+
+        // 이전 메시지의 발신자 가져오기
+        const lastMessage = chatLog.lastElementChild;
+        const previousSender = lastMessage ? lastMessage.querySelector('span').dataset.sender : null;
+
+        console.log(previousSender);
+
+        const messageBox = document.createElement('div');
+        messageBox.className = 'message--box';
+
+				const senderInfo = document.createElement('span');
+				senderInfo.dataset.sender = sender;
+				messageBox.appendChild(senderInfo);
+
+        const profileSub = document.createElement('div');
+        profileSub.className = 'chat--profile--sub';
+
+        // 이전 발신자와 현재 발신자가 다른 경우 이미지 삽입
+        if (previousSender !== sender) {
+            const image = document.createElement('img');
+            image.alt = 'profile_image';
+
+            if (imageUrl) {
+                image.src = imageUrl;
+            } else {
+                image.src = staticImagePath;
+            }
+
+            profileSub.appendChild(image);
+        }
+
+        const chatBubble = document.createElement('div');
+        chatBubble.className = 'chat-bubble chat-left';
+        const messageParagraph = document.createElement('p');
+        messageParagraph.textContent = message;
+        chatBubble.appendChild(messageParagraph);
+
+				const timeSpan = document.createElement('span');
+				timeSpan.className = 'left--time';
+				timeSpan.textContent = getCurrentTime();
+				chatBubble.appendChild(timeSpan);
+
+        messageBox.appendChild(profileSub);
+        messageBox.appendChild(chatBubble);
+
+        chatLog.appendChild(messageBox);
     }
+		scrollToBottom();
 };
+
 
 chatSocket.onclose = function(e) {
     console.error('Chat socket closed unexpectedly');
@@ -59,3 +106,10 @@ document.querySelector('#chat-message-submit').onclick = function(e) {
     }))
 messageInputDom.value = '';
 };
+
+function getCurrentTime() {
+  const now = new Date();
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  return hours + ':' + minutes;
+}

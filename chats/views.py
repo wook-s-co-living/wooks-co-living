@@ -15,6 +15,8 @@ def index(request):
 def room(request, first_name):
 
     user_name = User.objects.get(first_name=first_name).username
+    user2 = User.objects.get(first_name=first_name)
+    user2_image_url = user2.image.url if user2.image else None
 
     try:
         room = Chatroom.objects.get(user1=request.user, user2=User.objects.get(username=user_name))
@@ -34,6 +36,8 @@ def room(request, first_name):
         'messages': messages,
         'retriever': retriever,
         'retriever_name': retriever_name,
+        'user2' : user2,
+        'user2_image_url': user2_image_url,
     }
 
     return render(request, "chats/room.html", context)
