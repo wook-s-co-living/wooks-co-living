@@ -14,7 +14,11 @@ from django.utils.encoding import force_bytes, force_text
 from django.contrib.auth.tokens import default_token_generator
 from django.db.models.query_utils import Q
 from .models import User
-
+import os
+from dotenv import load_dotenv
+load_dotenv()
+KAKAO_JS_KEY = os.getenv('KAKAO_JS_KEY')
+KAKAO_API_KEY = os.getenv('KAKAO_API_KEY')
 
 # Create your views here.
 
@@ -60,6 +64,7 @@ def signup(request):
 
     context = {
         'form': form,
+        'KAKAO_JS_KEY': KAKAO_JS_KEY,
     }
     return render(request, 'accounts/signup.html', context)
 

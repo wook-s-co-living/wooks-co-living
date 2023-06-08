@@ -9,8 +9,11 @@ function search_address() {
       document.getElementById("t_address").value = addt;
       const addb = data.buildingName;
       document.getElementById("b_address").value = addb;
+      updateMap(addr);
     }
+  
   }).open();
+  
 }
 
 // 변경시 알람
