@@ -3,6 +3,8 @@ from django.shortcuts import render
 from .models import Chatroom
 from django.db.models import Q
 from accounts.models import User
+from django.templatetags.static import static
+
 def index(request):
     chatrooms = Chatroom.objects.filter(Q(user1=request.user) | Q(user2=request.user))
     sorted_chatrooms = sorted(chatrooms, key=lambda x: x.get_latest_message().created_at, reverse=True)
@@ -16,8 +18,7 @@ def room(request, first_name):
 
     user_name = User.objects.get(first_name=first_name).username
     user2 = User.objects.get(first_name=first_name)
-    user2_image_url = user2.image.url if user2.image else None
-
+    user2_image_url = user2.image.url if user2.image else static('image/noimage.png')
     try:
         room = Chatroom.objects.get(user1=request.user, user2=User.objects.get(username=user_name))
     except Chatroom.DoesNotExist:

@@ -73,7 +73,6 @@
 <script type="text/javascript" src="{% static 'js/chat.js' %}"></script>
 <script>
   const imageUrl = '{{ user2_image_url }}';
-  const staticImagePath = "{% static 'image/noimage.png' %}";
   const chatLog = document.getElementById('chat-log');
   function scrollToBottom() {
     chatLog.scrollTop = chatLog.scrollHeight;
