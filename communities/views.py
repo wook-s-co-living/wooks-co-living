@@ -75,8 +75,18 @@ def create(request):
 
 def detail(request, post_pk):
     post = Post.objects.get(pk=post_pk)
-    comments = post.comments.all()
+    comments = post.comments.filter(parent_comment=None)
     comment_form = CommentForm()
+
+    comment_pk = request.session.pop('comment_pk', None)
+
+    if comment_pk:
+        comment = Comment.objects.get(pk=comment_pk)
+        comment_section_id = f'comment-{comment.pk}'
+    else:
+        comment = None
+        comment_section_id = None
+
     if not request.session.get("post_viewed_{}".format(post_pk)):
         post.views += 1
         post.save()
@@ -86,6 +96,9 @@ def detail(request, post_pk):
         'post': post,
         'comments': comments,
         'comment_form': comment_form,
+        'comment': comment,
+        'comment_section_id': comment_section_id,
+        'likes_count': post.like_users.count()-post.dislike_users.count()
     }
     response = render(request, 'communities/detail.html', context)
 
@@ -133,33 +146,75 @@ def update(request, post_pk):
     return render(request, 'communities/update.html', context)
 
 @login_required
-def likes(request, post_pk):
+def scrapes(request, post_pk):
     post = Post.objects.get(pk=post_pk)
-    if request.user in post.like_users.all():
-        post.like_users.remove(request.user)
-        is_liked = False
+
+    if post.user == request.user:
+        error_message = "자신의 글은 스크랩할 수 없습니다."
+        return JsonResponse({"error": error_message})
+    
+    if post.scrape_users.filter(pk=request.user.pk).exists():
+        post.scrape_users.remove(request.user)
+        is_scraped = False
     else:
-        post.like_users.add(request.user)
-        is_liked = True
+        post.scrape_users.add(request.user)
+        is_scraped = True
+    
     context = {
-        'is_liked': is_liked
+        "is_scraped": is_scraped,
     }
-    # return redirect('communities:detail', post.pk)
+
     return JsonResponse(context)
 
 @login_required
-def dislikes(request, post_pk):
+def likes(request, post_pk):
     post = Post.objects.get(pk=post_pk)
-    if request.user in post.dislike_users.all():
-        post.dislike_users.remove(request.user)
-        is_disliked = False
+    like_value = request.POST.get("like_value")
+
+    if post.user == request.user:
+        error_message = "자신의 글은 추천할 수 없습니다."
+        return JsonResponse({"error": error_message})
+
+    if like_value == "like":
+        if post.like_users.filter(pk=request.user.pk).exists():
+            post.like_users.remove(request.user)
+            is_liked = False
+            is_disliked = False
+
+        elif post.dislike_users.filter(pk=request.user.pk).exists():
+            post.dislike_users.remove(request.user)
+            post.like_users.add(request.user)
+            is_liked = True
+            is_disliked = False
+
+        else:
+            post.like_users.add(request.user)
+            is_liked = True
+            is_disliked = False
+
     else:
-        post.dislike_users.add(request.user)
-        is_disliked = True
+        if post.dislike_users.filter(pk=request.user.pk).exists():
+            post.dislike_users.remove(request.user)
+            is_liked = False
+            is_disliked = False
+
+        elif post.like_users.filter(pk=request.user.pk).exists():
+            post.like_users.remove(request.user)
+            post.dislike_users.add(request.user)
+            is_liked = False
+            is_disliked = True
+
+        else:
+            post.dislike_users.add(request.user)
+            is_liked = False
+            is_disliked = True
+
     context = {
-        'is_disliked': is_disliked
+        "is_liked": is_liked,
+        "is_disliked": is_disliked,
+        "post_like": post.like_users.count()-post.dislike_users.count()
     }
-    # return redirect('communities:detail', post.pk)
+
     return JsonResponse(context)
 
 @login_required
@@ -172,8 +227,14 @@ def comment_create(request, post_pk, parent_pk):
             comment.user = request.user
             comment.post = post
             if parent_pk != 0:
-                comment.parent_comment = Comment.objects.get(pk=parent_pk)
+                parent_comment = Comment.objects.get(pk=parent_pk)
+                comment.parent_comment = parent_comment
+                comment.depth = parent_comment.depth + 10
+                if comment.depth > 50:
+                    comment.depth = 10
             comment.save()
+            request.session['comment_pk'] = comment.pk
+
             return redirect('communities:detail', post.pk)
 
 def comment_update(request, post_pk, comment_pk):
@@ -183,11 +244,21 @@ def comment_update(request, post_pk, comment_pk):
         if comment_update_form.is_valid():
             comment_update_form.save()
             return redirect('communities:detail', post_pk)
+        else:
+            print(comment_update_form.errors)
         
 def comment_delete(request, post_pk, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
+
     if request.user == comment.user:
         comment.delete()
+
+    post = Post.objects.get(pk=post_pk)
+    comments = post.comments.filter(parent_comment=None)
+    first_comment = comments.first()
+
+    request.session['comment_pk'] = first_comment.pk
+
     return redirect('communities:detail', post_pk)
 
 @login_required
