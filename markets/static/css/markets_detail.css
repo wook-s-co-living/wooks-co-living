@@ -426,3 +426,7 @@
   display: flex;
   justify-content: space-between;
 }
+
+.markets--detail--info a:hover {
+  color: black;
+}
