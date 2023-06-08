@@ -1,0 +1,544 @@
+.communities--detail--container {
+  width: 800px;
+  margin: 0 auto;
+}
+
+/* 커뮤니티 카테고리 헤더 */
+.communities--detail--category {
+  display: flex;
+  height: 50px;
+  margin-top: 15px;
+}
+
+.communities--detail--category div {
+  font-size: 14px;
+  padding-top: 17px;
+  margin: 0 10px;
+}
+
+.communities--detail--category div span:first-child {
+  color: rgb(150 150 150);
+}
+
+.communities--detail--category div span:last-child {
+  color: #34568b;
+  font-weight: bold;
+}
+
+.hr1 {
+  width: 5%;
+  height: 50%;
+  border-bottom: 1px solid rgb(230 230 230);
+}
+
+.hr2 {
+  flex-grow: 1;
+  height: 50%;
+  border-bottom: 1px solid rgb(230 230 230);
+}
+
+/* 디테일 유저 정보 */
+
+.communities--detail--profile {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  text-decoration: none;
+  height: 93px;
+}
+
+.communities--detail--profile--header {
+  width: 50px;
+  min-width: 50px;
+  transition: transform 0.3s ease;
+}
+
+.communities--detail--profile--header:hover {
+  transform: scale(1.05);
+}
+
+.communities--detail--profile--header img {
+  width: 100%;
+  border-radius: 100px;
+}
+
+.communities--detail--profile div {
+  margin-left: 10px;
+}
+
+.communities--detail--profile div h1 {
+  font-size: 16px;
+  font-weight: bold;
+  color: rgb(30 30 30);
+  margin-bottom: 10px;
+}
+
+.communities--detail--profile div h2 {
+  font-size: 14px;
+  color: rgb(120 120 120);
+  margin-top: 5px;
+}
+
+.communities--detail--profile footer {
+  flex-grow: 1;
+  height: 100%;
+  display: flex;
+  flex-flow: row-reverse;
+  align-items: start;
+  position: relative;
+}
+
+.communities--detail--profile footer section {
+  display: flex;
+}
+
+#communities--detail--share,
+#communities--detail--scrape button,
+#communities--detail--update--button {
+  background-color: white;
+  border: 0;
+  font-size: 17px;
+  color: rgb(120 120 120);
+  transition: color 0.1s ease;
+  margin-left: 10px;
+}
+
+#communities--detail--scrape button {
+  padding-top: 3px;
+  font-size: 20px;
+}
+
+#communities--detail--update--button {
+  font-size: 26px;
+  margin-left: 5px;
+}
+
+#communities--detail--share:hover,
+#communities--detail--scrape button:hover,
+#communities--detail--update--button:hover {
+  color: black;
+}
+
+#communities--detail--update--modal {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background-color: white;
+  z-index: 100;
+  box-shadow: 1px 7px 15px 4px rgba(0,0,0,0.1);
+  border-radius: 10px;
+}
+
+#communities--detail--update--modal form {
+  margin-top: 10px;
+}
+
+#communities--detail--update--modal a,
+#communities--detail--update--modal button {
+  color: rgb(30 30 30);
+  background-color: white;
+  border: 0;
+  font-size: 12px;
+  text-decoration: none;
+  padding: 10px 20px;
+}
+
+#communities--detail--update--modal a {
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  border-top: 0.5px solid rgb(250 250 250);
+}
+
+#communities--detail--update--modal button {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+#communities--detail--update--modal a:hover,
+#communities--detail--update--modal button:hover {
+  background-color: rgb(245 245 245);
+}
+
+/* 디테일 섹션 */
+
+.communities--detail--section {
+  padding: 20px;
+}
+
+.communities--detail--section--title {
+  font-size: 30px;
+  font-weight: bold;
+  margin: 40px 0;
+  margin-top: 20px;
+}
+
+.communities--detail--section--content {
+  font-size: 16px;
+  color: rgb(70 70 70);
+  line-height: 25px;
+  margin-bottom: 40px;
+}
+
+/* 디테일 섹션 푸터 */
+
+.communities--detail--section--footer {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgb(240 240 240);
+}
+
+.communities--detail--section--footer header {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.communities--detail--section--footer header a {
+  text-decoration: none;
+  background-color: rgb(245 245 245);
+  font-size: 13px;
+  padding: 10px 12px;
+  border-radius: 17px;
+  margin-right: 10px;
+  margin-bottom: 5px;
+  color: rgb(100 100 100);
+}
+
+.communities--detail--section--footer header a:hover {
+  font-weight: bold;
+  color: #34568b;
+}
+
+.communities--detail--section--likeform {
+  display: flex;
+  height: 38px;
+  border-radius: 5px;
+  width: 125px;
+}
+
+.communities--detail--section--likeform button {
+  background-color: white;
+  border: 0;
+  width: 35px;
+  font-size: 18px;
+  border: 1px solid rgb(200 200 200);
+}
+
+.section--likeform--dislikebtn {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.section--likeform--likebtn {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.section--likeform--dislikebtn:not(:disabled):hover {
+  color: rgb(214, 38, 7);
+  border-color: rgb(120 120 120);
+}
+
+.section--likeform--likebtn:not(:disabled):hover {
+  color: rgb(0, 185, 222);
+  border-color: rgb(120 120 120);
+}
+
+.section--likeform--likecount {
+  flex-grow: 1;
+  text-align: center;
+  line-height: 38px;
+  border: 1px solid rgb(200 200 200);
+  border-left: 0;
+  border-right: 0;
+}
+
+#communities--detail--alert {
+  position: sticky;
+  justify-content: space-between;
+  text-align: center;
+  bottom: 10px;
+  margin: 0 auto;
+  font-size: 15px;
+  width: 95%;
+  height: 50px;
+  padding: 17px 25px;
+  background-color: rgb(50 50 50);
+  border-radius: 10px;
+  color: white;
+  z-index: 700;
+}
+
+#communities--detail--alert a {
+  font-size: 14px;
+  color: #FEE500;
+  font-weight: bold;
+  text-decoration: none;
+  margin-top: 1px;
+}
+
+/* 디테일 댓글 */
+
+.communities--detail--section--comment {
+  width: 100%;
+  padding: 20px;
+}
+
+.communities--detail--section--comment h2 {
+  color: rgb(70 70 70);
+  font-weight: bold;
+  font-size: 17px;
+  margin-bottom: 20px;
+}
+
+.communities--detail--section--comment h2 span {
+  color: #34568b;
+}
+
+.communities--detail--section--commentcreate--btn {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border: 1px solid rgb(210 210 210);
+  border-radius: 5px;
+  padding: 12px 16px;
+  margin-top: 10px;
+  width: 100%;
+  transition: background-color 0.2s ease;
+}
+
+.communities--detail--section--commentcreate--btn:hover {
+  background-color: rgb(245 245 245);
+}
+
+.communities--detail--section--commentcreate--btn div {
+  width: 22px;
+}
+
+.communities--detail--section--commentcreate--btn img {
+  width: 100%;
+  border-radius: 100%;
+  margin-top: 2px;
+}
+
+.communities--detail--section--commentcreate--btn h1 {
+  font-size: 16px;
+  color: rgb(173 181 189);
+  margin-left: 10px;
+}
+
+#communities--detail--section--commentcreate .comment-submit {
+  padding: 6px 12px;
+  height: 42px;
+  background-color: #34568b;
+  font-weight: bold;
+  font-size: 14px;
+  color: white;
+  border: 0;
+  border-radius: 5px;
+  transition: background-color 0.2s ease;
+}
+
+#communities--detail--section--commentcreate .comment-submit:hover {
+  background-color: #112b56;
+}
+
+#communities--detail--section--commentcreate .comment-cancle {
+  padding: 6px 12px;
+  height: 42px;
+  background-color: white;
+  border: 1px solid rgb(230 230 230);
+  font-weight: bold;
+  font-size: 14px;
+  color: rgb(50 50 50);
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+#communities--detail--section--commentcreate .comment-cancle:hover {
+  background-color: rgb(240 240 240);
+}
+
+#communities--detail--section--commentcreate .comment-ckeditor #cke_1_contents {
+  width: 100%!important;
+  height: 158px!important;
+}
+
+#communities--detail--section--commentcreate .comment-ckeditor .ck-editor__editable,
+#communities--detail--section--commentcreate .comment-ckeditor div {
+  width: 100%!important;
+}
+/* 
+.communities--detail--section--commentitem .comment-ckeditor #cke_1_contents,
+.communities--detail--section--commentitem .comment-ckeditor .ck-deitor,
+.communities--detail--section--commentitem .ck-editor__main {
+  width: 100%!important;
+  height: 100px!important;
+}
+
+.communities--detail--section--commentitem .comment-ckeditor .ck-editor__editable,
+.communities--detail--section--commentitem .comment-ckeditor div {
+  width: 100%!important;
+} */
+
+/* 디테일 댓글 리스트 */
+
+.communities--detail--section--commentlist {
+  width: 100%;
+  padding: 20px;
+  border-bottom: 1px solid rgb(240 240 240);
+}
+
+.communities--detail--section--commentlist header {
+  display: flex;
+  align-items: center;
+}
+
+.communities--detail--section--commentlist header header {
+  width: 28px;
+}
+
+.communities--detail--section--commentlist header header img {
+  width: 100%;
+  border-radius: 100%;
+}
+
+.communities--detail--section--commentlist header section {
+  font-size: 15px;
+  color: rgb(50 50 50);
+  font-weight: bold;
+  margin: 0 20px;
+  margin-left: 10px;
+}
+
+.communities--detail--section--commentlist header footer {
+  font-size: 13px;
+  color: rgb(150 150 150);
+}
+
+.communities--detail--section--commentlist--content {
+  color: rgb(50 50 50);
+  padding-top: 20px;
+  font-size: 16px;
+  word-break: break-word;
+}
+
+/* 대댓글 */
+
+.fa-reply {
+  transform: rotate(180deg);
+  margin-right: 5px;
+}
+
+.communities--detail--recomment--tag {
+  font-weight: bold;
+  font-size: 15px;
+  background-color: rgb(240 240 240);
+  color: rgb(120 120 120);
+  margin-right: 5px;
+}
+
+/* 댓글 수정,삭제,답글 */
+
+.communities--detail--section--commentlist--headerend {
+  flex-grow: 1;
+}
+
+.communities--detail--section--commentlist--headerend div {
+  display: flex;
+  flex-flow: row-reverse;
+}
+
+.communities--detail--section--commentlist--headerend div button {
+  background-color: white;
+  color: rgb(140 140 140);
+  border: 0;
+  font-size: 13px;
+}
+
+.communities--detail--section--commentlist--headerend div button:hover {
+  color: black;
+}
+
+.communities--detail--section--commentlist--headerend div form button {
+  padding-bottom: 3px;
+}
+
+/* 수정,삭제 */
+
+.communities--detail--section--comment--updateform,
+.communities--detail--section--comment--createform {
+  padding: 20px;
+  border-bottom: 1px solid rgb(240 240 240);
+}
+
+.communities--detail--section--comment--updateform form textarea,
+.communities--detail--section--comment--createform form textarea {
+  width: 100%;
+  height: 100px;
+  border: 1px solid rgb(220 220 220);
+  border-radius: 10px;
+  margin-bottom: 5px;
+  padding: 20px;
+}
+
+.communities--detail--section--comment--updateform form textarea:focus,
+.communities--detail--section--comment--createform form textarea:focus {
+  outline: 1px solid #34568b;
+  color: rgb(80 80 80);
+}
+
+.communities--detail--section--comment--updateform .comment-submit,
+.communities--detail--section--comment--createform .comment-submit {
+  padding: 6px 12px;
+  height: 30px;
+  background-color: #34568b;
+  font-weight: bold;
+  font-size: 14px;
+  color: white;
+  border: 0;
+  border-radius: 5px;
+  transition: background-color 0.2s ease;
+}
+
+.communities--detail--section--comment--updateform .comment-submit:hover,
+.communities--detail--section--comment--createform .comment-submit:hover {
+  background-color: #112b56;
+}
+
+.communities--detail--section--comment--updateform .comment-cancle,
+.communities--detail--section--comment--createform .comment-cancle {
+  padding: 6px 12px;
+  height: 30px;
+  background-color: white;
+  border: 1px solid rgb(230 230 230);
+  font-weight: bold;
+  font-size: 14px;
+  color: rgb(50 50 50);
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.communities--detail--section--comment--updateform .comment-cancle:hover,
+.communities--detail--section--comment--createform .comment-cancle:hover {
+  background-color: rgb(240 240 240);
+}
+
+.communities--detail--section--comment--updateform label {
+  display: none;
+}
+
+.communities--detail--comment--content--text {
+  line-height: 30px;
+}
+
+@media (max-width: 800px) {
+  .communities--detail--container {
+    width: 100%;
+    margin: 0;
+  }
+
+  #communities--detail--alert {
+    bottom: 60px;
+  }
+}
