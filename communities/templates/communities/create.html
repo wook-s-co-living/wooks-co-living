@@ -2,76 +2,58 @@
 {% load static %}
 {% block title %} write {% endblock title %}
 {% block header %}
-
-  <link rel="stylesheet" type="text/css" href="{% static 'css/communities.css' %}"> 
+<link rel="stylesheet" type="text/css" href="{% static 'css/communities.css' %}"> 
 {% endblock header %}
 {% block content %}
 
 <div class="cmty--container">
-    <div class="cmty--left_sec">
-        <div class="cmty--left_wrap">
-                <div class="cmty--left_title">Top Writers</div>
-            <div class="cmty--left_cont">
-                <div class="cmty--left_cont_userinfo">
-                    <div class="cmty--left_cont_username">
-                        Mambo
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-
-    </div>
-    <div class="cmty--main">
-        <div class="cmty--board_wrap">
-            <div class="cmty--board_main_title">
-                <strong>커뮤니티</strong>
-                <p>{{ user.first_name }} 님,
-                    다양한 사람을 만나고 생각의 폭을 넓히세요.</p>
-            </div>
-            <form action="{% url 'communities:create' %}" method="POST">
-                {% csrf_token %}
-                <div>
-                    <div class="cmty--title">제목</div>                   
-                    <div class="cmty--form">
-                        {{ post_form.title }}
-                    </div>
-                </div>
-                
-                <div>
-                    <div class="cmty--title">카테고리</div>
-                    <div class="cmty--form">
-                        {{ post_form.category.label_tag }}
-                        {{ post_form.category }}
-                    </div>
+  <div class="cmty--main">
+      <div class="cmty--board_wrap">
+          <div class="cmty--board_main_title">
+              <strong>커뮤니티</strong>
+              <p>{{ user.first_name }} 님,
+                  다양한 사람을 만나고 생각의 폭을 넓히세요.</p>
+          </div>
+          <form action="{% url 'communities:create' %}" method="POST">
+              {% csrf_token %}
+              <div>
+                  <div class="cmty--title">제목</div>                   
+                  <div class="cmty--form">
+                      {{ post_form.title }}
+                  </div>
+              </div>
               
-                </div>
-                
-                <div>
-                    <div class="cmty--title">태그</div>
-                    <div class="cmty--form">
-                        <input type="text" name="tag" id="tag" placeholder="콤마(,)로 구분 해 주세요">
-                    </div>
-                    
-                </div>
+              <div>
+                  <div class="cmty--title">카테고리</div>
+                  <div class="cmty--form">
+                      {{ post_form.category.label_tag }}
+                      {{ post_form.category }}
+                  </div>
+            
+              </div>
+              
+              <div>
+                  <div class="cmty--title">태그</div>
+                  <div class="cmty--form">
+                      <input type="text" name="tag" id="tag" placeholder="콤마(,)로 구분 해 주세요">
+                  </div>
+                  
+              </div>
 
-                <div>
-                    <div class="cmty--title">본문</div>
-                    <div class="cmty--form">
-                        {{ post_form.content }} 
-                        {{ post_form.media }}
-                    </div>                
-                </div>
-                <div class="cmty--submit">
-                    <input type="submit" value="등록">
-                </div>
-                
-            </form>
-        </div>
-    </div>
-    <div class="cmty--right_sec">
-        <div>111</div>   
-    </div>
+              <div>
+                  <div class="cmty--title">본문</div>
+                  <div class="cmty--form">
+                      {{ post_form.content }} 
+                      {{ post_form.media }}
+                  </div>                
+              </div>
+              <div class="cmty--submit">
+                  <input type="submit" value="등록">
+              </div>
+              
+          </form>
+      </div>
+  </div>
 </div>
 
 
