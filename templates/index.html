@@ -4,11 +4,73 @@
 {% block title %} 혼거동락 {% endblock title %}
 
 {% block header %}
-
+  <link rel="stylesheet" href="{% static 'css/index.css' %}">
 {% endblock header %}
 
 {% block content %}
-  <div style='height: 700px;'>
-
+<div class="index--main_wrap">
+  <div class="parallax">    
+      <img class="index--banner_img" src="{% static 'image/main_banner.webp' %}" alt="index-banner">
+      <div class="index--main_text" id="text1">여러분의 이웃을</div>
+      <div class="index--main_text" id="text2">만나세요</div>
+      <a href="{% url 'accounts:login' %}">지금 시작</a>
   </div>
+  <section class="index--section_intro">
+      <div class="index--textbox_intro">
+          <p>환영합니다!</p>
+          <strong>혼자 사는 이웃과 함께 새로운 경험을 나눠보세요</strong>
+          <div>
+              <br>
+              배달 주문부터 물건 나눔, 소소한 모임까지!<br>
+              지역 속의 소중한 정보를 교환하고, 같은 취미를 가진 이웃을 만나보세요<br>
+              혼자가 아닌 "우리"가 될 시간, 지금 "혼거동락"에서 시작하세요!
+          </div>
+          
+      </div>
+  </section>
+  <section class="index--section">
+      <div class="index--textbox">
+          <strong>커뮤니티</strong>
+          <p class="index--description">우리동네 이웃끼리 공감대를 형성하세요</p>
+          <p>바로가기 ></p>
+      </div>
+      <div class="image-wrap">
+        <img src="{% static 'image/networkjpg.jpg' %}" alt="">
+      </div>
+  </section>
+  <section class="index--section">
+      <div class="image-wrap">
+        <img src="{% static 'image/fleemarket.png' %}" alt="">
+      </div>
+      <div class="index--textbox">
+          <strong>플리마켓</strong>
+          <p class="index--description">서로 필요한 물건을 사고 팔고 나누세요</p>
+          <p>바로가기 ></p>
+      </div>
+  </section>
+  <section class="index--section">
+      <div class="index--textbox">
+          <strong>소모임</strong>
+          <p class="index--description">같은 취미를 가진 이웃을 찾아보세요</p>
+          <p>바로가기 ></p>
+      </div>
+      <div class="image-wrap">
+        <img src="{% static 'image/hobby.png' %}" alt="">
+      </div>
+  </section>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  
+</div>
 {% endblock content %}
+
+{% block script %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://unpkg.com/scroll-out/dist/scroll-out.min.js"></script>
+  <script src="{% static 'js/index.js' %}"></script>
+{% endblock script %}
