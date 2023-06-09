@@ -127,6 +127,7 @@ def delete(request, post_pk):
 def update(request, post_pk):
     post = Post.objects.get(pk=post_pk)
     if request.method == "POST":
+        post.tags.clear()
         tags = request.POST.get('tag','').split(',')
         update_form = PostForm(request.POST, instance=post)
         if update_form.is_valid():
