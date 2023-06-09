@@ -14,6 +14,13 @@ class PostForm(forms.ModelForm):
             "category",
         ]
 
+    def __init__(self, *args, **kwargs):
+      super().__init__(*args, **kwargs)
+      self.fields["title"].widget.attrs["class"] = "cmty--form"
+      self.fields["category"].widget.attrs["class"] = "cmty--form"
+      self.fields["category"].widget.attrs["style"] = "width:100px"
+      self.fields["title"].widget.attrs["placeholder"] = "제목"
+        
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
