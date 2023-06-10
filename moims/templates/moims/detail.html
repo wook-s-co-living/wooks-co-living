@@ -285,16 +285,20 @@
                 {% else %}
                   {% if request.user != post.user %}
                     <button type='submit'>탈퇴하기</button>
-                    <button class='moims--detail--botnavbar--kakao kakao--btn--1' type='button' data-kakao-url='{{ post.kakao_url }}'>
-                      <i class="bi bi-chat-fill"></i> 
-                      카카오톡
-                    </button>
+                    {% if post.kakao_url %}
+                      <button class='moims--detail--botnavbar--kakao kakao--btn--1' type='button' data-kakao-url='{{ post.kakao_url }}'>
+                        <i class="bi bi-chat-fill"></i> 
+                        카카오톡
+                      </button>
+                    {% endif %}
                   {% endif %}
                 {% endif %}
-                <button class='moims--detail--botnavbar--kakao kakao--btn--2 d-none' type='button' data-kakao-url='{{ post.kakao_url }}'>
-                  <i class="bi bi-chat-fill"></i> 
-                  카카오톡
-                </button>
+                {% if post.kakao_url %}
+                  <button class='moims--detail--botnavbar--kakao kakao--btn--2 d-none' type='button' data-kakao-url='{{ post.kakao_url }}'>
+                    <i class="bi bi-chat-fill"></i> 
+                    카카오톡
+                  </button>
+                {% endif %}
               </form>
             </div>
         </div>

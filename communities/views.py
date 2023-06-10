@@ -236,17 +236,19 @@ def comment_create(request, post_pk, parent_pk):
             request.session['comment_pk'] = comment.pk
 
             return redirect('communities:detail', post.pk)
-
+@login_required
 def comment_update(request, post_pk, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
     if request.method == "POST":
         comment_update_form = CommentForm(request.POST, instance=comment)
         if comment_update_form.is_valid():
             comment_update_form.save()
-            return redirect('communities:detail', post_pk)
+            context = {'commentContent': request.POST.get('comment-content')}
+            return JsonResponse(context)
         else:
             print(comment_update_form.errors)
-        
+
+@login_required
 def comment_delete(request, post_pk, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
 
@@ -264,27 +266,49 @@ def comment_delete(request, post_pk, comment_pk):
 @login_required
 def comment_likes(request, post_pk, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
-    if request.user in comment.like_users.all():
-        comment.like_users.remove(request.user)
-        comment_is_liked = False
-    else:
-        comment.like_users.add(request.user)
-        comment_is_liked = True
-    context = {
-        'comment_is_liked': comment_is_liked
-    }
-    return JsonResponse(context)
+    like_value = request.POST.get("like_value")
 
-@login_required
-def comment_dislikes(request, post_pk, comment_pk):
-    comment = Comment.objects.get(pk=comment_pk)
-    if request.user in comment.dislike_users.all():
-        comment.dislike_users.remove(request.user)
-        comment_is_disliked = False
+    if comment.user == request.user:
+        error_message = "자신의 댓글은 추천할 수 없습니다."
+        return JsonResponse({"error": error_message})
+
+    if like_value == "like":
+        if comment.like_users.filter(pk=request.user.pk).exists():
+            comment.like_users.remove(request.user)
+            is_liked = False
+            is_disliked = False
+
+        elif comment.dislike_users.filter(pk=request.user.pk).exists():
+            comment.dislike_users.remove(request.user)
+            comment.like_users.add(request.user)
+            is_liked = True
+            is_disliked = False
+
+        else:
+            comment.like_users.add(request.user)
+            is_liked = True
+            is_disliked = False
+
     else:
-        comment.dislike_users.add(request.user)
-        comment_is_disliked = True
+        if comment.dislike_users.filter(pk=request.user.pk).exists():
+            comment.dislike_users.remove(request.user)
+            is_liked = False
+            is_disliked = False
+
+        elif comment.like_users.filter(pk=request.user.pk).exists():
+            comment.like_users.remove(request.user)
+            comment.dislike_users.add(request.user)
+            is_liked = False
+            is_disliked = True
+
+        else:
+            comment.dislike_users.add(request.user)
+            is_liked = False
+            is_disliked = True
+
     context = {
-        'comment_is_disliked': comment_is_disliked
+        "is_liked": is_liked,
+        "is_disliked": is_disliked,
+        "comment_like": comment.like_users.count()-comment.dislike_users.count()
     }
     return JsonResponse(context)

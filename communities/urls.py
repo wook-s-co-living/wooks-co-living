@@ -15,7 +15,6 @@ urlpatterns = [
     path('<int:post_pk>/update/<int:comment_pk>/', views.comment_update, name='comment_update'),
     path('<int:post_pk>/delete/<int:comment_pk>/', views.comment_delete, name='comment_delete'),
     path('<int:post_pk>/comment/<int:comment_pk>/likes/', views.comment_likes, name='comment_likes'),
-    path('<int:post_pk>/comment/<int:comment_pk>/dislikes/', views.comment_dislikes, name='comment_dislikes'),
     # path('search/', views.search, name='search'),
     # path('tags/<int:tag_pk>/', views.tagged_posts, name='tagged_posts'),
     # path('tag/', views.TagCloudTV.as_view(), name='tag_cloud'),

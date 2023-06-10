@@ -1,7 +1,6 @@
 from django.db import models
 from django.conf import settings
 from django.core.validators import MinValueValidator
-from ckeditor_uploader.fields import RichTextUploadingField
 from taggit.managers import TaggableManager
 from datetime import timedelta,datetime,date
 from django.utils import timezone
@@ -11,7 +10,7 @@ from django.utils import timezone
 class Post(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user_communities_posts')
     title = models.CharField(max_length=100)
-    content = RichTextUploadingField(blank=True,null=True)
+    content = models.TextField(null=True)
     category_Choices = (('일상 이야기', '일상 이야기'), ('건물 소식', '건물 소식'), ('자취 꿀팁', '자취 꿀팁'), ('같이 사요', '같이 사요'))
     category = models.CharField(max_length=40, choices=category_Choices)
     views = models.IntegerField(default=0) #models.PositiveIntegerField(default=0, verbose_name='조회수')
@@ -43,7 +42,7 @@ class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user_communities_comments')
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
     parent_comment = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name='child_comments')
-    content = RichTextUploadingField(blank=True,null=True)
+    content = models.TextField(null=True)
 
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_communities_comments')
     dislike_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='dislike_communities_comments')
@@ -51,6 +50,10 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     depth = models.IntegerField(default=0, validators=[MinValueValidator(0)])
+
+    @property
+    def likes_count(self):
+        return self.like_users.count()-self.dislike_users.count()
 
     @property
     def created_time(self):
