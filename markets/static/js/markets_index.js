@@ -79,6 +79,12 @@ searchInput.addEventListener('input', async (event) => {
     }
 
     postsContainer.innerHTML = posts.innerHTML
+
+    const emptyDiv = document.querySelector('.markets--index--empty')
+
+    if (emptyDiv) {
+      emptyDiv.textContent = '일치하는 검색어가 없습니다 😥'
+    }
   } catch (error) {
     console.error(error)
   }

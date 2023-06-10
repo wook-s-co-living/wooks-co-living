@@ -22,15 +22,25 @@
 
       <div class='communities--detail--section--commentlist--headerend'>
         <div>
-          <button class='recomment--create--button'>
-            <i class="bi bi-chat-fill"></i> 
-            댓글
-          </button>
-          
+          <form class='communities--detail--section--likeform' data-post-id="{{ post.pk }}" data-comment-id="{{ recursive_comment.pk }}">
+            {% csrf_token %}
+            <button class='section--likeform--dislikebtn' name='like_value' value='dislike' type='submit'>
+              <i class="bi bi-chevron-down" {% if request.user in recursive_comment.dislike_users.all %}style='color: rgb(214, 38, 7);'{% endif %}></i>
+            </button>
+
+            <div class='section--likeform--likecount' style='justify-content: center;'>
+              {{ recursive_comment.likes_count }}
+            </div>
+
+            <button class='section--likeform--likebtn' name='like_value' value='like' type='submit'>
+              <i class="bi bi-chevron-up" {% if request.user in recursive_comment.like_users.all %}style='color: rgb(0, 185, 222);'{% endif %}></i>
+            </button>
+          </form>
+
           {% if request.user == recursive_comment.user %}
             <form action="{% url 'communities:comment_delete' post.pk recursive_comment.pk %}" method="POST">
               {% csrf_token %}
-              <button type='submit'>삭제</button>
+              <button type='submit' class='pe-0' style='margin-top: 11.5px;'>삭제</button>
             </form>
 
             <button class='comment--update--button'>
@@ -45,15 +55,20 @@
       <i class="fa-sharp fa-solid fa-reply"></i> <span class='communities--detail--recomment--tag'>@{{ recursive_comment.parent_comment.user.first_name }}</span> <span class='communities--detail--comment--content--text'>{{ recursive_comment.content|safe }}</span>
     </section>
 
+    <footer class='communities--detail--section--commentlist--create'>
+      <button class='recomment--create--button'>
+        <i class="bi bi-chat-fill"></i> 
+        댓글 쓰기
+      </button>
+    </footer>
+
   </div>
 
   <div class='communities--detail--section--comment--updateform d-none' style='padding-left: calc(20px + 2 * {{ recursive_comment.depth }}px);'>
     <form data-post-id="{{ post.pk }}" data-comment-id="{{ recursive_comment.pk }}">
       {% csrf_token %}
-      <div class='comment-ckeditor' id='editor-{{ comment.pk }}'>
-        {{ comment_form.media }}
-        {{ recursive_comment|get_communities_comment_update_form|safe }}
-      </div>
+      {{ recursive_comment|get_communities_comment_update_form|safe }}
+
       <div class='d-flex flex-row-reverse'>
         <button class='comment-submit' type='submit'>등록</button>
         <button class='comment-cancle' type='button'>취소</button>
@@ -68,10 +83,8 @@
         <span class='communities--detail--recomment--tag'>@{{ recursive_comment.user.first_name }}</span>
       </div>
       {% csrf_token %}
-      <div class='comment-ckeditor' id='editor-{{ comment.pk }}{{ comment.pk }}'>
-        {{ comment_form.media }}
-        {{ comment_form.content }}
-      </div>
+      {{ comment_form.content }}
+
       <div class='d-flex flex-row-reverse'>
         <button class='comment-submit' type='submit'>등록</button>
         <button class='comment-cancle' type='button'>취소</button>

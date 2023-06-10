@@ -279,6 +279,24 @@
 
 /* 디테일 댓글 */
 
+.communities--detail--section--commentcontainer {
+  margin-bottom: 50px;
+}
+
+#communities--detail--section--commentcreate textarea {
+  width: 100%;
+  height: 158px;
+  border: 1px solid rgb(220 220 220);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 5px;
+}
+
+#communities--detail--section--commentcreate textarea:focus {
+  outline: 1px solid #34568b;
+  color: rgb(80 80 80);
+}
+
 .communities--detail--section--comment {
   width: 100%;
   padding: 20px;
@@ -359,28 +377,6 @@
   background-color: rgb(240 240 240);
 }
 
-#communities--detail--section--commentcreate .comment-ckeditor #cke_1_contents {
-  width: 100%!important;
-  height: 158px!important;
-}
-
-#communities--detail--section--commentcreate .comment-ckeditor .ck-editor__editable,
-#communities--detail--section--commentcreate .comment-ckeditor div {
-  width: 100%!important;
-}
-/* 
-.communities--detail--section--commentitem .comment-ckeditor #cke_1_contents,
-.communities--detail--section--commentitem .comment-ckeditor .ck-deitor,
-.communities--detail--section--commentitem .ck-editor__main {
-  width: 100%!important;
-  height: 100px!important;
-}
-
-.communities--detail--section--commentitem .comment-ckeditor .ck-editor__editable,
-.communities--detail--section--commentitem .comment-ckeditor div {
-  width: 100%!important;
-} */
-
 /* 디테일 댓글 리스트 */
 
 .communities--detail--section--commentlist {
@@ -449,18 +445,20 @@
   flex-flow: row-reverse;
 }
 
-.communities--detail--section--commentlist--headerend div button {
+.communities--detail--section--commentlist--headerend div button:not(.section--likeform--dislikebtn):not(.section--likeform--likebtn),
+.communities--detail--section--commentlist--create button {
   background-color: white;
   color: rgb(140 140 140);
   border: 0;
   font-size: 13px;
 }
 
-.communities--detail--section--commentlist--headerend div button:hover {
+.communities--detail--section--commentlist--headerend div button:not(.section--likeform--dislikebtn):not(.section--likeform--likebtn):hover,
+.communities--detail--section--commentlist--create button:hover {
   color: black;
 }
 
-.communities--detail--section--commentlist--headerend div form button {
+.communities--detail--section--commentlist--headerend div form button:not(.section--likeform--dislikebtn):not(.section--likeform--likebtn) {
   padding-bottom: 3px;
 }
 
@@ -532,10 +530,26 @@
   line-height: 30px;
 }
 
+.communities--detail--section--commentlist--create button {
+  padding-left: 0;
+  margin-top: 30px;
+}
+
+/* 대댓글 좋아요 */
+
+.communities--detail--section--commentlist--headerend .communities--detail--section--likeform {
+  transform: scale(0.8);
+  transform-origin: right;
+}
+
 @media (max-width: 800px) {
   .communities--detail--container {
     width: 100%;
     margin: 0;
+  }
+
+  .communities--detail--category {
+    margin-top: 0;
   }
 
   #communities--detail--alert {

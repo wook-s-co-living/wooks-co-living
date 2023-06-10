@@ -47,6 +47,7 @@ searchBtn.addEventListener('click', (event) => {
   } else if (!filterDiv.classList.contains('d-none')) {
     filterDiv.classList.add('d-none')
   }
+  
 })
 
 searchInput.addEventListener('input', async (event) => {
@@ -76,8 +77,15 @@ searchInput.addEventListener('input', async (event) => {
         h1.innerHTML = highlightedContent
       })
     }
-
+    
     postsContainer.innerHTML = posts.innerHTML
+    
+    const emptyDiv = document.querySelector('.moims--index--empty')
+
+    if (emptyDiv) {
+      emptyDiv.textContent = '일치하는 검색어가 없습니다 😥'
+    }
+
   } catch (error) {
     console.error(error)
   }

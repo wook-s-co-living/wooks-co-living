@@ -141,7 +141,11 @@
 
           </a>
         {% empty %}
-          <div class='markets--index--empty'>일치하는 검색어가 없습니다 😥</div>
+          {% if request.GET.q %}
+            <div class='markets--index--empty'>일치하는 검색어가 없습니다 😥</div>
+          {% else %}
+            <div class='markets--index--empty'>제일 먼저 모임 글을 작성해 보세요! 😃</div>
+          {% endif %}
         {% endfor %}
       </section>
 
