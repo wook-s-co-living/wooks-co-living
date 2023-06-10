@@ -165,7 +165,13 @@
       </a>
     {% else %}
       <a href="{% url 'accounts:login' %}" class="bottom--nav__item">
-        <i class="fa-solid fa-right-to-bracket"></i>
+        {% if 'accounts' in request.path %}
+          <i class="fa-solid fa-right-to-bracket" style='color: #34568b;'></i>
+          <p style='color: #34568b;'>로그인</p>
+        {% else %}
+          <i class="bi bi-box-arrow-right"></i>
+          <p>로그인</p>
+        {% endif %}
         <span class="icon-title">로그인</span> 
       </a>
     {% endif %}
