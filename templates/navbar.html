@@ -48,6 +48,8 @@
 
               <a href="{% url 'accounts:update' %}">회원정보</a>
 
+              <a href="{% url 'cscenter:index' %}">고객센터</a>
+
               <form action="{% url 'accounts:logout' %}" method="POST">
                 {% csrf_token %}
                 <button>로그아웃</button>

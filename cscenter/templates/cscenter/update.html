@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Cscenter update {% endblock title %}
+
+{% block content %}
+<form action="{% url 'cscenter:update' post.pk %}" method="POST">
+  {% csrf_token %}
+  {{ update_form.as_p }}
+  {{ update_form.media }}
+  <input type="submit">
+</form>
+{% endblock content %}
