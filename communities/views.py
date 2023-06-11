@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.db.models import Q, Count
 from taggit.models import Tag
 from datetime import datetime, timedelta
+from django.contrib.auth import get_user_model
 
 # Create your views here.
 def index(request):
@@ -15,8 +16,9 @@ def index(request):
     category = request.GET.get('category')
     q = request.GET.get('q')
     tag = request.GET.get('tag')
+    sort = request.GET.get('sort')
 
-    if category:
+    if category and category != 'null':
         posts = Post.objects.filter(category=category).order_by('-created_at')
     else:
         posts = Post.objects.all().order_by('-created_at')
@@ -24,12 +26,20 @@ def index(request):
     if q:
         posts = posts.filter(
             Q(title__icontains=q) |
-            Q(content__icontains=q) |
-            Q(user__username__icontains=q)
+            Q(tags__name__icontains=q)
         ).distinct()
         
-    if tag:
+    if tag and tag != 'null':
         posts = posts.filter(tags__name=tag)
+
+    if sort:
+        posts = index_sort(sort, posts)
+    else:
+        posts = posts.order_by('-pk')
+
+    top_writers = get_user_model().objects.exclude(Q(is_superuser=True) | Q(groups__name='admin') | Q(user_permissions__codename='admin')).order_by('-score')[:5]
+
+    weekly_best_posts = Post.objects.annotate(like_count=Count('like_users')).order_by('-like_users')[:5]
 
     # Get the tags related to the filtered posts
     filtered_tags = Tag.objects.filter(post__in=all_posts).annotate(num_times=Count('taggit_taggeditem_items')).order_by('-num_times')[:10]
@@ -40,9 +50,22 @@ def index(request):
         'filtered_tags': filtered_tags,
         'category': category,
         'all_posts': all_posts,
+        'top_writers': top_writers,
+        'weekly_best_posts': weekly_best_posts,
     }
     return render(request, 'communities/index.html', context)
 
+def index_sort(o, queryset):
+    if o == '최신순':
+        return queryset.order_by('-pk')
+    elif o == '추천순':
+        return queryset.annotate(likes_diff=Count('like_users') - Count('dislike_users')).order_by('-likes_diff')
+    elif o == '댓글순':
+        return queryset.annotate(comment_count=Count('comments')).order_by('-comment_count')
+    elif o == '스크랩순':
+        return queryset.annotate(scrape_count=Count('scrape_users')).order_by('-scrape_count')
+    elif o == '조회순':
+        return queryset.order_by('-views')
 
 def category(request, category):
     posts = Post.objects.filter(category=category).order_by('-created_at')
@@ -65,6 +88,8 @@ def create(request):
                 if tag != '':
                     post.tags.add(tag)
             post.save()
+            request.user.score += 5
+            request.user.save()
             return redirect('communities:detail', post.pk)
     else:
         post_form = PostForm()
@@ -122,6 +147,8 @@ def delete(request, post_pk):
     post = Post.objects.get(pk=post_pk)
     if post.user == request.user:
         post.delete()
+        request.user.score -= 5
+        request.user.save()
     return redirect('communities:index')
 
 def update(request, post_pk):
@@ -234,6 +261,8 @@ def comment_create(request, post_pk, parent_pk):
                 if comment.depth > 50:
                     comment.depth = 10
             comment.save()
+            request.user.score += 1
+            request.user.save()
             request.session['comment_pk'] = comment.pk
 
             return redirect('communities:detail', post.pk)
@@ -255,6 +284,8 @@ def comment_delete(request, post_pk, comment_pk):
 
     if request.user == comment.user:
         comment.delete()
+        request.user.score -= 1
+        request.user.save()
 
     post = Post.objects.get(pk=post_pk)
     comments = post.comments.filter(parent_comment=None)

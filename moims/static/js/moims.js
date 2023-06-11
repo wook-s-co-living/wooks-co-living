@@ -67,7 +67,7 @@ searchInput.addEventListener('input', async (event) => {
     const parser = new DOMParser()
     const doc = parser.parseFromString(html, 'text/html')
     const posts = doc.querySelector('.moims--index--section')
-
+ 
     if (searchValue) {
       const regex = new RegExp(searchValue, 'gi')
       const h1Elements = posts.querySelectorAll('h1')
