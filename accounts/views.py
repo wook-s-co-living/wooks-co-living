@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,update_session_auth_hash,get_user_model,login as auth_login, logout as auth_logout
-from .forms import CustomAuthenticationForm, CustomUserCreationForm, CustomUserChangeForm, CustomPasswordChangeForm, ProfileForm
+from .forms import CustomAuthenticationForm, CustomUserCreationForm, CustomUserChangeForm, CustomPasswordChangeForm, ProfileForm, ReportImageForm
 from django.contrib.auth.forms import PasswordResetForm
 from django.http import JsonResponse, HttpResponse
 from django.contrib import messages
@@ -13,7 +13,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_text
 from django.contrib.auth.tokens import default_token_generator
 from django.db.models.query_utils import Q
-from .models import User
+from .models import User, UserReport, Reportimage
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -21,6 +21,16 @@ KAKAO_JS_KEY = os.getenv('KAKAO_JS_KEY')
 KAKAO_API_KEY = os.getenv('KAKAO_API_KEY')
 
 # Create your views here.
+
+def maum_limit(view_func):
+    def wrapper(request, *args, **kwargs):
+        if request.user.maum != 100:
+            return view_func(request, *args, **kwargs)
+        else:
+            message = '신고 누적 5회차 이상으로 서비스 이용이 중지 되었습니다.\\n관리자에 문의하세요.'
+            messages.error(request, message)
+            return redirect('index')
+    return wrapper
 
 def signup(request):
     if request.user.is_authenticated:
@@ -161,6 +171,7 @@ def delete(request):
     request.user.delete()
     return redirect('index')
 
+@maum_limit
 @login_required
 def update(request):
     if request.method == 'POST':
@@ -195,7 +206,6 @@ def change_password(request):
     }
     return render(request, 'accounts/change_password.html', context)
 
-    
 @login_required
 def profile(request, username):
     User = get_user_model()
@@ -215,6 +225,7 @@ def profile(request, username):
     }
     return render(request, 'accounts/profile.html', context)
 
+@maum_limit
 @login_required
 def follow(request, user_pk):
     User = get_user_model()
@@ -235,6 +246,7 @@ def follow(request, user_pk):
         return JsonResponse(context)
     return redirect('accounts:profile', person.username)
 
+@maum_limit
 @login_required
 def followers_list(request, username):
     User = get_user_model()
@@ -245,6 +257,7 @@ def followers_list(request, username):
         }
     return render(request, 'accounts/followers_list.html', context)
 
+@maum_limit
 @login_required
 def user_likes(request, username):
     User = get_user_model()
@@ -265,6 +278,7 @@ def user_likes(request, username):
     }
     return JsonResponse(context)
 
+@maum_limit
 @login_required
 def user_dislikes(request, username):
   User = get_user_model()
@@ -318,3 +332,33 @@ def password_reset_request(request):
 		request=request,
 		template_name='accounts/password_reset.html',
 		context={'password_reset_form': password_reset_form})
+
+@maum_limit
+@login_required
+def report_user(request, username):
+  reported_user = get_object_or_404(User, username=username)
+
+  if request.method == 'POST':
+      reason = request.POST.get('reason')
+      files = request.FILES.getlist('image_first')
+
+      if reason:
+          report = UserReport.objects.create(reporter=request.user, reported_user=reported_user, reason=reason)
+          for i in files:
+                Reportimage.objects.create(image_first=i, report=report)
+
+          reported_user_reports = UserReport.objects.filter(reported_user=reported_user).count()
+          if reported_user_reports >= 5:
+              reported_user.maum = 100
+              reported_user.save()
+
+          messages.success(request, '혼거동락팀에 신고가 접수되었습니다.\\n감사합니다.')
+          
+          return redirect('accounts:profile', reported_user.username)
+      else:
+          messages.error(request, '신고 사유를 입력해주세요.')
+  else:
+    if reported_user != request.user:
+      return render(request, 'accounts/report_user.html', {'reported_user': reported_user, 'reportimage_form':ReportImageForm()})
+    else:
+      return redirect('accounts:profile', reported_user.username)

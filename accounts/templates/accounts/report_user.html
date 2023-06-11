@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} {{ reported_user }} Report {% endblock title %}
+{% block header %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/accounts.css' %}">
+{% endblock header %}
+
+
+{% block content %}
+<div class="user--report--container">
+  <h1>
+    유저 신고하기
+    <span> [신고 유저 : {{ reported_user.username }}]</span>
+  </h1>
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <textarea id="reason" name="reason" required placeholder="신고사유 작성" class="report--form"></textarea>
+    <p class="report--txt">{{ reportimage_form.image_first.label }}</p>
+    {{ reportimage_form.image_first }}
+    <div id="preview-container" class="preview--image"></div>
+    <input type="submit" value="신고제출" class="accounts--btn">
+  </form>
+</div>
+{% endblock content %}
+
+{% block script %}
+  <script src="{% static 'js/accounts.js' %}"></script>
+{% endblock script %} 

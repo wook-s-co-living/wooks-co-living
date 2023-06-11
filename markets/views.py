@@ -3,6 +3,18 @@ from .models import Post, Postimage
 from .forms import PostForm, PostImageForm, DeleteImageForm
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.contrib import messages
+
+
+def maum_limit(view_func):
+    def wrapper(request, *args, **kwargs):
+        if request.user.maum != 100:
+            return view_func(request, *args, **kwargs)
+        else:
+            message = '신고 누적 5회차 이상으로 서비스 이용이 중지 되었습니다.\\n관리자에 문의하세요.'
+            messages.error(request, message)
+            return redirect('index')
+    return wrapper
 
 # Create your views here.
 

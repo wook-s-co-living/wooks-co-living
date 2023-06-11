@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm, AuthenticationForm
 from django.contrib.auth import get_user_model
-from .models import User
+from .models import User, Reportimage
 from django import forms
 from django.forms.widgets import ClearableFileInput
 
@@ -127,3 +127,18 @@ class CustomAuthenticationForm(AuthenticationForm):
                 self.add_error('password', '비밀번호가 올바르지 않습니다. 다시 확인해주세요.')
 
         return self.cleaned_data
+    
+class ReportImageForm(forms.ModelForm):
+    image_first = forms.ImageField(
+    label='관련 이미지',
+    widget=CustomClearableFileInput(
+        attrs={
+            'multiple': True, 
+            'class': 'report--form',
+        }
+    ),
+)
+        
+    class Meta:
+        model = Reportimage
+        fields = ('image_first',)

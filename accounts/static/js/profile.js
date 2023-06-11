@@ -54,4 +54,3 @@ window.addEventListener('DOMContentLoaded', () => {
   updateFollowerList(username);
 });
 
-
