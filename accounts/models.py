@@ -26,6 +26,8 @@ class User(AbstractUser):
 
     maum = models.DecimalField(default=46.0, max_digits=4, decimal_places=1, validators=[MinValueValidator(0.0), MaxValueValidator(100.0)])
 
+    score = models.DecimalField(default=0, max_digits=5, decimal_places=1, validators=[MinValueValidator(0.0)])
+
     likes = models.ManyToManyField('self', symmetrical=False, related_name='got_likes')
     dislikes = models.ManyToManyField('self', symmetrical=False, related_name='got_dislikes')
     

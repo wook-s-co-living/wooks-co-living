@@ -4,13 +4,14 @@ from django.core.validators import MinValueValidator
 from taggit.managers import TaggableManager
 from datetime import timedelta,datetime,date
 from django.utils import timezone
+from ckeditor_uploader.fields import RichTextUploadingField
 
 # Create your models here.
 
 class Post(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user_communities_posts')
     title = models.CharField(max_length=100)
-    content = models.TextField(null=True)
+    content = content = RichTextUploadingField(blank=True,null=True)
     category_Choices = (('', '카테고리'),('일상 이야기', '일상 이야기'), ('건물 소식', '건물 소식'), ('자취 꿀팁', '자취 꿀팁'), ('같이 사요', '같이 사요'))
     category = models.CharField(max_length=40, choices=category_Choices)
     views = models.IntegerField(default=0) #models.PositiveIntegerField(default=0, verbose_name='조회수')
@@ -37,6 +38,10 @@ class Post(models.Model):
             return str(time.days) + '일 전'
         else:
             return self.created_at.strftime('%Y-%m-%d')
+        
+    @property
+    def likes_count(self):
+        return self.like_users.count()-self.dislike_users.count()
     
 class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user_communities_comments')
