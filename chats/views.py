@@ -1,9 +1,21 @@
 # chat/views.py
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Chatroom
 from django.db.models import Q
 from accounts.models import User
 from django.templatetags.static import static
+from django.contrib import messages
+
+
+def maum_limit(view_func):
+    def wrapper(request, *args, **kwargs):
+        if request.user.maum != 100:
+            return view_func(request, *args, **kwargs)
+        else:
+            message = '신고 누적 5회차 이상으로 서비스 이용이 중지 되었습니다.\\n관리자에 문의하세요.'
+            messages.error(request, message)
+            return redirect('index')
+    return wrapper
 
 def index(request):
     chatrooms = Chatroom.objects.filter(Q(user1=request.user) | Q(user2=request.user))

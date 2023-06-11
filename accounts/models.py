@@ -69,3 +69,31 @@ class User(AbstractUser):
         self.save()
 
     is_login = models.BooleanField(default=False)
+
+class UserReport(models.Model):
+    reporter = models.ForeignKey(User, on_delete=models.CASCADE)
+    reported_user = models.ForeignKey(User, related_name='reports', on_delete=models.CASCADE)
+    reason = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+class Reportimage(models.Model):
+    report = models.ForeignKey(UserReport, on_delete=models.CASCADE, related_name='reportimages')
+
+    def post_image_path(instance, filename):
+        return f'accounts/report/{instance.report.reported_user.username}/{filename}'
+
+    image_first = models.ImageField(upload_to=post_image_path, null=True, blank=True)
+    image = ImageSpecField(source='image_first',
+                            processors=[ResizeToFill(800, 800)],
+                            format='JPEG',
+                            options={'quality': 100}
+                            )
+
+    def delete(self, *args, **kargs):
+        if self.image_first:
+            os.remove(os.path.join(settings.MEDIA_ROOT, self.image_first.path))
+            dir_path = os.path.dirname(os.path.join(settings.MEDIA_ROOT, self.image_first.name))
+            if not os.listdir(dir_path):
+                os.rmdir(dir_path)
+        super(Reportimage, self).delete(*args, **kargs)
+

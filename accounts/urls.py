@@ -3,6 +3,7 @@ from . import views
 from django.contrib.auth import views as auth_views
 
 
+
 app_name="accounts"
 urlpatterns = [
     path("login/", views.login, name="login"),
@@ -20,6 +21,7 @@ urlpatterns = [
     path('profile/<str:username>/likes/', views.user_likes, name='user_likes'),
     path('profile/<str:username>/dislikes/', views.user_dislikes, name='user_dislikes'),
     path('activate/<str:token>/', views.activate, name='activate'),
+    path('report/<str:username>/', views.report_user, name='report_user'),
 
     # 비밀번호 재설정
     path('password_reset/', views.password_reset_request, name="password_reset"),

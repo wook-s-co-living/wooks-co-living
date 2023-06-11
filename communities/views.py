@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.db.models import Q, Count
 from taggit.models import Tag
 from datetime import datetime, timedelta
+from django.contrib import messages
 from django.contrib.auth import get_user_model
 import os
 from dotenv import load_dotenv
@@ -13,7 +14,18 @@ load_dotenv()
 KAKAO_JS_KEY = os.getenv('KAKAO_JS_KEY')
 KAKAO_API_KEY = os.getenv('KAKAO_API_KEY')
 
+def maum_limit(view_func):
+    def wrapper(request, *args, **kwargs):
+        if request.user.maum != 100:
+            return view_func(request, *args, **kwargs)
+        else:
+            message = '신고 누적 5회차 이상으로 서비스 이용이 중지 되었습니다.\\n관리자에 문의하세요.'
+            messages.error(request, message)
+            return redirect('index')
+    return wrapper
+
 # Create your views here.
+@maum_limit
 def index(request):
     all_posts = Post.objects.all()
     categories = Post.objects.values_list('category', flat=True).distinct()
@@ -60,6 +72,7 @@ def index(request):
     }
     return render(request, 'communities/index.html', context)
 
+@maum_limit
 def index_sort(o, queryset):
     if o == '최신순':
         return queryset.order_by('-pk')
@@ -79,6 +92,7 @@ def category(request, category):
     }
     return render(request, 'communities/category.html')
 
+@maum_limit
 @login_required
 def create(request):
     if request.method == "POST":
@@ -103,6 +117,7 @@ def create(request):
     }
     return render(request, 'communities/create.html', context)
 
+@maum_limit
 def detail(request, post_pk):
     post = Post.objects.get(pk=post_pk)
     comments = post.comments.filter(parent_comment=None)
@@ -149,6 +164,7 @@ def detail(request, post_pk):
         post.save()
     return response
 
+@maum_limit
 def delete(request, post_pk):
     post = Post.objects.get(pk=post_pk)
     if post.user == request.user:
@@ -157,6 +173,7 @@ def delete(request, post_pk):
         request.user.save()
     return redirect('communities:index')
 
+@maum_limit
 def update(request, post_pk):
     post = Post.objects.get(pk=post_pk)
     if request.method == "POST":
@@ -179,6 +196,7 @@ def update(request, post_pk):
     }
     return render(request, 'communities/update.html', context)
 
+@maum_limit
 @login_required
 def scrapes(request, post_pk):
     post = Post.objects.get(pk=post_pk)
@@ -200,6 +218,7 @@ def scrapes(request, post_pk):
 
     return JsonResponse(context)
 
+@maum_limit
 @login_required
 def likes(request, post_pk):
     post = Post.objects.get(pk=post_pk)
@@ -251,6 +270,7 @@ def likes(request, post_pk):
 
     return JsonResponse(context)
 
+@maum_limit
 @login_required
 def comment_create(request, post_pk, parent_pk):
     post = Post.objects.get(pk=post_pk)
@@ -272,6 +292,8 @@ def comment_create(request, post_pk, parent_pk):
             request.session['comment_pk'] = comment.pk
 
             return redirect('communities:detail', post.pk)
+
+@maum_limit
 @login_required
 def comment_update(request, post_pk, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
@@ -284,6 +306,8 @@ def comment_update(request, post_pk, comment_pk):
         else:
             print(comment_update_form.errors)
 
+            
+@maum_limit              
 @login_required
 def comment_delete(request, post_pk, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
@@ -301,6 +325,7 @@ def comment_delete(request, post_pk, comment_pk):
 
     return redirect('communities:detail', post_pk)
 
+@maum_limit
 @login_required
 def comment_likes(request, post_pk, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
@@ -327,6 +352,13 @@ def comment_likes(request, post_pk, comment_pk):
             is_liked = True
             is_disliked = False
 
+@maum_limit
+@login_required
+def comment_dislikes(request, post_pk, comment_pk):
+    comment = Comment.objects.get(pk=comment_pk)
+    if request.user in comment.dislike_users.all():
+        comment.dislike_users.remove(request.user)
+        comment_is_disliked = False
     else:
         if comment.dislike_users.filter(pk=request.user.pk).exists():
             comment.dislike_users.remove(request.user)
