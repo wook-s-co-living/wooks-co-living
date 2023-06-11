@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Cscenter index {% endblock title %}
+
+{% block content %}
+<p class="fs-1">자주 묻는 질문</p>
+<ul>
+  {% for post in first_objects %}
+  <li><a href="{% url 'cscenter:detail' post.pk %}">{{ post.title }}</a></li>
+  {% endfor %}
+</ul>
+
+<p class="fs-1">카테고리에서 찾기</p>
+<form action="{% url 'cscenter:index' %}">
+  {% for category in categories %}
+    <input type='submit' name='category' value='{{ category }}'>
+  {% endfor %}
+</form>
+
+<ul>
+  {% for post in posts %}
+  <li><a href="{% url 'cscenter:detail' post.pk %}">{{ post.title }}</a></li>
+  {% endfor %}
+</ul>
+
+<p class="fs-1">도움이 필요하신가요?</p>
+<a href="{% url 'cscenter:create' %}">문의하기</a>
+
+{% endblock content %}

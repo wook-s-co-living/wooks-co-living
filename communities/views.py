@@ -7,6 +7,11 @@ from django.db.models import Q, Count
 from taggit.models import Tag
 from datetime import datetime, timedelta
 from django.contrib.auth import get_user_model
+import os
+from dotenv import load_dotenv
+load_dotenv()
+KAKAO_JS_KEY = os.getenv('KAKAO_JS_KEY')
+KAKAO_API_KEY = os.getenv('KAKAO_API_KEY')
 
 # Create your views here.
 def index(request):
@@ -123,7 +128,8 @@ def detail(request, post_pk):
         'comment_form': comment_form,
         'comment': comment,
         'comment_section_id': comment_section_id,
-        'likes_count': post.like_users.count()-post.dislike_users.count()
+        'likes_count': post.like_users.count()-post.dislike_users.count(),
+        'KAKAO_JS_KEY': KAKAO_JS_KEY,
     }
     response = render(request, 'communities/detail.html', context)
 

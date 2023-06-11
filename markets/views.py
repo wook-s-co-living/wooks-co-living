@@ -3,6 +3,11 @@ from .models import Post, Postimage
 from .forms import PostForm, PostImageForm, DeleteImageForm
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+import os
+from dotenv import load_dotenv
+load_dotenv()
+KAKAO_JS_KEY = os.getenv('KAKAO_JS_KEY')
+KAKAO_API_KEY = os.getenv('KAKAO_API_KEY')
 
 # Create your views here.
 
@@ -39,7 +44,7 @@ def detail(request, market_pk):
         post.save()
         request.session["post_viewed_{}".format(market_pk)] = True
 
-    context = {'post': post, 'user_posts': user_posts}
+    context = {'post': post, 'user_posts': user_posts, 'KAKAO_JS_KEY': KAKAO_JS_KEY,}
     return render(request, 'markets/detail.html', context)
 
 @login_required

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Cscenter create {% endblock title %}
+
+{% block content %}
+<form action="{% url 'cscenter:create' %}" method="POST">
+  {% csrf_token %}
+  {{ post_form.as_p }}
+  {{ post_form.media }}
+  <input type="submit">
+</form>
+{% endblock content %}
