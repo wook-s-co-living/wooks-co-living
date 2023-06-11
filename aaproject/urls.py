@@ -41,4 +41,5 @@ urlpatterns = [
     path('moims/', include('moims.urls')),
     path('markets/', include('markets.urls')),
     path('chats/', include('chats.urls')),
+    path('cscenter/', include('cscenter.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

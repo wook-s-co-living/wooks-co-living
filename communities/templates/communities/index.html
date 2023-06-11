@@ -2,70 +2,185 @@
 {% load static %}
 {% block title %} Communities {% endblock title %}
 
-{% block style %}
-    .tag-cloud{
-        width: 40%;
-        margin-left: 30px;
-        text-align: center;
-        padding: 5px;
-        border: 1px solid orange;
-        background-color: #ffc;
-    }
-    .tag-1 {font-size: 12px}
-    .tag-2 {font-size: 14px}
-    .tag-3 {font-size: 16px}
-    .tag-4 {font-size: 18px}
-    .tag-5 {font-size: 20px}
-    .tag-6 {font-size: 24px}
-{% endblock style %}
+{% block header %}
+<link rel="stylesheet" href="{% static 'css/communities_index.css' %}">
+{% endblock header %}
 
 {% block content %}
 
-<form action="{% url 'communities:index' %}">
-  <div class="search_container input-group flex-nowrap">
-    <span class="search-icon"><i class="bi bi-search"></i></span>
-    <input type="text" class="search_text" placeholder="검색어를 입력하세요" name="q">
-    <input type="submit" class="search_submit" value="검 색">
-  </div>
-</form>
+<div class='communities--index'>
+  <div class='communities--index--container'>
+    
+    {% comment %} Top writers {% endcomment %}
+    <div class='communities--index--topwriters'>
+      <h1>Top Writers</h1>
 
-<form action="{% url 'communities:index' %}">
-  <input type='submit' value='전체'>
-  {% for category in categories %}
-    <input type='submit' name='category' value='{{ category }}'>
-  {% endfor %}
-</form>
+      {% for top_writer in top_writers %}
+        <a class='communities--index--topwriters-item' href="{% url 'accounts:profile' top_writer.username %}">
+          <header>
+            <header>
+              {% if top_writer.image %}
+                <img src="{{ top_writer.image.url }}" alt="{{ top_writer.username }}">
+              {% else %}
+                <img src="{% static 'image/noimage.png' %}" alt="noimage">
+              {% endif %}
+            </header>
 
-{% for post in posts %}
-<ul>
-  <li>{{ post.user.username }}</li>
-  <li><a href="{% url 'communities:detail' post.pk %}">{{ post.title }}</a></li>
-  <li>카테고리 : {{ post.category }}</li>
-  <li>{{ post.created_time }}</li>
-  <li>조회수 : {{ post.views }}</li>
-  <li>댓글 수 : {{ post.comments.count }}</li>
-  <li>좋아요 수 : {{ post.like_users.count }}</li>
-  {% if post.tags.all %}
-    <form action="{% url 'communities:index' %}">
-      {% for tag in post.tags.all %}
-      <input type="hidden" name='category' value='{{ request.GET.category }}'>
-      <input type='submit' name='tag' value='{{ tag.name }}' class="rounded-pill bg-success" style="color: white; border: 0;">
+            <div>
+              {{ top_writer.first_name }}
+            </div>
+          </header>
+
+          <section>
+            <i class="bi bi-lightning-fill"></i> 
+            {{ top_writer.score }}
+          </section>
+        </a>
+      {% endfor %}
+    </div>
+
+    {% comment %} weekly best {% endcomment %}
+    <div class='communities--index--weeklybest'>
+      <h1>Weekly Best</h1>
+
+      <div class='communities--index--weeklybest--section'>
+        {% for post in weekly_best_posts %}
+          <a class='communities--index--weeklybest--section--item' href="{% url 'communities:detail' post.pk %}">
+            <section>
+              {{ post.title }}
+            </section>
+
+            <footer>
+              <header>
+                <header>
+                  {% if post.user.image %}
+                    <img src="{{ post.user.image.url }}" alt="{{ post.user.username }}">
+                  {% else %}
+                    <img src="{% static 'image/noimage.png' %}" alt="noimage">
+                  {% endif %}
+                </header>
+  
+                <div>
+                  {{ post.user.first_name }}
+                </div>
+              </header>
+
+              <footer>
+                <i class="bi bi-hand-thumbs-up"></i> <span>{{ post.likes_count }}</span>
+              </footer>
+            </footer>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+
+    {% comment %} Top tags {% endcomment %}
+    <div class='communities--index--toptags'>
+      <h1>Top Tags</h1>
+
+      <div class='communities--index--toptags--section'>
+        {% for tag in filtered_tags %}
+          {% if tag.num_times != 0 %}
+            <a class='communities--index--toptags--item' href="{% url 'communities:index' %}?tag={{ tag }}">#{{ tag }}</a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    {% comment %} 카테고리 {% endcomment %}
+    <form class='communities--index--category' action="{% url 'communities:index' %}">
+        <button type='submit' class='communities--index--category--btn {% if not request.GET.category %}communities--index--category--btn--click{% endif %}'>전체</button>
+      {% for category in categories %}
+        <button type='submit' class='communities--index--category--btn {% if request.GET.category == category %}communities--index--category--btn--click{% endif %}' name='category' value='{{ category }}'>{{ category }}</button>
       {% endfor %}
     </form>
-  {% endif %}
-</ul>
-{% endfor %}
 
-<div>
-  {% for tag in filtered_tags %}
-    <form action="{% url 'communities:index' %}">
-      {% if tag.num_times != 0 %}
-        <input type="hidden" name='category' value='{{ request.GET.category }}'>
-        <input type="hidden" name='tag' value='{{ tag.name }}'>
-        <input  class="underline" type="submit" value="{{tag.name}}({{tag.num_times}})">
-      {% endif %}
-    </form>
-  {% endfor %}
+    {% comment %} container header {% endcomment %}
+    <div class='communities--index--create'>
+      <a class='communities--index--create--a' href="{% url 'communities:create' %}">
+        <i class="bi bi-pencil-square"></i> 
+        작성하기
+      </a>
+
+      <form class='communities--index--create--form'>
+        <input type="search" name='q'>
+        <button type='submit'>
+          <i class="bi bi-search"></i>
+        </button>
+      </form>
+
+      <button class='communities--index--order--btn'>
+        <i class="bi bi-sort-down"></i>
+        <span>
+          {% if request.GET.sort %}
+            {{ request.GET.sort }}
+          {% else %}
+            최신순
+          {% endif %}
+        </span>
+      </button>
+
+      <div class='communities--index--order--collapse d-none'>
+        <a href="{% url 'communities:index' %}?category={{ request.GET.category }}&tag={{ request.GET.tag }}&sort=최신순" type='submit' {% if request.GET.sort == '최신순' or not request.GET.sort %}class='communities--index--order--collapse--active'{% endif %}>최신순</a>
+        <a href="{% url 'communities:index' %}?category={{ request.GET.category }}&tag={{ request.GET.tag }}&sort=추천순" type='submit' {% if request.GET.sort == '추천순' %}class='communities--index--order--collapse--active'{% endif %}>추천순</a>
+        <a href="{% url 'communities:index' %}?category={{ request.GET.category }}&tag={{ request.GET.tag }}&sort=댓글순" type='submit' {% if request.GET.sort == '댓글순' %}class='communities--index--order--collapse--active'{% endif %}>댓글순</a>
+        <a href="{% url 'communities:index' %}?category={{ request.GET.category }}&tag={{ request.GET.tag }}&sort=스크랩순" type='submit' {% if request.GET.sort == '스크랩순' %}class='communities--index--order--collapse--active'{% endif %}>스크랩순</a>
+        <a href="{% url 'communities:index' %}?category={{ request.GET.category }}&tag={{ request.GET.tag }}&sort=조회순" type='submit' {% if request.GET.sort == '조회순' %}class='communities--index--order--collapse--active'{% endif %}>조회순</a>
+      </div>
+    </div>
+
+    {% comment %} index section {% endcomment %}
+    <section class='communities--index--section'>
+      {% for post in posts %}
+        <div class='communities--index--section--item'>
+          <header class='communities--index--section--item--header'>
+            <a href="{% url 'accounts:profile' post.user.username %}">
+              {% if post.user.image %}
+                <img src="{{ post.user.image.url }}" alt="{{ post.user.username }}">
+              {% else %}
+                <img src="{% static 'image/noimage.png' %}" alt="noimage">
+              {% endif %}
+            </a>
+
+            <div>
+              {{ post.user.first_name }} <span>&nbsp;·&nbsp;</span> <i class="bi bi-lightning-fill"></i>{{ post.user.score }} <span>&nbsp;·&nbsp;</span> {{ post.created_time }}
+            </div>
+          </header>
+
+          <a class='communities--index--section--item--section' href="{% url 'communities:detail' post.pk %}">
+            {{ post.title }}
+          </a>
+
+          <footer class='communities--index--section--item--footer'>
+            <header>
+              <a class='communities--index--section--item--category' href="{% url 'communities:index' %}?category={{ post.category }}">{{ post.category }}</a>
+  
+              {% for tag in post.tags.all %}
+                <a class='communities--index--section--item--tag' href="{% url 'communities:index' %}?tag={{ tag }}">#{{ tag }}</a>
+              {% endfor %}
+            </header>
+
+            <section>
+              <h1><i class="bi bi-eye"></i> {{ post.views }}</h1>
+
+              <h2><i class="bi bi-bookmark"></i> {{ post.scrape_users.count }}</h2>
+
+              <h3><i class="bi bi-chat-dots"></i> {{ post.comments.count }}</h3>
+
+              <h4><i class="bi bi-hand-thumbs-up"></i> {{ post.likes_count }}</h4>
+            </section>
+          </footer>
+        </div>
+      {% empty %}
+        {% if request.GET.q %}
+          <div class='communities--index--empty'>일치하는 검색어가 없습니다 😥</div>
+        {% else %}
+          <div class='communities--index--empty'>제일 먼저 게시글을 작성해 보세요! 😃</div>
+        {% endif %}
+      {% endfor %}
+    </section>
+  </div>
 </div>
 
+<script src="{% static 'js/communities_index.js' %}"></script>
 {% endblock content %}

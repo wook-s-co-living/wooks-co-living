@@ -497,6 +497,16 @@ input[type=file]::file-selector-button {
   transform: scale(1.05);
 }
 
+.moims--index--empty {
+  width: 100%;
+  height: 800px;
+  padding-top: 200px;
+  text-align: center;
+  color: rgb(112 112 112);
+  font-weight: bold;
+  font-size: 24px;
+}
+
 @media(max-width: 800px) {
   .moims--index--create {
     bottom: 100px;

@@ -285,22 +285,30 @@
                 {% else %}
                   {% if request.user != post.user %}
                     <button type='submit'>탈퇴하기</button>
-                    <button class='moims--detail--botnavbar--kakao kakao--btn--1' type='button' data-kakao-url='{{ post.kakao_url }}'>
-                      <i class="bi bi-chat-fill"></i> 
-                      카카오톡
-                    </button>
+                    {% if post.kakao_url %}
+                      <button class='moims--detail--botnavbar--kakao kakao--btn--1' type='button' data-kakao-url='{{ post.kakao_url }}'>
+                        <i class="bi bi-chat-fill"></i> 
+                        카카오톡
+                      </button>
+                    {% endif %}
                   {% endif %}
                 {% endif %}
-                <button class='moims--detail--botnavbar--kakao kakao--btn--2 d-none' type='button' data-kakao-url='{{ post.kakao_url }}'>
-                  <i class="bi bi-chat-fill"></i> 
-                  카카오톡
-                </button>
+                {% if post.kakao_url %}
+                  <button class='moims--detail--botnavbar--kakao kakao--btn--2 d-none' type='button' data-kakao-url='{{ post.kakao_url }}'>
+                    <i class="bi bi-chat-fill"></i> 
+                    카카오톡
+                  </button>
+                {% endif %}
               </form>
             </div>
         </div>
       </section>
     </div>
   </div>
+
+  <!--공유하기-->
+  <a href="https://twitter.com/intent/tweet?text=혼거동락_{{ post.title }}&url=http://127.0.0.1:8000/moims/{{ post.pk }}/" data-toggle="tooltip" data-placement="top" title="" target="_blank" rel="noopener" aria-label="Twitter" data-original-title="Twitter">트위터 내보내기 버튼</a>
+  <a id="kakaotalk-sharing-btn" href="javascript:shareMessage()">카카오톡 공유 보내기 버튼</a>
 
 
 {% comment %} <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> {% endcomment %}
@@ -479,5 +487,38 @@
     resizeMap();
   });
   
+</script>
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.2.0/kakao.min.js"
+  integrity="sha384-x+WG2i7pOR+oWb6O5GV5f1KN2Ko6N7PTGPS7UlasYWNxZMKQA63Cj/B2lbUmUfuC" crossorigin="anonymous"></script>
+<script>
+  Kakao.init('{{ KAKAO_JS_KEY }}'); // 사용하려는 앱의 JavaScript 키 입력
+</script>
+<script>
+  function shareMessage() {
+    Kakao.Share.sendDefault({
+      objectType: 'feed',
+      content: {
+        title: '{{ post.title }}',
+        description: '{{ post.content }}',
+        imageUrl: 'https://i.pinimg.com/originals/02/0b/5c/020b5c474a758dd57e8e689e06514ab0.jpg',
+        link: {
+          // [내 애플리케이션] > [플랫폼] 에서 등록한 사이트 도메인과 일치해야 함
+          webUrl: 'http://127.0.0.1:8000/',
+        },
+      },
+      social: {
+        likeCount: {{ post.like_users.count }},
+        commentCount: {{ post.comments.count }},
+      },
+      buttons: [
+        {
+          title: '웹으로 보기',
+          link: {
+            webUrl: 'http://127.0.0.1:8000/moims/{{ post.pk }}/',
+          },
+        },
+      ],
+    });
+  }
 </script>
 {% endblock content %}

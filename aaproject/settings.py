@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'accounts',
     'chats',
     'communities',
+    'cscenter',
     'markets',
     'moims',
 
@@ -194,9 +195,12 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'jeongsodam26@gmail.com'
+EMAIL_HOST_USER = 'hongeodonglag@gmail.com'
+# hongeodonglag@gmail.com
+# jeongsodam26@gmail.com
 EMAIL_SENDER_NAME = '혼거동락'
-EMAIL_HOST_PASSWORD = 'bsmaiatiokrqwvoo'
+EMAIL_HOST_PASSWORD = 'wgrsmwuwujcaafxl'
+# bsmaiatiokrqwvoo
 EMAIL_USE_LOCALTIME = True
 DEFAULT_FROM_EMAIL = EMAIL_SENDER_NAME + ' <' + EMAIL_HOST_USER + '>'
 
