@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Cscenter detail {% endblock title %}
+
+{% block content %}
+<ul>
+  <li>{{ post.user.username }}</li>
+  <li>{{ post.title }}</li>
+  <li>{{ post.content|safe }}</li>
+  <li>{{ post.category }}</li>
+  <li>{{ post.created_time }}</li>
+</ul>
+{% if post.user == user %}
+  <a href="{% url 'cscenter:update' post.pk %}">UPDATE</a>
+  <form action="{% url 'cscenter:delete' post.pk %}" method="POST">
+    {% csrf_token %}
+    <input type="submit" value="DELETE">
+  </form>
+{% endif %}
+{% endblock content %}
