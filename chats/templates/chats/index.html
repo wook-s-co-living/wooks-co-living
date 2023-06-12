@@ -10,15 +10,17 @@
       <div class="chats--title">채팅 리스트</div>
         {% for chatroom in chatrooms %}
           {% if chatroom.user2 != user %}
-            <a href="{% url 'chats:room' chatroom.user2.first_name %}" class="chat--link">
+            <a href="{% url 'chats:room' chatroom.user2.first_name %}" class="chat--link" id="{{chatroom.user2}}">
               <div class="chat--box">
                 {% if chatroom.user2.image %}
                   <div class="chat--profile">
                     <img src="{{chatroom.user2.image.url}}" alt="profile_image">
+                    <header class='loginStatus'></header>
                   </div>
                 {% else %}
                   <div class="chat--profile">
                     <img src="{% static 'image/noimage.png' %}" alt="noimage">
+                    <header class='loginStatus'></header>
                   </div>
                 {% endif %}
                 <div class="chat--txt">
@@ -27,6 +29,12 @@
                     <i class="bi bi-person-circle"></i>
                     {% endif %}
                     {{ chatroom.user2.first_name }}
+                    {% if chatroom.user2.is_login %}
+                      <p class="status--login" id="user{{chatroom.user2.is_login}}">활성화</p>
+                    {% else %}
+                      <p class="status--logout" id="user{{chatroom.user2.is_login}}">비활성화</p>
+                    {% endif %}
+
                   </div>
                   {% comment %} {% if chatroom.get_latest_message.sender == user %} {% endcomment %}
                   <div class="chat--txt--info">
@@ -40,15 +48,19 @@
               </div>
             </a>
           {% else %}
-            <a href="{% url 'chats:room' chatroom.user1.first_name %}" class="chat--link">
+            <a href="{% url 'chats:room' chatroom.user1.first_name %}" class="chat--link" id="{{chatroom.user1}}">
               <div class="chat--box">
                 {% if chatroom.user1.image %}
                   <div class="chat--profile">
                     <img src="{{chatroom.user1.image.url}}" alt="profile_image">
+                    <div>aa</div>
+                    <header class='loginStatus'></header>
                   </div>
-                {% else %}
+                  {% else %}
                   <div class="chat--profile">
                     <img src="{% static 'image/noimage.png' %}" alt="noimage">
+                    <div>aa</div>
+                    <header class='loginStatus'></header>
                   </div>
                 {% endif %}
                 <div class="chat--txt">
@@ -57,6 +69,13 @@
                     <i class="bi bi-person-circle"></i>
                     {% endif %}
                     {{ chatroom.user1.first_name }}
+
+                    {% if chatroom.user1.is_login %}
+                      <p class="status--login" id="user{{chatroom.user1}}">활성화</p>
+                    {% else %}
+                      <p class="status--logout" id="user{{chatroom.user1}}">비활성화</p>
+                    {% endif %}
+
                   </div>
                   <div class="chat--txt--info">
                     <span class="chat--message">{{ chatroom.get_latest_message.content }}</span>
@@ -68,4 +87,5 @@
           {% endif %}
         {% endfor %}
     </div>
+    <script src="{% static 'js/index.js' %}"></script>
 {% endblock content %}

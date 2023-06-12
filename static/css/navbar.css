@@ -376,8 +376,8 @@
 }
 
 .nav--bar--bell--a {
-  display: block;
-  position: relative;
+  /* display: block;
+  position: relative; */
   color: black;
   font-size: 22px;
   margin-right: 20px;
@@ -398,14 +398,34 @@
 
 .nav--bar--bell--red {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 4px;
+  right: 48px;
   width: 7px;
   height: 7px;
   border-radius: 100%;
   background-color: red;
 }
 
+#nav--bar--bell--collapse {
+  position: absolute;
+  top: 28px;
+  right: -10px;
+  box-shadow: 1px 7px 15px 4px rgba(0,0,0,0.1);
+  width: 120px;
+  text-decoration: none;
+  padding-bottom: 5px;
+  border-radius: 10px;
+  background-color: white;
+  z-index: 50;
+}
+
+#nav--bar--bell--collapse a {
+  display: block;
+  padding: 7px 30px;
+  font-size: 14px;
+  /* font-weight: bold; */
+  color: black;
+}
 
 .nav--bar--right--image {
   width: 25px;
@@ -423,7 +443,6 @@
   width: 100%;
   border-radius: 100%;
 }
-
 /* 네비바 오른쪽 콜랩스 */
 
 #nav--bar--right--collapse {

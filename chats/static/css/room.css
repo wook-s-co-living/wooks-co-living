@@ -230,3 +230,15 @@
   font-size: 0.7rem;
   margin: 15px 0;
 }
+
+.status--logout {
+  display: inline-block;
+  background-color: gray;
+  z-index: 10;
+}
+
+.status--login {
+  display: inline-block;
+  background-color: green;
+  z-index: 10;
+}
