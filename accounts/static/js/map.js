@@ -17,6 +17,8 @@ function updateMap(addr) {
     var geocoder = new kakao.maps.services.Geocoder()
     geocoder.addressSearch(addr, function(result, status) {
         if (status === kakao.maps.services.Status.OK) {
+            var submitButton = document.getElementById('submit_button');
+            submitButton.disabled = true;
             var coords = new kakao.maps.LatLng(result[0].y, result[0].x)
             // Append the object to the positions array
             positions[1] = ({ title: '입력한 주소지', latlng: coords });
@@ -137,7 +139,10 @@ function displayMarkers() {
             submitButton.disabled = true;
             showDialog('입력한 주소지와 현재 위치가 너무 멀어요!');
           } else {
+            var submitButton = document.getElementById('submit_button');
+            submitButton.disabled = false;
             showDialog('인증되었습니다!');
+            
           }
         }, 2000, distance);
         
