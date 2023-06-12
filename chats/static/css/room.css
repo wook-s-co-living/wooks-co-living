@@ -234,10 +234,35 @@
   margin: 15px 0;
 }
 
+
+.status--logout {
+  display: inline-block;
+  background-color: gray;
+  z-index: 10;
+}
+
+.status--login {
+  display: inline-block;
+  background-color: green;
+  z-index: 10;
+
 .delete--user {
   color: black;
   font-weight: 600;
   font-size: 0.9rem;
+
+}
+
+@media (max-width: 600px) {
+  .chats--container {
+    width: 100%;
+    margin: 20px 0;
+    padding-bottom: 70px;
+  }
+
+  #chat-log {
+    height: 90vh;
+  }
 }
 
 @media (max-width: 600px) {

@@ -25,7 +25,7 @@ def index(request):
     chatrooms = Chatroom.objects.filter(Q(user1=request.user) | Q(user2=request.user))
     sorted_chatrooms = sorted(chatrooms, key=lambda x: x.get_latest_message().created_at if x.get_latest_message() else x.created_at, reverse=True)
     context = {
-        'chatrooms' : sorted_chatrooms,
+        'chatrooms': sorted_chatrooms,
     }
     return render(request, "chats/index.html", context)
 
@@ -57,3 +57,5 @@ def room(request, first_name):
     }
 
     return render(request, "chats/room.html", context)
+
+

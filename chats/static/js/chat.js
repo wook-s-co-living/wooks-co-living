@@ -110,7 +110,6 @@ document.querySelector('#chat-message-submit').onclick = function(e) {
         'retriever': retriever,
         'roomName': roomName,
     }))
-    
 messageInputDom.value = '';
 };
 
