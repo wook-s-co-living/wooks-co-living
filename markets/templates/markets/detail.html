@@ -114,7 +114,7 @@
 
         <div class="markets--detail--info">
           <div>
-            <h5>관심 <span id='markets--detail--section-likecount'>{{ post.like_users.count }}</span><span>&nbsp;·&nbsp;</span>채팅 ??<span>&nbsp;·&nbsp;</span>조회 {{ post.views }}</h5>
+            <h5>관심 <span id='markets--detail--section-likecount'>{{ post.like_users.count }}</span><span>&nbsp;·&nbsp;</span>채팅 {{chatrooms_length}}<span>&nbsp;·&nbsp;</span>조회 {{ post.views }}</h5>
           </div>
           {% if request.user == post.user %}
             <div>

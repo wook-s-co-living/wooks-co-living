@@ -30,8 +30,6 @@ chatSocket.onmessage = function(e) {
         const lastMessage = chatLog.lastElementChild;
         const previousSender = lastMessage ? lastMessage.querySelector('span').dataset.sender : null;
 
-        console.log(previousSender);
-
         const messageBox = document.createElement('div');
         messageBox.className = 'message--box';
 
@@ -112,8 +110,6 @@ document.querySelector('#chat-message-submit').onclick = function(e) {
         'retriever': retriever,
         'roomName': roomName,
     }))
-
-    
 messageInputDom.value = '';
 };
 

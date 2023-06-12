@@ -24,12 +24,21 @@
         <input type="text" id="b_address" placeholder="건물명" name="b_address" class="signup--form" autocomplete="off" value="{{ user.building }}">
         <input type="button" onclick="search_address()" value="주소 검색" class="address--btn">
       </div>
-        <input type="submit" value="회원 정보 수정" class="accounts--btn">
+
+      <div id="map" style="width:auto;height:350px;"></div>
+        <input type="submit" value="회원 정보 수정" class="accounts--btn" id="submit_button">
         <a type="button" href="{% url 'accounts:change_password' %}" class="accounts--btn">비밀번호 변경</a>
     </form>
+  </div>
+  <div id="dialog" class="dialog hidden">
+    <p id="dialog-message"></p>
   </div>
 </div>
 
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="{% static 'js/accounts.js' %}" type="text/javascript"></script>
+<!--지도 생성 script-->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey={{ KAKAO_JS_KEY }}&libraries=services,geometry"></script>
+<script src="{% static 'js/map.js' %}" type="text/javascript"></script>
 {% endblock content %}

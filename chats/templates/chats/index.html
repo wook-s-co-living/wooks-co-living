@@ -38,17 +38,19 @@
                     <header class='loginStatus'></header>
                   </div>
                 {% endif %}
+
+                {% if chatroom.user2.is_login %}
+                  <p class="status--login status--log" id="user{{chatroom.user2.is_login}}"></p>
+                {% else %}
+                  <p class="status--logout status--log" id="user{{chatroom.user2.is_login}}"></p>
+                {% endif %}
+
                 <div class="chat--txt">
                   <div>
                     {% if chatroom.user1 == chatroom.user2 %}
                     <i class="bi bi-person-circle"></i>
                     {% endif %}
                     {{ chatroom.user2.first_name }}
-                    {% if chatroom.user2.is_login %}
-                      <p class="status--login" id="user{{chatroom.user2.is_login}}">활성화</p>
-                    {% else %}
-                      <p class="status--logout" id="user{{chatroom.user2.is_login}}">비활성화</p>
-                    {% endif %}
 
                   </div>
                   {% comment %} {% if chatroom.get_latest_message.sender == user %} {% endcomment %}
@@ -78,18 +80,19 @@
                     <header class='loginStatus'></header>
                   </div>
                 {% endif %}
+
+                {% if chatroom.user2.is_login %}
+                  <p class="status--login status--log" id="user{{chatroom.user2.is_login}}"></p>
+                {% else %}
+                  <p class="status--logout status--log" id="user{{chatroom.user2.is_login}}"></p>
+                {% endif %}
+                
                 <div class="chat--txt">
                   <div>
                     {% if chatroom.user1 == chatroom.user2 %}
                     <i class="bi bi-person-circle"></i>
                     {% endif %}
                     {{ chatroom.user1.first_name }}
-
-                    {% if chatroom.user1.is_login %}
-                      <p class="status--login" id="user{{chatroom.user1}}">활성화</p>
-                    {% else %}
-                      <p class="status--logout" id="user{{chatroom.user1}}">비활성화</p>
-                    {% endif %}
 
                   </div>
                   <div class="chat--txt--info">
