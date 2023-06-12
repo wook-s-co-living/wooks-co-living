@@ -89,7 +89,7 @@
 /* 글 생성 */
 .markets--index--create {
   position: sticky;
-  margin-left: 860px;
+  margin-left: 70%;
   bottom: 20px;
 }
 
@@ -315,7 +315,7 @@
   .markets--index--create {
     margin-left: 90%;
   }
-
+ 
   #markets--index--address--block header button,
   #markets--index--filter--block header button {
     padding-right: 0;

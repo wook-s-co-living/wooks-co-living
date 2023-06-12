@@ -4,11 +4,193 @@
 {% block title %} 혼거동락 {% endblock title %}
 
 {% block header %}
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'owlcarousel/owl.carousel.css' %}">
+  <link rel="stylesheet" href="{% static 'owlcarousel/owl.theme.default.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="{% static 'css/index.css' %}">
+ 
 {% endblock header %}
 
 {% block content %}
-  <div style='height: 700px;'>
+<body style="background-image: url({% static 'image/background_1.png' %}); background-position: center top; background-repeat: repeat; background-size: cover;">
 
+<div class="index--main_wrap">
+  <div class="parallax">    
+      <img class="index--banner_img" src="{% static 'image/main_banner.webp' %}" alt="index-banner">
+      <div class="index--main_text" id="text1">여러분의 이웃을</div>
+      <div class="index--main_text" id="text2">만나세요</div>
+      <a href="{% url 'accounts:login' %}">지금 시작</a>
   </div>
+  <section class="index--section_intro">
+      <div class="index--textbox_intro">
+          <p>환영합니다!</p>
+          <strong>혼자 사는 이웃과 함께 새로운 경험을 나눠보세요</strong>
+          <div>
+              <br>
+              배달 주문부터 물건 나눔, 소소한 모임까지!<br>
+              지역 속의 소중한 정보를 교환하고, 같은 취미를 가진 이웃을 만나보세요<br>
+              혼자가 아닌 "우리"가 될 시간, 지금 "혼거동락"에서 시작하세요!
+          </div>
+          
+      </div>
+  </section>
+  <section class="index--section">
+      <div class="index--textbox">
+          <strong>커뮤니티</strong>
+          <p class="index--description">오늘은 동네에 무슨 일이?</p>
+          <p class="index--description">우리동네 이웃끼리 공감대를 형성하세요</p>
+          <a href="{% url 'communities:index' %}" class="index--shortcut">바로가기</a>
+      </div>
+      <div class="image-wrap">
+        <img src="{% static 'image/talking.png' %}" alt="">
+      </div>
+  </section>
+  <section class="index--section">
+      <div class="image-wrap">
+        <img src="{% static 'image/fleemarket.png' %}" alt="">
+      </div>
+      <div class="index--textbox">
+          <strong>플리마켓</strong>
+          <p class="index--description">안쓰지만 서로서로 필요한 물건들</p>
+          <p class="index--description">아까운 내 물건 사고 팔고 나누세요</p>
+          <a href="{% url 'markets:index' %}" class="index--shortcut">바로가기</a>
+      </div>
+  </section>
+  <section class="index--section">
+      <div class="index--textbox">
+          <strong>소모임</strong>
+          <p class="index--description">함께 하면 더 재밌는</p>
+          <p class="index--description">같은 취미를 가진 이웃을 찾아보세요</p>
+          <a href="{% url 'moims:index' %}" class="index--shortcut">바로가기</a>
+          
+      </div>
+      <div class="image-wrap">
+        <img src="{% static 'image/hobby.png' %}" alt="">
+      </div>
+  </section>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+<section class="index--maum">
+  <div class="index--maum_title">동네 친구와 마음 거리를 확인하세요</div>
+  <div class="index--maum_description">
+    <br>
+    어떤 친구와 얼마나 자주 만날까?<br><br>
+    최근에 동네 친구와 얼마나 가깝게 지내는지 확인해보세요<br>
+  </div>
+  
+
+  <div class="index--maum_image">
+    <div class="index--maum_num" style="top: 65%; right: 30%;">39cm</div>
+    <div class="index--maum_num" style="top: 20%; right: 40%;">34cm</div>
+    <div class="index--maum_num" style="top: 30%; right: 50%;">79cm</div>
+    <div class="index--maum_num" style="top: 47%; right: 20%;">65cm</div>
+    <div class="index--maum_num" style="top: 50%; right: 70%;">10cm</div>
+    <div class="index--maum_num" style="top: 60%; right: 80%;">51cm</div>
+    <img src="{% static 'image/social.jpg' %}"  alt="">
+  </div>
+</section>
+<section class="index--flow_section_w100">  
+    <strong>동네 친구들과 즐거운 시간을 위한 <br> 다양한 기능들을 만나보세요!</strong>
+        
+    <div class="sample-ele"> 
+      <img src="{% static 'image/crown.png' %}" alt="">
+      <img src="{% static 'image/crown.png' %}" alt="">
+      <img src="{% static 'image/crown.png' %}" alt="">
+      <img src="{% static 'image/crown.png' %}" alt="">
+      <img src="{% static 'image/crown.png' %}" alt="">
+    </div>
+    
+</section>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>  
+    <section id="testimonial" class="section-100">
+      <div class="testimonial-container">
+        <p class="testimonial--title1">혼거동락에 대한</p>
+        <h1 class="testimonial--title2"><b>동네친구들의 한마디</b></h1>
+        <br>
+        <br>
+        <div class="testimonial-view">
+          <div class="owl-carousel">
+            <div class="testimonial-box">
+              <i class="fa fa-quote-left quote-icon"></i>
+              <div class="testimonial-img_box">
+                <img src="{% static 'image/crown.png' %}" class="user-img">
+                <div>
+                  <h5 class="testimonial--name"><b>김테스트</b></h5>
+                  <p class="testimonial--sub_title">테스트 애호가</p>
+                </div>
+              </div>
+              <p class="testimonial--text">안녕하세요 만나서 반갑습니다 제 이름은 김테스트라고 합니다.</p>
+            </div>
+            <div class="testimonial-box">
+              <i class="fa fa-quote-left quote-icon"></i>
+              <div class="testimonial-img_box">
+                <img src="{% static 'image/crown.png' %}" alt="" class="user-img">
+                <div>
+                  <h5 class="testimonial--name"><b>존 윅</b></h5>
+                  <p class="testimonial--sub_title">Entrepreneur</p>
+                </div>
+              </div>
+              <p class="testimonial--text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam temporibus quidem magni qui doloribus quasi natus inventore nisi velit minima.</p>
+            </div>
+            <div class="testimonial-box">
+              <i class="fa fa-quote-left quote-icon"></i>
+              <div class="testimonial-img_box">
+                <img src="{% static 'image/crown.png' %}" alt="" class="user-img">
+                <div>
+                  <h5 class="testimonial--name"><b>김상식</b></h5>
+                  <p class="testimonial--sub_title">나만 고양이 없어</p>
+                </div>
+              </div>
+              <p class="testimonial--text">옆집 고양이를 대신 봐주면 기분이 조크든요</p>
+            </div>
+            <div class="testimonial-box">
+              <i class="fa fa-quote-left quote-icon"></i> 
+              <div class="testimonial-img_box">
+                <img src="{% static 'image/crown.png' %}" alt="" class="user-img">
+                <div>
+                  <h5 class="testimonial--name"><b>마동석</b></h5>
+                  <p class="testimonial--sub_title">형사</p>
+                </div>
+              </div>
+              <p class="testimonial--text">진실의 방으로</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+</div>
+
+</body>
+{% if messages %}
+  {% for message in messages %}
+    <script>
+      alert("{{ message }}");
+    </script>
+  {% endfor %}
+{% endif %}
 {% endblock content %}
+
+{% block script %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+  <script src="https://unpkg.com/scroll-out/dist/scroll-out.min.js"></script>
+
+  <script src="{% static 'js/index.js' %}"></s>
+{% endblock script %}

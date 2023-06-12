@@ -1,9 +1,28 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %} Update {% endblock title %}
-
+{% block title %} UPDATE {% endblock title %}
+{% block header %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/communities.css' %}"> 
+{% endblock header %}
 {% block content %}
 
+<div class="cmty--container">
+  <div class="cmty--title">
+    커뮤니티 글 수정
+  </div>
+  <form action="{% url 'communities:update' post.pk %}" method="POST">
+    {% csrf_token %}
+    {{ update_form.media }}
+    <div class="d-flex gap-1">
+      {{ update_form.category }}
+      {{ update_form.title }}
+    </div>
+    <input type="text" name="tag" id="tag" placeholder="#태그 [콤마(,)로 구분 해 주세요]" class="cmty--form" value="{% for tag in post.tags.all %}{{ tag }}{% if not forloop.last %}, {% endif %}{% endfor %}"  autocomplete="off">
+    {{ update_form.content }} 
+    <input type="submit" value="저장" class="create--btn">
+    
+  </form>
+</div>
 
-
+<script src="{% static 'js/communities.js' %}"></script>
 {% endblock content %}

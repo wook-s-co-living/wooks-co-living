@@ -1,21 +1,45 @@
 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
 
+// 공유하기
+
+const shareBtn = document.querySelector('#communities--detail--share')
+const shareCollapse = document.querySelector('.communities--detail--share--collapse')
+
+if (shareBtn) {
+  shareBtn.addEventListener('click', (event) => {
+    if (shareCollapse.classList.contains('d-none')) {
+      shareCollapse.classList.remove('d-none')
+    } else {
+      shareCollapse.classList.add('d-none')
+    }
+  })
+  
+  document.addEventListener('click', (event) => {
+    const target = event.target
+    if (!shareBtn.contains(target) && !shareCollapse.contains(target)) {
+      shareCollapse.classList.add('d-none')
+    }
+  })
+}
+
 document.addEventListener('DOMContentLoaded', function() {
 
-  document.getElementById('communities--detail--share').addEventListener('click', function() {
-      var currentUrl = window.location.href
-      var tempInput = document.createElement('input')
+  document.getElementById('communities--detail--share--collapse--url').addEventListener('click', function() {
+    shareCollapse.classList.add('d-none')
 
-      tempInput.value = currentUrl
-      document.body.appendChild(tempInput)
+    var currentUrl = window.location.href
+    var tempInput = document.createElement('input')
 
-      tempInput.select()
+    tempInput.value = currentUrl
+    document.body.appendChild(tempInput)
 
-      document.execCommand('copy')
- 
-      document.body.removeChild(tempInput)
+    tempInput.select()
 
-      alert('URL이 복사되었습니다!')
+    document.execCommand('copy')
+
+    document.body.removeChild(tempInput)
+
+    alert('URL이 복사되었습니다!')
   })
 })
 
@@ -112,6 +136,7 @@ if (scrapeForm) {
           } else if (isScrped == false) {
             scrapeBtnIcon.classList.remove('bi-bookmark-fill')
             scrapeBtnIcon.classList.add('bi-bookmark')
+            scrapeBtnIcon.style.color = ''
           }
 
         }
@@ -269,7 +294,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
           .then((response) => {
             const CommentContent = listDiv.querySelector('.communities--detail--comment--content--text')
-            CommentContent.textContent = response.data.commentContent
+            CommentContent.innerHTML = response.data.commentContent.replace(/\n/g, "<br>")
 
             CommentUpdateForm.classList.add('d-none')
           })
@@ -297,6 +322,81 @@ document.addEventListener('DOMContentLoaded', function() {
     if (RecommentCancleBtn) {
       RecommentCancleBtn.addEventListener('click', (event) => {
         RecommentCreateForm.classList.add('d-none')
+      })
+    }
+
+    const commentLikesForm = listDiv.querySelector('.communities--detail--section--likeform')
+
+    if (commentLikesForm) {
+      commentLikesForm.addEventListener('submit', (event) => {
+        event.preventDefault()
+      
+        const postId = event.target.dataset.postId
+        const commentId = event.target.dataset.commentId
+        const likeValue = event.submitter.value
+      
+        const formData = new FormData(commentLikesForm)
+        formData.append('like_value', likeValue)
+      
+        axios({
+          method: "POST",
+          url: `/communities/${postId}/comment/${commentId}/likes/`,
+          headers: {'X-CSRFToken': csrftoken},
+          data: formData
+        })
+      
+          .then((response) => {
+            if (response.data.error) {
+  
+              const errorMessage = response.data.error
+      
+              if (likeAlert.style.display == 'none') {
+                
+                likeAlert.innerHTML = errorMessage
+                likeAlert.style.display = 'block'
+                likeAlert.style.opacity = '1'
+        
+                setTimeout(() => {
+                  likeAlert.style.opacity = '0.9'
+                  setTimeout(() => {
+                    likeAlert.style.opacity = '0.8'
+                    setTimeout(() => {
+                      likeAlert.style.opacity = '0.7'
+                      setTimeout(() => {
+                        likeAlert.style.display = 'none'
+                      }, 50)
+                    }, 50)
+                  }, 50)
+                }, 1500)
+              }
+            } else {
+
+            const isLiked = response.data.is_liked
+            const isDisLiked = response.data.is_disliked
+            const likeIcon = commentLikesForm.querySelector('.bi-chevron-up')
+            const DisLikeIcon = commentLikesForm.querySelector('.bi-chevron-down')
+      
+            const likeCount = commentLikesForm.querySelector('.section--likeform--likecount')
+      
+            likeCount.textContent = response.data.comment_like
+      
+            if (isLiked === true) {
+              likeIcon.style.color = 'rgb(0, 185, 222)'
+            } else if (isLiked == false) {
+              likeIcon.style.color = 'black'
+            }
+      
+            if (isDisLiked === true) {
+              DisLikeIcon.style.color = 'rgb(214, 38, 7)'
+            } else if (isDisLiked == false) {
+              DisLikeIcon.style.color = 'black'
+            }
+          }
+          })
+      
+          .catch((error) => {
+            console.log(error.response)
+          })
       })
     }
   })

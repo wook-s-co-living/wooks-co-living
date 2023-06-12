@@ -27,6 +27,24 @@
         <a class="owl--carousel--back" href="{% url 'markets:index' %}">
           <i class="bi bi-chevron-left"></i>
         </a>
+
+        <button class='owl--carousel--share'>
+          <i class="bi bi-share"></i>
+        </button>
+
+        <div class='owl--carousel--collapse d-none'>
+          <button id='owl--carousel--collapse--url'>
+            <i class="bi bi-cloud-arrow-up-fill"></i> <span>URL</span>
+          </button>
+
+          <a href="https://twitter.com/intent/tweet?text=혼거동락_{{ post.title }}&url=http://127.0.0.1:8000/markets/{{ post.pk }}/" data-toggle="tooltip" data-placement="top" title="" target="_blank" rel="noopener" aria-label="Twitter" data-original-title="Twitter">
+            <i class="bi bi-twitter"></i> <span>Twitter</span>
+          </a>
+
+          <a id="kakaotalk-sharing-btn" href="javascript:shareMessage()">
+            <i class="bi bi-chat-fill"></i> <span>KaKao</span>
+          </a>
+        </div>
       </div>
 
       <div class='markets--carousel--dnone d-none'>
@@ -173,20 +191,13 @@
           </div>
         </div>
 
-        <a class='markets--detail--navbar--right' href="{% url 'chats:room' post.user.username %}">
+        <a class='markets--detail--navbar--right' href="{% url 'chats:room' post.user.first_name %}">
           채팅하기
         </a>
       </nav>
 
     </section>
   </div>
-
-  {% comment %} <div>{{ post.title }}</div> {% endcomment %}
-  {% comment %} {% for postimage in post.postimages.all %}
-    <div>
-      <img src="{{ postimage.image.url }}" alt="{{ post.title }}">
-    </div>
-  {% endfor %} {% endcomment %}
 
   <script>
     $('.owl-carousel').owlCarousel({
@@ -215,6 +226,38 @@
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.2.0/kakao.min.js"
+  integrity="sha384-x+WG2i7pOR+oWb6O5GV5f1KN2Ko6N7PTGPS7UlasYWNxZMKQA63Cj/B2lbUmUfuC" crossorigin="anonymous"></script>
+  <script>
+    Kakao.init('{{ KAKAO_JS_KEY }}'); // 사용하려는 앱의 JavaScript 키 입력
+  </script>
+  <script>
+    function shareMessage() {
+      Kakao.Share.sendDefault({
+        objectType: 'feed',
+        content: {
+          title: '{{ post.title }}',
+          description: '플리마켓',
+          imageUrl: 'https://1.bp.blogspot.com/-mJ5jFeNA4gQ/X79hVOtDv8I/AAAAAAAAQYk/p5C-cInqnT8mIJ_i5BNNwKcCBh-1P1UOACLcBGAsYHQ/s625-rw/money%2Brain.jpg',
+          link: {
+            // [내 애플리케이션] > [플랫폼] 에서 등록한 사이트 도메인과 일치해야 함
+            webUrl: 'http://127.0.0.1:8000/',
+          },
+        },
+        social: {
+          likeCount: {{ post.like_users.count }},
+        },
+        buttons: [
+          {
+            title: '웹으로 보기',
+            link: {
+              webUrl: 'http://127.0.0.1:8000/markets/{{ post.pk }}/',
+            },
+          },
+        ],
+      });
+    }
+  </script>
 {% endblock content %}
 
 {% block script %}

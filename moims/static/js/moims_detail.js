@@ -1,24 +1,45 @@
-// 공유
+// 공유하기
+
+const shareBtn = document.querySelector('#moims--detail--share')
+const shareCollapse = document.querySelector('.moims--detail--share--collapse')
+
+if (shareBtn) {
+  shareBtn.addEventListener('click', (event) => {
+    if (shareCollapse.classList.contains('d-none')) {
+      shareCollapse.classList.remove('d-none')
+    } else {
+      shareCollapse.classList.add('d-none')
+    }
+  })
+  
+  document.addEventListener('click', (event) => {
+    const target = event.target
+    if (!shareBtn.contains(target) && !shareCollapse.contains(target)) {
+      shareCollapse.classList.add('d-none')
+    }
+  })
+}
 
 document.addEventListener('DOMContentLoaded', function() {
 
-  document.getElementById('moims--detail--share').addEventListener('click', function() {
-      var currentUrl = window.location.href
-      var tempInput = document.createElement('input')
+  document.getElementById('moims--detail--share--url').addEventListener('click', function() {
+    shareCollapse.classList.add('d-none')
 
-      tempInput.value = currentUrl
-      document.body.appendChild(tempInput)
+    var currentUrl = window.location.href
+    var tempInput = document.createElement('input')
 
-      tempInput.select()
+    tempInput.value = currentUrl
+    document.body.appendChild(tempInput)
 
-      document.execCommand('copy')
- 
-      document.body.removeChild(tempInput)
+    tempInput.select()
 
-      alert('URL이 복사되었습니다!')
+    document.execCommand('copy')
+
+    document.body.removeChild(tempInput)
+
+    alert('URL이 복사되었습니다!')
   })
 })
-
 
 // 댓글
 const commentStartBtn = document.querySelector('.moims--detail--section--commentcreate--btn')
@@ -90,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
           .then((response) => {
             const CommentContent = listDiv.querySelector('.moims--detail--comment--content--text')
-            CommentContent.textContent = response.data.commentContent
+            CommentContent.innerHTML = response.data.commentContent.replace(/\n/g, "<br>")
 
             CommentUpdateForm.classList.add('d-none')
           })
@@ -173,9 +194,23 @@ likeForm.addEventListener('submit', function (event) {
           if (likeAlert.style.display == 'none') {
             const likeAlertH1 = likeAlert.querySelector('h1')
             const likeAlertA = likeAlert.querySelector('a')
-
-            likeAlertH1.textContent = '관심목록에 추가됐어요.'
-            likeAlertA.textContent = '관심목록보기'
+            
+            if (!likeAlertH1) {
+              const newH1 = document.createElement('h1')
+              newH1.textContent = "관심목록에 추가됐어요."
+              likeAlert.innerHTML = ''
+              likeAlert.appendChild(newH1)
+            } else {
+              likeAlertH1.textContent = '관심목록에 추가됐어요.'
+            }
+            
+            if (!likeAlertA) {
+              const newA = document.createElement('a')
+              newA.textContent = '관심목록보기'
+              likeAlert.appendChild(newA)
+            } else {
+              likeAlertA.textContent = '관심목록보기'
+            }
 
             likeAlert.style.display = 'flex'
             likeAlert.style.opacity = '1'
@@ -261,7 +296,9 @@ joinForm.addEventListener('submit', function (event) {
 
         if (isJoined == true) {
           joinSubmit.textContent = '탈퇴하기'
-          kakaoBtn2.classList.remove('d-none')
+          if (kakaoBtn2) {
+            kakaoBtn2.classList.remove('d-none')
+          }
           requestUserCarousel.classList.remove('d-none')
           memberCount1.textContent = parseInt(memberCount1.textContent) + 1
           memberCount2.textContent = parseInt(memberCount2.textContent) + 1
@@ -298,7 +335,9 @@ joinForm.addEventListener('submit', function (event) {
           if (kakaoBtn1) {
             kakaoBtn1.classList.add('d-none')
           }
-          kakaoBtn2.classList.add('d-none')
+          if (kakaoBtn2) {
+            kakaoBtn2.classList.add('d-none')
+          }
         }
 
       }
@@ -312,9 +351,11 @@ joinForm.addEventListener('submit', function (event) {
 // 디테일 카카오톡
 const kakaoBtns = document.querySelectorAll('.moims--detail--botnavbar--kakao')
 
-kakaoBtns.forEach((btn) => {
-  btn.addEventListener('click', (event) => {
-    const kakaoUrl = event.target.dataset.kakaoUrl
-    window.open(kakaoUrl)
+if (kakaoBtns) {
+  kakaoBtns.forEach((btn) => {
+    btn.addEventListener('click', (event) => {
+      const kakaoUrl = event.target.dataset.kakaoUrl
+      window.open(kakaoUrl)
+    })
   })
-})
+}

@@ -2,6 +2,7 @@
   min-height: 100vh;
   padding: 0 10px;
   width: 100%;
+  position: relative;
 }
 
 /* moims/index/header */
@@ -17,25 +18,13 @@
 }
 
 .moims--index--container {
-  width: 800px;
+  width: 1000px;
   margin: 0 auto;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 100%;
-}
-
-@media(max-width: 800px) {
-  .moims--index--container {
-    margin-left: 0;
-    width: 100%;
-    padding: 0;
-  }
-
-  .moims--index--header {
-    top: 0;
-  }
 }
 
 .moims--index--header .bi-chevron-down {
@@ -391,6 +380,7 @@
 .moims--create--container {
   width: 400px;
   margin: 40px auto;
+  margin-bottom: 60px;
   min-height: 100vh;
 }
 
@@ -476,7 +466,7 @@ input[type=file]::file-selector-button {
 
 .moims--index--create {
   position: sticky;
-  margin-left: 70%;
+  margin-left: 72%;
   bottom: 20px;
 }
 
@@ -497,9 +487,41 @@ input[type=file]::file-selector-button {
   transform: scale(1.05);
 }
 
+.moims--index--empty {
+  width: 100%;
+  height: 800px;
+  padding-top: 200px;
+  text-align: center;
+  color: rgb(112 112 112);
+  font-weight: bold;
+  font-size: 23px;
+}
+
+@media(max-width: 1000px) {
+  .moims--index--container {
+    margin-left: 0;
+    width: 100%;
+    padding: 0;
+  }
+
+  .moims--index--create {
+    margin-left: 90%;
+  }
+}
+
 @media(max-width: 800px) {
   .moims--index--create {
-    bottom: 100px;
-    margin-left: 80%;
+    bottom: 80px;
+    margin-left: 88%;
+  }
+
+  .moims--index--header {
+    top: 0;
+  }
+}
+
+@media(max-width: 600px) {
+  .moims--index--create {
+    margin-left: 84%;
   }
 }

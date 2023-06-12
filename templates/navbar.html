@@ -5,24 +5,29 @@
 
 <nav class="nav--bar" style="font-family: 'SpoqaHanSansNeo-Regular';">
     <div class="nav--container">
-        <a href="{% url 'index' %}">
-            <div class="nav--logo">
+        <div class='nav--container--logobox'>
+            <a class="nav--logo" href="{% url 'index' %}">
                 {% comment %} <img src="{% static 'image/logo_icon.png' %}" alt="Logo"> {% endcomment %}
                 <svg width="36px" height="36px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2.5 9.5L12 4L21.5 9.5" stroke="#34568b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M7 21V20C7 17.2386 9.23858 15 12 15V15C14.7614 15 17 17.2386 17 20V21" stroke="#34568b" stroke-width="1.5"></path> <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="#34568b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                 <div class="nav-logo--text">
-                  혼거동락</div>
-            </div>
-        </a>
-        <div class="nav--links">
-            <a href="{% url 'communities:index' %}">커뮤니티</a>
-            <a href="{% url 'markets:index' %}">플리마켓</a>
-            <a href="{% url 'moims:index' %}">모임</a>
+                  혼거동락
+                </div>
+              </a>
+
+              {% if 'cscenter' in request.path %}
+                <a href="{% url 'cscenter:index' %}" class='nav--container--logobox--cscenter' style='font-size: 18px; margin-left: 5px;'>| 고객센터</a>
+              {% endif %}
+        </div>
+        <div class="nav--links"> 
+          <a href="{% url 'moims:index' %}" {% if 'moims' in request.path %}class='nav--links--hover'{% endif %}>모임</a>
+          <a href="{% url 'markets:index' %}" {% if 'markets' in request.path %}class='nav--links--hover'{% endif %}>플리마켓</a>
+          <a href="{% url 'communities:index' %}" {% if 'communities' in request.path %}class='nav--links--hover'{% endif %}>커뮤니티</a>
         </div>
         <div class="nav--links mobile-menu">
           {% comment %} <a href="{% url 'accounts:profile' request.user.username %}">마이 페이지</a> {% endcomment %}
-          <a href="{% url 'communities:index' %}">커뮤니티</a>
-          <a href="{% url 'markets:index' %}">플리마켓</a>
           <a href="{% url 'moims:index' %}">모임</a>
+          <a href="{% url 'markets:index' %}">플리마켓</a>
+          <a href="{% url 'communities:index' %}">커뮤니티</a>
         </div>             
         <div class='nav--bar--right'>
           {% if user.is_authenticated %}
@@ -56,7 +61,9 @@
               <a href="{% url 'accounts:profile' request.user.username %}" style='padding-top: 11px;'>내 프로필</a>
               
               <a href="{% url 'accounts:update' %}">회원정보</a>
-              
+
+              <a href="{% url 'cscenter:index' %}">고객센터</a>
+
               <form action="{% url 'accounts:logout' %}" method="POST">
                 {% csrf_token %}
                 <button>로그아웃</button>
@@ -65,9 +72,7 @@
             
 
           {% else %}
-            <form action="{% url 'accounts:login' %}">
-              <button class="login--button">로그인</button>
-            </form>
+            <a href="{% url 'accounts:login' %}" class="login--button">로그인</a>
           {% endif %}
         </div>
         <a class="hamburger--menu">
@@ -107,6 +112,8 @@
 
           <a href="{% url 'accounts:update' %}">회원정보</a>
 
+          <a href="{% url 'cscenter:index' %}">고객센터</a>
+
           <form action="{% url 'accounts:logout' %}" method="POST">
             {% csrf_token %}
             <button type='submit'>로그아웃</button>
@@ -117,17 +124,17 @@
   </div>
   
   <div class="bottom--nav">
-    <a href="{% url 'communities:index' %}" class="bottom--nav__item">
-      {% if 'communities' in request.path %}
-        <i class="bi bi-chat-dots-fill" style='color: #34568b;'></i>
-        <p style='color: #34568b;'>커뮤니티</p>
+    <a href="{% url 'moims:index' %}" class="bottom--nav__item">
+      {% if 'moims' in request.path %}
+        <i class="bi bi-people-fill" style='color: #34568b;'></i>
+        <p style='color: #34568b;'>모임</p>
       {% else %}
-        <i class="bi bi-chat-dots"></i>
-        <p>커뮤니티</p>
+        <i class="bi bi-people"></i>
+        <p>모임</p>
       {% endif %}
-      <span class="icon-title">커뮤니티</span> 
     </a>
 
+    
     <a href="{% url 'markets:index' %}" class="bottom--nav__item">
       {% if 'markets' in request.path %}
         <i class="bi bi-cart-fill" style='color: #34568b;'></i>
@@ -136,7 +143,6 @@
         <i class="bi bi-cart"></i>
         <p>플리마켓</p>
       {% endif %}
-      <span class="icon-title">플리마켓</span> 
     </a>
 
     <a href="{% url 'index' %}" class="bottom--nav__item">
@@ -147,35 +153,37 @@
         <i class='bi bi-house-door'></i>
         <p>홈</p>
       {% endif %}
-      <span class='icon-title'>홈</span>
     </a>
 
-    <a href="{% url 'moims:index' %}" class="bottom--nav__item">
-      {% if 'moims' in request.path %}
-        <i class="bi bi-people-fill" style='color: #34568b;'></i>
-        <p style='color: #34568b;'>모임</p>
+    <a href="{% url 'communities:index' %}" class="bottom--nav__item">
+      {% if 'communities' in request.path %}
+        <i class="bi bi-chat-dots-fill" style='color: #34568b;'></i>
+        <p style='color: #34568b;'>커뮤니티</p>
       {% else %}
-        <i class="bi bi-people"></i>
-        <p>모임</p>
+        <i class="bi bi-chat-dots"></i>
+        <p>커뮤니티</p>
       {% endif %}
-      <span class="icon-title">모임</span> 
     </a>
 
     {% if user.is_authenticated %}
       <a id="bot_nav--profile--icon" for="modal-toggle" class="bottom--nav__item">
         {% if 'profile' in request.path %}
-          <i class="bi bi-person-fill" style='color: #34568b;'></i>
+        <i class="bi bi-person-fill" style='color: #34568b;'></i>
           <p style='color: #34568b;'>내 메뉴</p>
         {% else %}
           <i class="bi bi-person"></i>
           <p>내 메뉴</p>
         {% endif %}
-        <span class="icon-title">내 메뉴</span> 
       </a>
     {% else %}
       <a href="{% url 'accounts:login' %}" class="bottom--nav__item">
-        <i class="fa-solid fa-right-to-bracket"></i>
-        <span class="icon-title">로그인</span> 
+        {% if 'accounts' in request.path %}
+          <i class="fa-solid fa-right-to-bracket" style='color: #34568b;'></i>
+          <p style='color: #34568b;'>로그인</p>
+        {% else %}
+          <i class="bi bi-box-arrow-right"></i>
+          <p>로그인</p>
+        {% endif %}
       </a>
     {% endif %}
   </div>

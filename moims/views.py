@@ -15,8 +15,26 @@ from django.utils.html import escape
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from django.contrib import messages
+
+
+def maum_limit(view_func):
+    def wrapper(request, *args, **kwargs):
+        if request.user.is_authenticated:
+            if request.user.maum != 100:
+                return view_func(request, *args, **kwargs)
+            else:
+                message = '신고 누적 5회차 이상으로 서비스 이용이 중지 되었습니다.\\n혼거동락팀에게 문의하세요.'
+                messages.error(request, message)
+                return redirect('index')
+        else:
+            return redirect('accounts:login')
+    return wrapper
 
 # Create your views here.
+
+@maum_limit
+@login_required
 def index(request):
     category = request.GET.get('category')
     dis = request.GET.get('dis')    
@@ -39,6 +57,8 @@ def index(request):
 
     return render(request, 'moims/many.html', context)
 
+@maum_limit
+@login_required
 def create(request):
     if request.method == "POST":
         post_form = PostForm(request.POST, request.FILES)
@@ -58,6 +78,8 @@ def create(request):
     }
     return render(request, 'moims/create.html', context)
 
+@maum_limit
+@login_required
 def detail(request, moim_pk):
     post = Post.objects.get(pk=moim_pk)
     comments = post.comments.filter(parent_comment=None)
@@ -82,6 +104,8 @@ def detail(request, moim_pk):
     }
     return render(request, 'moims/detail.html', context)
 
+@maum_limit
+@login_required
 def update(request, moim_pk):
     post = Post.objects.get(pk=moim_pk)
     if request.method == "POST":
@@ -101,12 +125,16 @@ def update(request, moim_pk):
     }
     return render(request, 'moims/update.html', context)
 
+@maum_limit
+@login_required
 def delete(request, moim_pk):
     post = Post.objects.get(pk=moim_pk)
     if request.user == post.user:
         post.delete()
     return redirect('moims:index')
 
+
+@maum_limit
 @login_required
 def likes(request, moim_pk):
     post = Post.objects.get(pk=moim_pk)
@@ -125,6 +153,7 @@ def likes(request, moim_pk):
     context = {'is_liked': is_liked}
     return JsonResponse(context)
 
+@maum_limit
 @login_required
 def joins(request, moim_pk):
     post = Post.objects.get(pk=moim_pk)
@@ -147,6 +176,7 @@ def joins(request, moim_pk):
     context = {'is_joined': is_joined}
     return JsonResponse(context)
 
+@maum_limit
 @login_required
 def comment_create(request, moim_pk, parent_pk):
     post = Post.objects.get(pk=moim_pk)
@@ -168,6 +198,7 @@ def comment_create(request, moim_pk, parent_pk):
 
             return redirect('moims:detail', moim_pk=moim_pk)
  
+@maum_limit
 @login_required
 def comment_update(request, moim_pk, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
@@ -180,6 +211,7 @@ def comment_update(request, moim_pk, comment_pk):
         else:
             print(comment_update_form.errors)
 
+@maum_limit
 @login_required
 def comment_delete(request, moim_pk, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
@@ -195,6 +227,8 @@ def comment_delete(request, moim_pk, comment_pk):
 
     return redirect('moims:detail', moim_pk=moim_pk)
 
+@maum_limit
+@login_required
 def search(request):
     category = request.GET.get('category')
     cate = None

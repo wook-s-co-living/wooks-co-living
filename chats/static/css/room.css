@@ -62,11 +62,6 @@
   font-size: 0.9rem;
   display: block;
 }
-.chat--link span {
-  color: gray;
-  font-weight: 400;
-  font-size: 0.8rem;  
-}
 
 .chat--box {
   display: grid;
@@ -110,11 +105,17 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: gray;
+  font-weight: 400;
+  font-size: 0.8rem;  
 }
 
 .chat--created {
   width: 80px;
   text-align: end;
+  color: gray;
+  font-weight: 400;
+  font-size: 0.8rem;  
 }
 
 #chat-log {
@@ -231,6 +232,7 @@
   margin: 15px 0;
 }
 
+
 .status--logout {
   display: inline-block;
   background-color: gray;
@@ -241,4 +243,10 @@
   display: inline-block;
   background-color: green;
   z-index: 10;
+
+.delete--user {
+  color: black;
+  font-weight: 600;
+  font-size: 0.9rem;
+
 }

@@ -9,7 +9,22 @@
     <div class="chats--container">
       <div class="chats--title">채팅 리스트</div>
         {% for chatroom in chatrooms %}
-          {% if chatroom.user2 != user %}
+          {% if chatroom.user2 is null or chatroom.user1 is null %}
+            <div class="chat--box">
+              <div class="chat--profile">
+                <img src="{% static 'image/noimage.png' %}" alt="noimage">
+              </div>
+              <div class="chat--txt">
+                <div class="delete--user">
+                  탈퇴한 회원
+                </div>
+                <div class="chat--txt--info">
+                  <span class="chat--message">{{ chatroom.get_latest_message.content }}</span>
+                  <span class="chat--created">{{ chatroom.get_latest_message.created_time }}</span>
+                </div>
+              </div>
+            </div>
+          {% elif chatroom.user2 != user %}
             <a href="{% url 'chats:room' chatroom.user2.first_name %}" class="chat--link" id="{{chatroom.user2}}">
               <div class="chat--box">
                 {% if chatroom.user2.image %}

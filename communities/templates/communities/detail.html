@@ -44,6 +44,20 @@
             <i class="bi bi-share"></i>
           </button>
 
+          <div class='communities--detail--share--collapse d-none'>
+            <button id='communities--detail--share--collapse--url'>
+              <i class="bi bi-cloud-arrow-up-fill"></i> <span>URL</span>
+            </button>
+  
+            <a href="https://twitter.com/intent/tweet?text=혼거동락_{{ post.title }}&url=http://127.0.0.1:8000/markets/{{ post.pk }}/" data-toggle="tooltip" data-placement="top" title="" target="_blank" rel="noopener" aria-label="Twitter" data-original-title="Twitter">
+              <i class="bi bi-twitter"></i> <span>Twitter</span>
+            </a>
+  
+            <a id="kakaotalk-sharing-btn" href="javascript:shareMessage()">
+              <i class="bi bi-chat-fill"></i> <span>KaKao</span>
+            </a>
+          </div>
+
           <form id='communities--detail--scrape' data-post-id="{{ post.pk }}">
             {% csrf_token %}
             <button type='submit'>
@@ -84,7 +98,7 @@
       <footer class='communities--detail--section--footer'>
         <header>
           {% for tag in post.tags.all %}
-            <a href="{% url 'communities:index' %}?tag=tag">#{{ tag }}</a>
+            <a href="{% url 'communities:index' %}?tag={{ tag }}">#{{ tag }}</a>
           {% endfor %}
         </header>
 
@@ -127,10 +141,8 @@
 
         <form id='communities--detail--section--commentcreate' style='display: none;' action="{% url 'communities:comment_create' post.pk 0 %}" method="POST">
           {% csrf_token %}
-          <div class='comment-ckeditor'>
-            {{ comment_form.media }}
-            {{ comment_form.content }}
-          </div>
+          {{ comment_form.content }}
+
           <div class='d-flex flex-row-reverse mt-2'>
             <button class='comment-submit' type='submit'>등록</button>
             <button class='comment-cancle' type='button'>취소</button>
@@ -162,15 +174,25 @@
 
               <div class='communities--detail--section--commentlist--headerend'>
                 <div>
-                  <button class='recomment--create--button'>
-                    <i class="bi bi-chat-fill"></i> 
-                    댓글
-                  </button>
+                  <form class='communities--detail--section--likeform' data-post-id="{{ post.pk }}" data-comment-id="{{ comment.pk }}">
+                    {% csrf_token %}
+                    <button class='section--likeform--dislikebtn' name='like_value' value='dislike' type='submit'>
+                      <i class="bi bi-chevron-down" {% if request.user in comment.dislike_users.all %}style='color: rgb(214, 38, 7);'{% endif %}></i>
+                    </button>
+        
+                    <div class='section--likeform--likecount' style='justify-content: center;'>
+                      {{ comment.likes_count }}
+                    </div>
+        
+                    <button class='section--likeform--likebtn' name='like_value' value='like' type='submit'>
+                      <i class="bi bi-chevron-up" {% if request.user in comment.like_users.all %}style='color: rgb(0, 185, 222);'{% endif %}></i>
+                    </button>
+                  </form>
                   
                   {% if request.user == comment.user %}
                     <form action="{% url 'communities:comment_delete' post.pk comment.pk %}" method="POST">
                       {% csrf_token %}
-                      <button type='submit'>삭제</button>
+                      <button type='submit' class='pe-0' style='margin-top: 11.5px;'>삭제</button>
                     </form>
 
                     <button class='comment--update--button'>
@@ -183,19 +205,24 @@
 
             <section class='communities--detail--section--commentlist--content'>
               <span class='communities--detail--comment--content--text'>
-                {{ comment.content|safe }}
+                {{ comment.content|linebreaksbr }}
               </span>
             </section>
+
+            <footer class='communities--detail--section--commentlist--create'>
+              <button class='recomment--create--button'>
+                <i class="bi bi-chat-fill"></i> 
+                댓글 쓰기
+              </button>
+            </footer>
 
           </div>
 
           <div class='communities--detail--section--comment--updateform d-none' style='padding-left: calc(20px + 2 * {{ comment.depth }}px);'>
             <form data-post-id="{{ post.pk }}" data-comment-id="{{ comment.pk }}">
               {% csrf_token %}
-              <div class='comment-ckeditor' id='editor-{{ comment.pk }}'>
-                {{ comment_form.media }}
-                {{ comment|get_communities_comment_update_form|safe }}
-              </div>
+              {{ comment|get_communities_comment_update_form|safe }}
+
               <div class='d-flex flex-row-reverse'>
                 <button class='comment-submit' type='submit'>등록</button>
                 <button class='comment-cancle' type='button'>취소</button>
@@ -210,10 +237,8 @@
                 <span class='communities--detail--recomment--tag'>@{{ comment.user.first_name }}</span>
               </div>
               {% csrf_token %}
-              <div class='comment-ckeditor' id='editor-{{ comment.pk }}{{ comment.pk }}'>
-                {{ comment_form.media }}
-                {{ comment_form.content }}
-              </div>
+              {{ comment_form.content }}
+
               <div class='d-flex flex-row-reverse'>
                 <button class='comment-submit' type='submit'>등록</button>
                 <button class='comment-cancle' type='button'>취소</button>
@@ -242,15 +267,10 @@
   </div>
 </div>
 
-
-<div style='height: 600px;'></div>
-
 <script src="{% static 'js/communities_detail.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
-<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/translations/ko.js"></script>
 <script>
-  /*
   {% if comment %}
     $(document).ready(function() {
       var targetScrollPosition = $('#{{ comment_section_id }}').offset().top - 100;
@@ -260,22 +280,38 @@
       }, 500);
     });
   {% endif %}
-  */
-
-  ClassicEditor.create( document.querySelector( '#editor' ), {
-    language: "ko"
-  } );
-
-  var editorContainers = document.querySelectorAll('.communities--detail--section--commentitem .comment-ckeditor');
-
-  // Iterate over each container and initialize CKEditor
-  editorContainers.forEach(function(container) {
-    ClassicEditor
-      .create(container)
-      .catch(error => {
-        console.error(error);
-      });
-  });
 </script>
-
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.2.0/kakao.min.js"
+  integrity="sha384-x+WG2i7pOR+oWb6O5GV5f1KN2Ko6N7PTGPS7UlasYWNxZMKQA63Cj/B2lbUmUfuC" crossorigin="anonymous"></script>
+<script>
+  Kakao.init('{{ KAKAO_JS_KEY }}'); // 사용하려는 앱의 JavaScript 키 입력
+</script>
+<script>
+  function shareMessage() {
+    Kakao.Share.sendDefault({
+      objectType: 'feed',
+      content: {
+        title: '{{ post.title }}',
+        description: '커뮤니티',
+        imageUrl: 'https://pbs.twimg.com/media/FKQuyJjXEAQvzeq.jpg',
+        link: {
+          // [내 애플리케이션] > [플랫폼] 에서 등록한 사이트 도메인과 일치해야 함
+          webUrl: 'http://127.0.0.1:8000/',
+        },
+      },
+      social: {
+        likeCount: {{ post.like_users.count }},
+        commentCount: {{ post.comments.count }},
+      },
+      buttons: [
+        {
+          title: '웹으로 보기',
+          link: {
+            webUrl: 'http://127.0.0.1:8000/communities/{{ post.pk }}/',
+          },
+        },
+      ],
+    });
+  }
+</script>
 {% endblock content %}

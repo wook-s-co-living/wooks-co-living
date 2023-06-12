@@ -6,8 +6,30 @@ from django.http import JsonResponse
 from django.db.models import Q, Count
 from taggit.models import Tag
 from datetime import datetime, timedelta
+from django.contrib import messages
+from django.contrib.auth import get_user_model
+import os
+from dotenv import load_dotenv
+load_dotenv()
+KAKAO_JS_KEY = os.getenv('KAKAO_JS_KEY')
+KAKAO_API_KEY = os.getenv('KAKAO_API_KEY')
+
+def maum_limit(view_func):
+    def wrapper(request, *args, **kwargs):
+        if request.user.is_authenticated:
+            if request.user.maum != 100:
+                return view_func(request, *args, **kwargs)
+            else:
+                message = '신고 누적 5회차 이상으로 서비스 이용이 중지 되었습니다.\\n혼거동락팀에게 문의하세요.'
+                messages.error(request, message)
+                return redirect('index')
+        else:
+            return redirect('accounts:login')
+    return wrapper
 
 # Create your views here.
+@maum_limit
+@login_required
 def index(request):
     all_posts = Post.objects.all()
     categories = Post.objects.values_list('category', flat=True).distinct()
@@ -15,21 +37,33 @@ def index(request):
     category = request.GET.get('category')
     q = request.GET.get('q')
     tag = request.GET.get('tag')
+    sort = request.GET.get('sort')
 
-    if category:
-        posts = Post.objects.filter(category=category).order_by('-created_at')
+    if category and category != 'null':
+        if category == '건물 소식':
+            posts = Post.objects.filter(user__building=request.user.building, category=category).order_by('-created_at')
+        else:
+            posts = Post.objects.filter(category=category).order_by('-created_at')
     else:
         posts = Post.objects.all().order_by('-created_at')
 
     if q:
         posts = posts.filter(
             Q(title__icontains=q) |
-            Q(content__icontains=q) |
-            Q(user__username__icontains=q)
+            Q(tags__name__icontains=q)
         ).distinct()
         
-    if tag:
+    if tag and tag != 'null':
         posts = posts.filter(tags__name=tag)
+
+    if sort:
+        posts = index_sort(sort, posts)
+    else:
+        posts = posts.order_by('-pk')
+
+    top_writers = get_user_model().objects.exclude(Q(is_superuser=True) | Q(groups__name='admin') | Q(user_permissions__codename='admin') | Q(score=0)).order_by('-score')[:5]
+
+    weekly_best_posts = Post.objects.annotate(likes_diff=Count('like_users') - Count('dislike_users')).exclude(likes_diff=0).order_by('-likes_diff')[:5]
 
     # Get the tags related to the filtered posts
     filtered_tags = Tag.objects.filter(post__in=all_posts).annotate(num_times=Count('taggit_taggeditem_items')).order_by('-num_times')[:10]
@@ -40,10 +74,27 @@ def index(request):
         'filtered_tags': filtered_tags,
         'category': category,
         'all_posts': all_posts,
+        'top_writers': top_writers,
+        'weekly_best_posts': weekly_best_posts,
     }
     return render(request, 'communities/index.html', context)
 
+@maum_limit
+@login_required
+def index_sort(o, queryset):
+    if o == '최신순':
+        return queryset.order_by('-pk')
+    elif o == '추천순':
+        return queryset.annotate(likes_diff=Count('like_users') - Count('dislike_users')).order_by('-likes_diff')
+    elif o == '댓글순':
+        return queryset.annotate(comment_count=Count('comments')).order_by('-comment_count')
+    elif o == '스크랩순':
+        return queryset.annotate(scrape_count=Count('scrape_users')).order_by('-scrape_count')
+    elif o == '조회순':
+        return queryset.order_by('-views')
 
+@maum_limit
+@login_required
 def category(request, category):
     posts = Post.objects.filter(category=category).order_by('-created_at')
     context = {
@@ -51,6 +102,7 @@ def category(request, category):
     }
     return render(request, 'communities/category.html')
 
+@maum_limit
 @login_required
 def create(request):
     if request.method == "POST":
@@ -65,6 +117,8 @@ def create(request):
                 if tag != '':
                     post.tags.add(tag)
             post.save()
+            request.user.score += 5
+            request.user.save()
             return redirect('communities:detail', post.pk)
     else:
         post_form = PostForm()
@@ -73,6 +127,8 @@ def create(request):
     }
     return render(request, 'communities/create.html', context)
 
+@maum_limit
+@login_required
 def detail(request, post_pk):
     post = Post.objects.get(pk=post_pk)
     comments = post.comments.filter(parent_comment=None)
@@ -98,7 +154,8 @@ def detail(request, post_pk):
         'comment_form': comment_form,
         'comment': comment,
         'comment_section_id': comment_section_id,
-        'likes_count': post.like_users.count()-post.dislike_users.count()
+        'likes_count': post.like_users.count()-post.dislike_users.count(),
+        'KAKAO_JS_KEY': KAKAO_JS_KEY,
     }
     response = render(request, 'communities/detail.html', context)
 
@@ -118,15 +175,22 @@ def detail(request, post_pk):
         post.save()
     return response
 
+@maum_limit
+@login_required
 def delete(request, post_pk):
     post = Post.objects.get(pk=post_pk)
     if post.user == request.user:
         post.delete()
+        request.user.score -= 5
+        request.user.save()
     return redirect('communities:index')
 
+@maum_limit
+@login_required
 def update(request, post_pk):
     post = Post.objects.get(pk=post_pk)
     if request.method == "POST":
+        post.tags.clear()
         tags = request.POST.get('tag','').split(',')
         update_form = PostForm(request.POST, instance=post)
         if update_form.is_valid():
@@ -145,6 +209,7 @@ def update(request, post_pk):
     }
     return render(request, 'communities/update.html', context)
 
+@maum_limit
 @login_required
 def scrapes(request, post_pk):
     post = Post.objects.get(pk=post_pk)
@@ -166,6 +231,7 @@ def scrapes(request, post_pk):
 
     return JsonResponse(context)
 
+@maum_limit
 @login_required
 def likes(request, post_pk):
     post = Post.objects.get(pk=post_pk)
@@ -217,6 +283,7 @@ def likes(request, post_pk):
 
     return JsonResponse(context)
 
+@maum_limit
 @login_required
 def comment_create(request, post_pk, parent_pk):
     post = Post.objects.get(pk=post_pk)
@@ -233,25 +300,35 @@ def comment_create(request, post_pk, parent_pk):
                 if comment.depth > 50:
                     comment.depth = 10
             comment.save()
+            request.user.score += 1
+            request.user.save()
             request.session['comment_pk'] = comment.pk
 
             return redirect('communities:detail', post.pk)
 
+@maum_limit
+@login_required
 def comment_update(request, post_pk, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
     if request.method == "POST":
         comment_update_form = CommentForm(request.POST, instance=comment)
         if comment_update_form.is_valid():
             comment_update_form.save()
-            return redirect('communities:detail', post_pk)
+            context = {'commentContent': request.POST.get('comment-content')}
+            return JsonResponse(context)
         else:
             print(comment_update_form.errors)
-        
+
+            
+@maum_limit              
+@login_required
 def comment_delete(request, post_pk, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
 
     if request.user == comment.user:
         comment.delete()
+        request.user.score -= 1
+        request.user.save()
 
     post = Post.objects.get(pk=post_pk)
     comments = post.comments.filter(parent_comment=None)
@@ -261,20 +338,34 @@ def comment_delete(request, post_pk, comment_pk):
 
     return redirect('communities:detail', post_pk)
 
+@maum_limit
 @login_required
 def comment_likes(request, post_pk, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
-    if request.user in comment.like_users.all():
-        comment.like_users.remove(request.user)
-        comment_is_liked = False
-    else:
-        comment.like_users.add(request.user)
-        comment_is_liked = True
-    context = {
-        'comment_is_liked': comment_is_liked
-    }
-    return JsonResponse(context)
+    like_value = request.POST.get("like_value")
 
+    if comment.user == request.user:
+        error_message = "자신의 댓글은 추천할 수 없습니다."
+        return JsonResponse({"error": error_message})
+
+    if like_value == "like":
+        if comment.like_users.filter(pk=request.user.pk).exists():
+            comment.like_users.remove(request.user)
+            is_liked = False
+            is_disliked = False
+
+        elif comment.dislike_users.filter(pk=request.user.pk).exists():
+            comment.dislike_users.remove(request.user)
+            comment.like_users.add(request.user)
+            is_liked = True
+            is_disliked = False
+
+        else:
+            comment.like_users.add(request.user)
+            is_liked = True
+            is_disliked = False
+
+@maum_limit
 @login_required
 def comment_dislikes(request, post_pk, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
@@ -282,9 +373,25 @@ def comment_dislikes(request, post_pk, comment_pk):
         comment.dislike_users.remove(request.user)
         comment_is_disliked = False
     else:
-        comment.dislike_users.add(request.user)
-        comment_is_disliked = True
+        if comment.dislike_users.filter(pk=request.user.pk).exists():
+            comment.dislike_users.remove(request.user)
+            is_liked = False
+            is_disliked = False
+
+        elif comment.like_users.filter(pk=request.user.pk).exists():
+            comment.like_users.remove(request.user)
+            comment.dislike_users.add(request.user)
+            is_liked = False
+            is_disliked = True
+
+        else:
+            comment.dislike_users.add(request.user)
+            is_liked = False
+            is_disliked = True
+
     context = {
-        'comment_is_disliked': comment_is_disliked
+        "is_liked": is_liked,
+        "is_disliked": is_disliked,
+        "comment_like": comment.like_users.count()-comment.dislike_users.count()
     }
     return JsonResponse(context)
