@@ -57,3 +57,5 @@ def room(request, first_name):
     }
 
     return render(request, "chats/room.html", context)
+
+

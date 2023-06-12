@@ -92,12 +92,28 @@ document.querySelector('#chat-message-submit').onclick = function(e) {
         'retriever': retriever,
     }));
     
-    alarmSocket.send(JSON.stringify({
-        'content': message,
+    navAlarmSocket.send(JSON.stringify({
+        'message': message,
         'sender': currentUser,
         'retriever': retriever,
         'roomName': roomName,
     }))
+
+    indexSocket.send(JSON.stringify({
+        'message': message,
+        'sender': currentUser,
+        'retriever': retriever,
+        'roomName': roomName,
+    }))
+
+    loginSocket.send(JSON.stringify({
+        'message': message,
+        'sender': currentUser,
+        'retriever': retriever,
+        'roomName': roomName,
+    }))
+
+    
 messageInputDom.value = '';
 };
 
