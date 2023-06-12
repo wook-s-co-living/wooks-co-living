@@ -12,80 +12,86 @@
   <div class='communities--index--container'>
     
     {% comment %} Top writers {% endcomment %}
-    <div class='communities--index--topwriters'>
-      <h1>Top Writers</h1>
+    {% if top_writers %}
+      <div class='communities--index--topwriters'>
+        <h1>Top Writers</h1>
 
-      {% for top_writer in top_writers %}
-        <a class='communities--index--topwriters-item' href="{% url 'accounts:profile' top_writer.username %}">
-          <header>
+        {% for top_writer in top_writers %}
+          <a class='communities--index--topwriters-item' href="{% url 'accounts:profile' top_writer.username %}">
             <header>
-              {% if top_writer.image %}
-                <img src="{{ top_writer.image.url }}" alt="{{ top_writer.username }}">
-              {% else %}
-                <img src="{% static 'image/noimage.png' %}" alt="noimage">
-              {% endif %}
-            </header>
-
-            <div>
-              {{ top_writer.first_name }}
-            </div>
-          </header>
-
-          <section>
-            <i class="bi bi-lightning-fill"></i> 
-            {{ top_writer.score }}
-          </section>
-        </a>
-      {% endfor %}
-    </div>
-
-    {% comment %} weekly best {% endcomment %}
-    <div class='communities--index--weeklybest'>
-      <h1>Weekly Best</h1>
-
-      <div class='communities--index--weeklybest--section'>
-        {% for post in weekly_best_posts %}
-          <a class='communities--index--weeklybest--section--item' href="{% url 'communities:detail' post.pk %}">
-            <section>
-              {{ post.title }}
-            </section>
-
-            <footer>
               <header>
-                <header>
-                  {% if post.user.image %}
-                    <img src="{{ post.user.image.url }}" alt="{{ post.user.username }}">
-                  {% else %}
-                    <img src="{% static 'image/noimage.png' %}" alt="noimage">
-                  {% endif %}
-                </header>
-  
-                <div>
-                  {{ post.user.first_name }}
-                </div>
+                {% if top_writer.image %}
+                  <img src="{{ top_writer.image.url }}" alt="{{ top_writer.username }}">
+                {% else %}
+                  <img src="{% static 'image/noimage.png' %}" alt="noimage">
+                {% endif %}
               </header>
 
-              <footer>
-                <i class="bi bi-hand-thumbs-up"></i> <span>{{ post.likes_count }}</span>
-              </footer>
-            </footer>
+              <div>
+                {{ top_writer.first_name }}
+              </div>
+            </header>
+
+            <section>
+              <i class="bi bi-lightning-fill"></i> 
+              {{ top_writer.score }}
+            </section>
           </a>
         {% endfor %}
       </div>
-    </div>
+    {% endif %}
+
+    {% comment %} weekly best {% endcomment %}
+    {% if weekly_best_posts %}
+      <div class='communities--index--weeklybest'>
+        <h1>Weekly Best</h1>
+
+        <div class='communities--index--weeklybest--section'>
+          {% for post in weekly_best_posts %}
+            <a class='communities--index--weeklybest--section--item' href="{% url 'communities:detail' post.pk %}">
+              <section>
+                {{ post.title }}
+              </section>
+
+              <footer>
+                <header>
+                  <header>
+                    {% if post.user.image %}
+                      <img src="{{ post.user.image.url }}" alt="{{ post.user.username }}">
+                    {% else %}
+                      <img src="{% static 'image/noimage.png' %}" alt="noimage">
+                    {% endif %}
+                  </header>
+    
+                  <div>
+                    {{ post.user.first_name }}
+                  </div>
+                </header>
+
+                <footer>
+                  <i class="bi bi-hand-thumbs-up"></i> <span>{{ post.likes_count }}</span>
+                </footer>
+              </footer>
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
 
     {% comment %} Top tags {% endcomment %}
-    <div class='communities--index--toptags'>
-      <h1>Top Tags</h1>
+    {% if filtered_tags %}
+      <div class='communities--index--toptags'>
+        <h1>Top Tags</h1>
 
-      <div class='communities--index--toptags--section'>
-        {% for tag in filtered_tags %}
-          {% if tag.num_times != 0 %}
-            <a class='communities--index--toptags--item' href="{% url 'communities:index' %}?tag={{ tag }}">#{{ tag }}</a>
-          {% endif %}
-        {% endfor %}
+        <div class='communities--index--toptags--section'>
+          {% for tag in filtered_tags %}
+            {% if tag.num_times != 0 %}
+              <a class='communities--index--toptags--item' href="{% url 'communities:index' %}?tag={{ tag }}">#{{ tag }}</a>
+            {% endif %}
+          {% endfor %}
+        </div>
       </div>
-    </div>
+    {% endif %}
 
     {% comment %} 카테고리 {% endcomment %}
     <form class='communities--index--category' action="{% url 'communities:index' %}">

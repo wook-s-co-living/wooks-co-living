@@ -902,3 +902,7 @@ hr {
   color: #34568b;
   font-size: 1.2rem;
 }
+
+.bot_nav--modal--content {
+  line-height: 1;
+}

@@ -32,6 +32,20 @@
         <button id='moims--detail--share'>
           <i class="bi bi-share"></i>
         </button>
+
+        <section class='moims--detail--share--collapse d-none'>
+          <button id='moims--detail--share--url'>
+            <i class="bi bi-cloud-arrow-up-fill"></i> <span>URL</span>
+          </button>
+      
+          <a href="https://twitter.com/intent/tweet?text=혼거동락_{{ post.title }}&url=http://127.0.0.1:8000/moims/{{ post.pk }}/" data-toggle="tooltip" data-placement="top" title="" target="_blank" rel="noopener" aria-label="Twitter" data-original-title="Twitter">
+            <i class="bi bi-twitter"></i> <span>Twitter</span>
+          </a>
+      
+          <a id="kakaotalk-sharing-btn" href="javascript:shareMessage()">
+            <i class="bi bi-chat-fill"></i> <span>KaKao</span>
+          </a>
+        </section>
       </header>
 
       <section class='moims--detail--section'>
@@ -306,11 +320,6 @@
     </div>
   </div>
 
-  <!--공유하기-->
-  <a href="https://twitter.com/intent/tweet?text=혼거동락_{{ post.title }}&url=http://127.0.0.1:8000/moims/{{ post.pk }}/" data-toggle="tooltip" data-placement="top" title="" target="_blank" rel="noopener" aria-label="Twitter" data-original-title="Twitter">트위터 내보내기 버튼</a>
-  <a id="kakaotalk-sharing-btn" href="javascript:shareMessage()">카카오톡 공유 보내기 버튼</a>
-
-
 {% comment %} <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> {% endcomment %}
 <script src="{% static 'js/moims_detail.js' %}"></script>
 <!--지도 생성 script-->
@@ -444,7 +453,7 @@
       if (positions[i].title !== '현재 위치') {
         iwContent += '<a href="https://map.kakao.com/link/to/' +
           positions[i].title + ',' + lat + ',' + lng +
-          '" style="color:blue" target="_blank">길찾기</a>';
+          '" class="moims--detail--map--target" target="_blank"><i class="fa-solid fa-location-arrow"></i><span>길찾기</span></a>';
       }
   
       iwContent += '</div>';
@@ -499,7 +508,7 @@
       objectType: 'feed',
       content: {
         title: '{{ post.title }}',
-        description: '{{ post.content }}',
+        description: '모임',
         imageUrl: 'https://i.pinimg.com/originals/02/0b/5c/020b5c474a758dd57e8e689e06514ab0.jpg',
         link: {
           // [내 애플리케이션] > [플랫폼] 에서 등록한 사이트 도메인과 일치해야 함
