@@ -38,6 +38,7 @@ def index(request):
     }
     return render(request, 'cscenter/index.html', context)
 
+@login_required
 def create(request):
     if request.method == "POST":
         post_form = PostForm(request.POST)
