@@ -135,21 +135,22 @@ if (navbarBellCollapse) {
   })
 }
 
+var protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
 var loginSocket;
 var navAlarmSocket;
 var indexSocket;
 
 if (!loginSocket || loginSocket.readyState !== WebSocket.OPEN) { 
   // 만약 소켓이 없으면 소켓 생성 -> 로그인을 의미하는 socket생성
-  loginSocket = new WebSocket('ws://' + window.location.host + '/ws/login/');
+  loginSocket = new WebSocket(protocol + '//' + window.location.host + '/ws/login/');
 }
 if (!navAlarmSocket || navAlarmSocket.readyState !== WebSocket.OPEN) { 
   // 만약 소켓이 없으면 소켓 생성 -> 로그인을 의미하는 socket생성
-  navAlarmSocket = new WebSocket('ws://' + window.location.host + '/ws/alarm/');
+  navAlarmSocket = new WebSocket(protocol + '//' + window.location.host + '/ws/alarm/');
 }
 if (!indexSocket || indexAlarmSocket.readyState !== WebSocket.OPEN) { 
   // 만약 소켓이 없으면 소켓 생성 -> 로그인을 의미하는 socket생성
-  indexSocket = new WebSocket('ws://' + window.location.host + '/ws/index/');
+  indexSocket = new WebSocket(protocol + '//' + window.location.host + '/ws/index/');
 }
 const currentUser2 = document.getElementById('currentUser').value;
 
@@ -167,6 +168,7 @@ navAlarmSocket.onmessage = (event) => {
     console.log(chatSocket.url)
   }
   const data = JSON.parse(event.data);
+  console.log(data)
   const sender = data.sender
   const retriever = data.retriever
   const content = data.content
@@ -182,7 +184,8 @@ navAlarmSocket.onmessage = (event) => {
       aTags[0].remove(); // 첫 번째 <a> 태그 제거
     }
 
-    navBarBellCollapse.innerHTML += `<a href=/chats/${sendername}>${sendername}이(가) 메세지를 보냈습니다</a>`
+    navBarBellCollapse.innerHTML += `<a href=/chats/${sendername}><span>${sendername}</span>님이 메세지를 보냈어요.</a>`
+
     document.querySelector('.nav--bar--bell--red').classList.remove('d-none');
   }
   

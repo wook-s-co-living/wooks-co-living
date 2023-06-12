@@ -358,6 +358,9 @@ input[id="tab06"]:checked ~ .card6 {
   position: absolute;
   top: 40px;
   right: 10px;
+  color: darkred;
+}
+.report--btn:hover {
   color: red;
 }
 
@@ -399,6 +402,17 @@ input[id="tab06"]:checked ~ .card6 {
   text-align: center;
   padding: 5px 10px;
   border-radius: 8px;
+}
+.profile--chatbtn {
+  width: 100%;
+  background-color: #34568b;
+  font-size: 0.8rem;
+  color: white;
+  border: none;
+  text-align: center;
+  padding: 5px 10px;
+  border-radius: 8px;
+  text-decoration: none;
 }
 
 .maum {

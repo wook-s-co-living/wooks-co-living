@@ -118,7 +118,7 @@
           </div>
           {% if request.user == post.user %}
             <div>
-              <h5><a href="{% url 'markets:update' post.pk %}" style="margin-right:8px;">수정</a> <a href="{% url 'markets:delete' post.pk %}"  onclick="return confirm('삭제하시겠습니까?')">삭제</a></h5>
+              <h5><a href="{% url 'markets:update' post.pk %}" style="margin-right:8px;">수정</a> <a href="{% url 'markets:delete' post.pk %}"  onclick="return confirm('삭제하시겠습니까?')">삭제</a> {% if post.sale_status != '판매중' %}<span class='detail--sale--status'>{{ post.sale_status }}</span>{% endif %}</h5>
             </div>
           {% endif %}
         </div>
@@ -191,9 +191,16 @@
           </div>
         </div>
 
-        <a class='markets--detail--navbar--right' href="{% url 'chats:room' post.user.first_name %}">
-          채팅하기
-        </a>
+        {% if request.user != post.user %}
+          <a class='markets--detail--navbar--right' href="{% url 'chats:room' post.user.first_name %}">
+            채팅하기
+          </a>
+        {% else %}
+          <form class='markets--detail--salestatus' action="{% url 'markets:update_sale_status' post.pk %}" method="POST" >
+            {% csrf_token %}
+            {{ post_form.sale_status }}
+          </form>
+        {% endif %}
       </nav>
 
     </section>
@@ -261,5 +268,12 @@
 {% endblock content %}
 
 {% block script %}
+<script>
+  const selectField = document.querySelector('.markets--detail--salestatus select');
+
+  selectField.addEventListener('change', function() {
+    this.form.submit();
+  });
+</script>
   <script src="{% static 'js/markets_detail.js' %}"></script>
 {% endblock script %}

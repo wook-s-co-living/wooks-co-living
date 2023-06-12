@@ -123,6 +123,10 @@
                 <h3>무료 나눔</h3>
               {% endif %}
 
+              {% if post.sale_status != '판매중' %}
+                <p class='detail--sale--status'>{{ post.sale_status }}</p>
+              {% endif %}
+
               <h4>
                 <form class='markets--index--section--likes' method="POST" data-post-id="{{ post.pk }}">
                   {% csrf_token %}

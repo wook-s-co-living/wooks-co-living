@@ -55,20 +55,23 @@
             </div>
             
             {% comment %} 팔로우버튼 {% endcomment %}
-            {% if request.user != person %}
-              <form id="follow-form" data-user-id="{{ person.pk }}" data-username="{{ person.username }}" action="{% url 'accounts:follow' person.pk %}" method="post">
-                {% csrf_token %} 
-                  {% if request.user in person.followers.all %}
-                  <input class="profile--followbtn" type="submit" value="언팔로우">
-                  {% else %}
-                    {% if request.user.is_authenticated %}
-                      <input class="profile--followbtn" type="submit" value="팔로우">
+            <div class="d-flex gap-2">
+              {% if request.user != person %}
+                <form id="follow-form" data-user-id="{{ person.pk }}" data-username="{{ person.username }}" action="{% url 'accounts:follow' person.pk %}" method="post">
+                  {% csrf_token %} 
+                    {% if request.user in person.followers.all %}
+                    <input class="profile--followbtn" type="submit" value="언팔로우">
                     {% else %}
-                      <input class="profile--followbtn" type="submit" value="팔로우" disabled>
-                    {% endif %}
-                {% endif %}
-              </form>
-            {% endif %}
+                      {% if request.user.is_authenticated %}
+                        <input class="profile--followbtn" type="submit" value="팔로우">
+                      {% else %}
+                        <input class="profile--followbtn" type="submit" value="팔로우" disabled>
+                      {% endif %}
+                  {% endif %}
+                </form>
+              {% endif %}
+              <a href="{% url 'chats:room' person.first_name %}" class="profile--chatbtn">메세지</a>
+            </div>
     
             {% comment %} 마음거리 {% endcomment %}
             <div class="maum">

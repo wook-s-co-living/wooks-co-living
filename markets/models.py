@@ -17,6 +17,9 @@ class Post(models.Model):
     content = models.TextField()
     price = models.IntegerField(default=0, validators=[MinValueValidator(0)])
 
+    sale_status_Choices = (('판매중','판매중'), ('예약중','예약중'), ('판매완료','판매완료'))
+    sale_status = models.CharField(max_length=20, default='판매중', choices=sale_status_Choices, null=True)
+
     views = models.IntegerField(default=0)
 
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_markets_posts')
