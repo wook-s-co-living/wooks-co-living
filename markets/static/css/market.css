@@ -33,6 +33,7 @@ input[type=file]::file-selector-button {
 .market--create {
   width: 400px;
   margin: 40px auto;
+  margin-bottom: 60px;
   min-height: 100vh;
 }
 

@@ -23,21 +23,11 @@ def index(request):
         if first_object:
             first_objects.append(first_object)
     category = request.GET.get('category')
-    q = request.GET.get('q')
-
     posts = all_posts.none()
 
     if category:
         posts = all_posts.filter(category=category).order_by('-created_at')
-
-    if q:
-        posts = all_posts.filter(
-            Q(title__icontains=q) |
-            Q(content__icontains=q) |
-            Q(user__username__icontains=q) |
-            Q(category__icontains=q)
-        ).distinct()
-
+        
     context = {
         'categories': categories,
         'posts': posts,

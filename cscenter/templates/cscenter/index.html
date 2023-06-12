@@ -2,28 +2,51 @@
 {% load static %}
 {% block title %} Cscenter index {% endblock title %}
 
+{% block header %}
+  <link rel="stylesheet" href="{% static 'css/cscenter_index.css' %}">
+{% endblock header %}
+
 {% block content %}
-<p class="fs-1">자주 묻는 질문</p>
-<ul>
-  {% for post in first_objects %}
-  <li><a href="{% url 'cscenter:detail' post.pk %}">{{ post.title }}</a></li>
-  {% endfor %}
-</ul>
 
-<p class="fs-1">카테고리에서 찾기</p>
-<form action="{% url 'cscenter:index' %}">
-  {% for category in categories %}
-    <input type='submit' name='category' value='{{ category }}'>
-  {% endfor %}
-</form>
+<div class='cscenter--index'>
+  <div class='cscenter--index--container'>
 
-<ul>
-  {% for post in posts %}
-  <li><a href="{% url 'cscenter:detail' post.pk %}">{{ post.title }}</a></li>
-  {% endfor %}
-</ul>
+    <header class='cscenter--index--header'>
+      안녕하세요,<br>
+      무엇을 도와드릴까요?
+    </header>
 
-<p class="fs-1">도움이 필요하신가요?</p>
-<a href="{% url 'cscenter:create' %}">문의하기</a>
+    <section class='cscenter--index--section'>
+      <h1>자주 묻는 질문</h1>
 
+      <section>
+        {% for post in first_objects %}
+          <a href="{% url 'cscenter:detail' post.pk %}">{{ post.title }}</a>
+        {% endfor %}
+      </section>
+
+      <h1>카테고리에서 찾기</h1>
+
+      <header class='cscenter--index--section--category'>
+        {% for category in categories %}
+          <button class='cscenter--index--section--category--item' value='{{ category }}'>{{ category }}</button>
+        {% endfor %}
+      </header>
+
+      <section class='cscenter--index--section--category--posts'>
+        {% for post in posts %}
+          <a href="{% url 'cscenter:detail' post.pk %}">{{ post.title }}</a>
+        {% endfor %}
+      </section>
+
+      <footer>
+        <h1>도움이 필요하신가요?</h1>
+
+        <a href="{% url 'cscenter:create' %}">문의하기</a>
+      </footer>
+    </section>
+  </div>
+</div>
+
+<script src="{% static 'js/cscenter_index.js' %}"></script>
 {% endblock content %}

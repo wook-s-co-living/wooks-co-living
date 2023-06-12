@@ -40,7 +40,10 @@ def index(request):
     sort = request.GET.get('sort')
 
     if category and category != 'null':
-        posts = Post.objects.filter(category=category).order_by('-created_at')
+        if category == '건물 소식':
+            posts = Post.objects.filter(user__building=request.user.building, category=category).order_by('-created_at')
+        else:
+            posts = Post.objects.filter(category=category).order_by('-created_at')
     else:
         posts = Post.objects.all().order_by('-created_at')
 
@@ -58,9 +61,9 @@ def index(request):
     else:
         posts = posts.order_by('-pk')
 
-    top_writers = get_user_model().objects.exclude(Q(is_superuser=True) | Q(groups__name='admin') | Q(user_permissions__codename='admin')).order_by('-score')[:5]
+    top_writers = get_user_model().objects.exclude(Q(is_superuser=True) | Q(groups__name='admin') | Q(user_permissions__codename='admin') | Q(score=0)).order_by('-score')[:5]
 
-    weekly_best_posts = Post.objects.annotate(like_count=Count('like_users')).order_by('-like_users')[:5]
+    weekly_best_posts = Post.objects.annotate(likes_diff=Count('like_users') - Count('dislike_users')).exclude(likes_diff=0).order_by('-likes_diff')[:5]
 
     # Get the tags related to the filtered posts
     filtered_tags = Tag.objects.filter(post__in=all_posts).annotate(num_times=Count('taggit_taggeditem_items')).order_by('-num_times')[:10]

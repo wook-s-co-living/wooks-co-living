@@ -177,6 +177,7 @@
   color: rgb(70 70 70);
   line-height: 25px;
   margin-bottom: 40px;
+  word-break: break-word;
 }
 
 /* 디테일 섹션 푸터 */
@@ -540,6 +541,55 @@
 .communities--detail--section--commentlist--headerend .communities--detail--section--likeform {
   transform: scale(0.8);
   transform-origin: right;
+}
+
+/* 공유하기 */
+
+.communities--detail--share--collapse {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  border: 1px solid rgb(120 120 120);
+  border-radius: 10px;
+  background-color: white;
+  z-index: 50;
+  box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.1), 5px 5px 15px 0px rgba(0,0,0,0.1);
+  text-align: start;
+  font-size: 16px;
+  padding: 20px;
+}
+
+.communities--detail--share--collapse span {
+  margin-left: 5px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.communities--detail--share--collapse button {
+  background-color: white;
+  border: 0;
+  padding: 0;
+  width: 100%;
+  text-align: start;
+}
+
+.communities--detail--share--collapse button:hover {
+  color: rgb(0 144 249);
+}
+
+.communities--detail--share--collapse a {
+  display: block;
+  text-decoration: none;
+  padding-top: 13px;
+  color: black;
+}
+
+.communities--detail--share--collapse a:hover {
+  color: rgb(0 144 249);
+}
+
+.communities--detail--share--collapse a:hover .communities--detail--share--collapse span {
+  color: rgb(0 144 249);
 }
 
 @media (max-width: 800px) {
