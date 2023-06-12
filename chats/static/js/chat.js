@@ -1,7 +1,8 @@
 const roomName = JSON.parse(document.getElementById('room-name').textContent);
-      
+protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'; 
 const chatSocket = new WebSocket(
-'ws://'
+protocol
++ '//'
 + window.location.host
 + '/ws/chat/'
 + roomName

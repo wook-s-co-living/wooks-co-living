@@ -22,7 +22,9 @@ window.addEventListener('scroll', function() {
     var scrollPosition = window.pageYOffset;
 
     // Apply the scroll effect by adjusting the top position of the image
-    bannerImg.style.transform = 'translateY(' + scrollPosition * 0.5 + 'px)';
+    if (bannerImg) {
+        bannerImg.style.transform = 'translateY(' + scrollPosition * 0.5 + 'px)';
+    }
 });
 
 

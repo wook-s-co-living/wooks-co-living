@@ -114,3 +114,7 @@ p label {
   font-size: 0.9rem;
   color: gray;
 }
+
+#id_sale_status {
+  display: none;
+}

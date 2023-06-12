@@ -238,10 +238,22 @@
 .status--log {
   position: absolute;
   bottom: 10px;
-  left: 50px;
+  left: 48px;
   width: 12px;
   height: 12px;
   border-radius: 100%;
+  z-index: 99;
+}
+
+.status--log--black {
+  position: absolute;
+  bottom: 12px;
+  left: 50px;
+  width: 8px;
+  height: 8px;
+  border-radius: 100%;
+  z-index: 98;
+  background-color: rgb(70 70 70);
 }
 
 .status--logout {
@@ -251,7 +263,7 @@
 
 
 .status--login {
-  background-color: rgb(10, 171, 10);
+  background-color: rgb(8, 217, 8);
   z-index: 10;
 }
 .delete--user {
@@ -259,18 +271,6 @@
   font-weight: 600;
   font-size: 0.9rem;
 
-}
-
-@media (max-width: 600px) {
-  .chats--container {
-    width: 100%;
-    margin: 20px 0;
-    padding-bottom: 70px;
-  }
-
-  #chat-log {
-    height: 90vh;
-  }
 }
 
 @media (max-width: 600px) {

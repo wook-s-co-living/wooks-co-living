@@ -40,7 +40,7 @@
             <section id='nav--bar--bell--collapse' class='d-none'>
               {% for unchecked_alarm  in unchecked_alarms  %}
                 <a href="{% url 'chats:room' unchecked_alarm.sender.first_name %}">
-                  {{ unchecked_alarm.sender.first_name }}이(가) 메세지를 보냈습니다
+                  <span>{{ unchecked_alarm.sender.first_name }}</span>님이 메세지를 보냈어요.
                 </a>
               {% endfor %}
             </section>
@@ -188,6 +188,5 @@
     {% endif %}
   </div>
   <div id="bot_nav--modal"></div>
-   
 <input type="hidden" id="currentUser" value="{{user}}">
 <script src="{% static 'js/navbar.js' %}"></script>

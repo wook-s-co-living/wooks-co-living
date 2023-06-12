@@ -112,8 +112,11 @@ class AlarmConsumer(AsyncWebsocketConsumer):
         sender = text_data_json["sender"]
         retriever = text_data_json["retriever"]
         senderUser = await sync_to_async(User.objects.get)(username=sender)
-        senderImage = senderUser.image.url
-        sendername = sender.firstname
+        if senderUser.image :
+            senderImage = senderUser.image.url
+        else : 
+            senderImage = "/static/image/noimage.png"
+        
         # await sync_to_async(Message.objects.create)(content=content, sender=sender, retriever=retriever)
         # Send message to room group
         await self.channel_layer.group_send(
@@ -123,9 +126,9 @@ class AlarmConsumer(AsyncWebsocketConsumer):
     async def alarm_message(self, event):
         sender = event["sender"]
         retriever = event["retriever"]
-        
+        sendername = await sync_to_async(User.objects.get)(username=sender).first_name
         roomName = event["roomName"]
-        sendername = event["sendername"]
+        
         # WebSocket으로 메시지를 전송합니다.
         await self.send(text_data=json.dumps({
             "sender": sender,
@@ -154,3 +157,48 @@ class AlarmConsumer(AsyncWebsocketConsumer):
 #             # 커넥트가 된 상태라면 message가 전송될 때마다 알림을 보낸다. 어디에 base.html에다가 하면 된다.
             
 # # 이미 다른 곳에서 로그인
+
+class IndexConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+            await self.accept()
+            await self.channel_layer.group_add("index_group", self.channel_name)
+            # Add the user to a group or do any other initialization
+
+    async def disconnect(self, close_code):
+        print(close_code)
+        await self.channel_layer.group_discard("index_group", self.channel_name)
+
+    async def receive(self, text_data):
+        text_data_json = json.loads(text_data)
+        message = text_data_json["message"]
+        roomName = text_data_json["roomName"]
+        sender = text_data_json["sender"]
+        retriever = text_data_json["retriever"]
+        senderUser = await sync_to_async(User.objects.get)(username=sender)
+        if senderUser.image :
+            senderImage = senderUser.image.url
+        else : 
+            senderImage = "/static/image/noimage.png"
+        retrieverUser = await sync_to_async(User.objects.get)(username=retriever)
+        # await sync_to_async(Message.objects.create)(content=message, sender=senderUser, retriever=retrieverUser, chatroom=await sync_to_async(Chatroom.objects.get)(pk=roomName))
+        # Send message to room group
+        await self.channel_layer.group_send(
+            "index_group", {"type": "index_message", "sender": sender, "retriever": retriever, "message": message, "roomName": roomName, "sender": sender, "senderImage": senderImage}
+        )
+
+    async def index_message(self, event):
+        sender = event["sender"]
+        retriever = event["retriever"]
+        message = event["message"]
+        roomName = event["roomName"]
+        sendername = event["sender"]
+        senderImage = event["senderImage"]
+        # WebSocket으로 메시지를 전송합니다.
+        await self.send(text_data=json.dumps({
+            "sender": sender,
+            "retriever": retriever,
+            "message": message,
+            "roomName": roomName,
+            "sendername": sendername,
+            "senderImage": senderImage,
+        }))

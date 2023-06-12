@@ -19,9 +19,13 @@ class PostForm(forms.ModelForm):
     price = forms.IntegerField(label='판매금액', widget=forms.NumberInput(
     attrs={'class': 'market--form'}),validators=[MinValueValidator(0)],initial=0)
 
+    sale_status = forms.ChoiceField(label=False, choices=Post.sale_status_Choices, widget=forms.Select(
+        attrs={'class': 'market--form'}
+    ))
+
     class Meta:
         model = Post
-        fields = ('title', 'content', 'price',)
+        fields = ('title', 'content', 'price', 'sale_status',)
 
 class PostImageForm(forms.ModelForm):
     image_first = forms.ImageField(
