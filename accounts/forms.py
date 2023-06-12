@@ -131,6 +131,7 @@ class CustomAuthenticationForm(AuthenticationForm):
 class ReportImageForm(forms.ModelForm):
     image_first = forms.ImageField(
     label='관련 이미지',
+    required=False,
     widget=CustomClearableFileInput(
         attrs={
             'multiple': True, 

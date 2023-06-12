@@ -13,16 +13,21 @@ KAKAO_API_KEY = os.getenv('KAKAO_API_KEY')
 
 def maum_limit(view_func):
     def wrapper(request, *args, **kwargs):
-        if request.user.maum != 100:
-            return view_func(request, *args, **kwargs)
+        if request.user.is_authenticated:
+            if request.user.maum != 100:
+                return view_func(request, *args, **kwargs)
+            else:
+                message = '신고 누적 5회차 이상으로 서비스 이용이 중지 되었습니다.\\n혼거동락팀에게 문의하세요.'
+                messages.error(request, message)
+                return redirect('index')
         else:
-            message = '신고 누적 5회차 이상으로 서비스 이용이 중지 되었습니다.\\n관리자에 문의하세요.'
-            messages.error(request, message)
-            return redirect('index')
+            return redirect('accounts:login')
     return wrapper
 
 # Create your views here.
 
+@maum_limit
+@login_required
 def index(request):
     dis = request.GET.get('dis')
     category = request.GET.get('category')
@@ -46,6 +51,8 @@ def index(request):
     context = {'posts': posts}
     return render(request, 'markets/index.html', context)
 
+@maum_limit
+@login_required
 def detail(request, market_pk):
     post = Post.objects.get(pk=market_pk)
 
@@ -59,6 +66,7 @@ def detail(request, market_pk):
     context = {'post': post, 'user_posts': user_posts, 'KAKAO_JS_KEY': KAKAO_JS_KEY,}
     return render(request, 'markets/detail.html', context)
 
+@maum_limit
 @login_required
 def create(request):
     if request.method == 'POST':
@@ -81,6 +89,7 @@ def create(request):
     context = {'post_form': post_form, 'postimage_form': postimage_form}
     return render(request, 'markets/create.html', context)
 
+@maum_limit
 @login_required
 def update(request, market_pk):
     post = Post.objects.get(pk=market_pk)
@@ -115,6 +124,7 @@ def update(request, market_pk):
     }
     return render(request, 'markets/update.html', context)
 
+@maum_limit
 @login_required
 def delete(request, market_pk):
     post = Post.objects.get(pk=market_pk)
@@ -122,6 +132,7 @@ def delete(request, market_pk):
         post.delete()
     return redirect('markets:index')
 
+@maum_limit
 @login_required
 def likes(request, market_pk):
     post = Post.objects.get(pk=market_pk)

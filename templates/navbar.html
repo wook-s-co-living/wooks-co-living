@@ -57,9 +57,7 @@
 
             </section>
           {% else %}
-            <form action="{% url 'accounts:login' %}">
-              <button class="login--button">로그인</button>
-            </form>
+            <a href="{% url 'accounts:login' %}" class="login--button">로그인</a>
           {% endif %}
         </div>
         <a class="hamburger--menu">

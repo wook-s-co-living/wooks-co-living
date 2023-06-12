@@ -24,12 +24,15 @@ KAKAO_API_KEY = os.getenv('KAKAO_API_KEY')
 
 def maum_limit(view_func):
     def wrapper(request, *args, **kwargs):
-        if request.user.maum != 100:
-            return view_func(request, *args, **kwargs)
+        if request.user.is_authenticated:
+            if request.user.maum != 100:
+                return view_func(request, *args, **kwargs)
+            else:
+                message = '신고 누적 5회차 이상으로 서비스 이용이 중지 되었습니다.\\n혼거동락팀에게 문의하세요.'
+                messages.error(request, message)
+                return redirect('index')
         else:
-            message = '신고 누적 5회차 이상으로 서비스 이용이 중지 되었습니다.\\n관리자에 문의하세요.'
-            messages.error(request, message)
-            return redirect('index')
+            return redirect('accounts:login')
     return wrapper
 
 def signup(request):
@@ -191,6 +194,7 @@ def update(request):
     }
     return render(request, 'accounts/update.html', context)
 
+@maum_limit
 @login_required
 def change_password(request):
     if request.method == 'POST':
@@ -218,6 +222,7 @@ def profile(request, username):
     else:
         form = ProfileForm(instance=person)
     context = {
+        'request_user': request.user,
         'person': person,
         'followings': person.followings.all(),
         'followers': person.followers.all(),

@@ -16,16 +16,20 @@ KAKAO_API_KEY = os.getenv('KAKAO_API_KEY')
 
 def maum_limit(view_func):
     def wrapper(request, *args, **kwargs):
-        if request.user.maum != 100:
-            return view_func(request, *args, **kwargs)
+        if request.user.is_authenticated:
+            if request.user.maum != 100:
+                return view_func(request, *args, **kwargs)
+            else:
+                message = '신고 누적 5회차 이상으로 서비스 이용이 중지 되었습니다.\\n혼거동락팀에게 문의하세요.'
+                messages.error(request, message)
+                return redirect('index')
         else:
-            message = '신고 누적 5회차 이상으로 서비스 이용이 중지 되었습니다.\\n관리자에 문의하세요.'
-            messages.error(request, message)
-            return redirect('index')
+            return redirect('accounts:login')
     return wrapper
 
 # Create your views here.
 @maum_limit
+@login_required
 def index(request):
     all_posts = Post.objects.all()
     categories = Post.objects.values_list('category', flat=True).distinct()
@@ -73,6 +77,7 @@ def index(request):
     return render(request, 'communities/index.html', context)
 
 @maum_limit
+@login_required
 def index_sort(o, queryset):
     if o == '최신순':
         return queryset.order_by('-pk')
@@ -85,6 +90,8 @@ def index_sort(o, queryset):
     elif o == '조회순':
         return queryset.order_by('-views')
 
+@maum_limit
+@login_required
 def category(request, category):
     posts = Post.objects.filter(category=category).order_by('-created_at')
     context = {
@@ -118,6 +125,7 @@ def create(request):
     return render(request, 'communities/create.html', context)
 
 @maum_limit
+@login_required
 def detail(request, post_pk):
     post = Post.objects.get(pk=post_pk)
     comments = post.comments.filter(parent_comment=None)
@@ -165,6 +173,7 @@ def detail(request, post_pk):
     return response
 
 @maum_limit
+@login_required
 def delete(request, post_pk):
     post = Post.objects.get(pk=post_pk)
     if post.user == request.user:
@@ -174,6 +183,7 @@ def delete(request, post_pk):
     return redirect('communities:index')
 
 @maum_limit
+@login_required
 def update(request, post_pk):
     post = Post.objects.get(pk=post_pk)
     if request.method == "POST":

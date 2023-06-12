@@ -114,6 +114,7 @@
         {% include "moims/once.html" %}
       {% else %}
         <section class="moims--index--section">
+        {% if posts %}
           <div class="many--moims">
             {% for post in posts %}
               <a href="{% url 'moims:detail' post.pk %}" class="many--moim--content ratio ratio-1x1">
@@ -140,18 +141,18 @@
                     <p>
                       참여멤버({{ post.join_users.all|length }}/{{ post.limit }})
                     </p>
-
                   </div>
                 </div>
               </a>
-            {% empty %}
-              {% if request.GET.q %}
-                <div class='moims--index--empty'>일치하는 검색어가 없습니다 😥</div>
-              {% else %}
-                <div class='moims--index--empty'>제일 먼저 모임 글을 작성해 보세요! 😃</div>
-              {% endif %}
             {% endfor %}
           </div>
+        {% else %}
+          {% if request.GET.q %}
+            <div class='moims--index--empty'>일치하는 검색어가 없습니다 😥</div>
+          {% else %}
+            <div class='moims--index--empty'>제일 먼저 모임 글을 작성해 보세요! 😃</div>
+          {% endif %}
+        {% endif %}
         </section>
       {% endif %}
     </div>
