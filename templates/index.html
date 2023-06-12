@@ -5,9 +5,14 @@
 
 {% block header %}
   <link rel="stylesheet" href="{% static 'css/index.css' %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
 {% endblock header %}
 
 {% block content %}
+<body style="background-image: url({% static 'image/background_1.png' %}); background-position: center top; background-repeat: repeat; background-size: cover;">
+
 <div class="index--main_wrap">
   <div class="parallax">    
       <img class="index--banner_img" src="{% static 'image/main_banner.webp' %}" alt="index-banner">
@@ -31,11 +36,12 @@
   <section class="index--section">
       <div class="index--textbox">
           <strong>커뮤니티</strong>
+          <p class="index--description">오늘은 동네에 무슨 일이?</p>
           <p class="index--description">우리동네 이웃끼리 공감대를 형성하세요</p>
-          <p>바로가기 ></p>
+          <a href="{% url 'communities:index' %}" class="index--shortcut">바로가기</a>
       </div>
       <div class="image-wrap">
-        <img src="{% static 'image/networkjpg.jpg' %}" alt="">
+        <img src="{% static 'image/talking.png' %}" alt="">
       </div>
   </section>
   <section class="index--section">
@@ -44,15 +50,18 @@
       </div>
       <div class="index--textbox">
           <strong>플리마켓</strong>
-          <p class="index--description">서로 필요한 물건을 사고 팔고 나누세요</p>
-          <p>바로가기 ></p>
+          <p class="index--description">안쓰지만 서로서로 필요한 물건들</p>
+          <p class="index--description">아까운 내 물건 사고 팔고 나누세요</p>
+          <a href="{% url 'markets:index' %}" class="index--shortcut">바로가기</a>
       </div>
   </section>
   <section class="index--section">
       <div class="index--textbox">
           <strong>소모임</strong>
+          <p class="index--description">함께 하면 더 재밌는</p>
           <p class="index--description">같은 취미를 가진 이웃을 찾아보세요</p>
-          <p>바로가기 ></p>
+          <a href="{% url 'moims:index' %}" class="index--shortcut">바로가기</a>
+          
       </div>
       <div class="image-wrap">
         <img src="{% static 'image/hobby.png' %}" alt="">
@@ -65,8 +74,46 @@
   <br>
   <br>
   <br>
+<div class="index--maum">
+  <div class="index--maum_title">동네 친구와 마음 거리를 확인하세요</div>
+  <div class="index--maum_description">
+    <br>
+    어떤 친구와 얼마나 자주 만날까?<br><br>
+    최근에 동네 친구와 얼마나 가깝게 지내는지 확인해보세요<br>
+  </div>
   
+
+  <div class="index--maum_image">
+    <div class="index--maum_num" style="top: 65%; right: 30%;">39cm</div>
+    <div class="index--maum_num" style="top: 20%; right: 40%;">34cm</div>
+    <div class="index--maum_num" style="top: 30%; right: 50%;">79cm</div>
+    <div class="index--maum_num" style="top: 47%; right: 20%;">65cm</div>
+    <div class="index--maum_num" style="top: 50%; right: 70%;">10cm</div>
+    <div class="index--maum_num" style="top: 60%; right: 80%;">51cm</div>
+    <img src="{% static 'image/social.jpg' %}"  alt="">
+  </div>
 </div>
+<div class="index--flow_section_w100">  
+    <strong>동네 친구들과 즐거운 시간을 위한 다양한 기능들을 만나보세요!</strong>
+    <div class="sample-ele"> 
+      <img src="{% static 'image/crown.png' %}" alt="">
+      <img src="{% static 'image/crown.png' %}" alt="">
+      <img src="{% static 'image/crown.png' %}" alt="">
+      <img src="{% static 'image/crown.png' %}" alt="">
+      <img src="{% static 'image/crown.png' %}" alt="">
+    </div>
+    
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>  
+</div>
+
+</body>
 {% if messages %}
   {% for message in messages %}
     <script>
