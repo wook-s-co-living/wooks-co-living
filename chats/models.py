@@ -6,6 +6,7 @@ from django.utils import timezone
 class Chatroom(models.Model):
     user1 = models.ForeignKey(User, related_name='chatrooms_as_user1', null=True, on_delete=models.SET_NULL)
     user2 = models.ForeignKey(User, related_name='chatrooms_as_user2', null=True, on_delete=models.SET_NULL)  # 대화에 참여하는 참가자 둘
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def get_latest_message(self):
         return self.message_set.order_by('-created_at').first()
@@ -16,7 +17,7 @@ class Message(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)  # 메시지 작성일시
     sender = models.ForeignKey(User, related_name='messages_as_sender', null=True, on_delete=models.SET_NULL)
     retriever = models.ForeignKey(User, related_name='messages_as_retriever', null=True, on_delete=models.SET_NULL)
-
+    is_checked = models.BooleanField(default=False)
 
     @property
     def created_time(self):

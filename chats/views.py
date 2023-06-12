@@ -23,7 +23,7 @@ def maum_limit(view_func):
 @maum_limit
 def index(request):
     chatrooms = Chatroom.objects.filter(Q(user1=request.user) | Q(user2=request.user))
-    sorted_chatrooms = sorted(chatrooms, key=lambda x: x.get_latest_message().created_at, reverse=True)
+    sorted_chatrooms = sorted(chatrooms, key=lambda x: x.get_latest_message().created_at if x.get_latest_message() else x.created_at, reverse=True)
     context = {
         'chatrooms' : sorted_chatrooms,
     }
@@ -57,3 +57,5 @@ def room(request, first_name):
     }
 
     return render(request, "chats/room.html", context)
+
+
