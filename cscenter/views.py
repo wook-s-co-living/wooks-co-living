@@ -63,8 +63,18 @@ def create(request):
 
 def detail(request, post_pk):
     post = Post.objects.get(pk=post_pk)
+
+    all_posts = Post.objects.filter(user__is_superuser=True)
+    categories = Post.objects.values_list('category', flat=True).distinct()
+    first_objects = []
+    for category in categories:
+        first_object = all_posts.filter(category=category).order_by('id').first()
+        if first_object and first_object != post:
+            first_objects.append(first_object)
+
     context = {
         'post': post,
+        'first_objects': first_objects,
     }
     return render(request, 'cscenter/detail.html', context)
 
@@ -88,7 +98,3 @@ def update(request, post_pk):
         'update_form': update_form,
     }
     return render(request, 'cscenter/update.html', context)
-
-
-
-
