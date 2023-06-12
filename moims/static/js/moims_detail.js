@@ -1,24 +1,45 @@
-// 공유
+// 공유하기
+
+const shareBtn = document.querySelector('#moims--detail--share')
+const shareCollapse = document.querySelector('.moims--detail--share--collapse')
+
+if (shareBtn) {
+  shareBtn.addEventListener('click', (event) => {
+    if (shareCollapse.classList.contains('d-none')) {
+      shareCollapse.classList.remove('d-none')
+    } else {
+      shareCollapse.classList.add('d-none')
+    }
+  })
+  
+  document.addEventListener('click', (event) => {
+    const target = event.target
+    if (!shareBtn.contains(target) && !shareCollapse.contains(target)) {
+      shareCollapse.classList.add('d-none')
+    }
+  })
+}
 
 document.addEventListener('DOMContentLoaded', function() {
 
-  document.getElementById('moims--detail--share').addEventListener('click', function() {
-      var currentUrl = window.location.href
-      var tempInput = document.createElement('input')
+  document.getElementById('moims--detail--share--url').addEventListener('click', function() {
+    shareCollapse.classList.add('d-none')
 
-      tempInput.value = currentUrl
-      document.body.appendChild(tempInput)
+    var currentUrl = window.location.href
+    var tempInput = document.createElement('input')
 
-      tempInput.select()
+    tempInput.value = currentUrl
+    document.body.appendChild(tempInput)
 
-      document.execCommand('copy')
- 
-      document.body.removeChild(tempInput)
+    tempInput.select()
 
-      alert('URL이 복사되었습니다!')
+    document.execCommand('copy')
+
+    document.body.removeChild(tempInput)
+
+    alert('URL이 복사되었습니다!')
   })
 })
-
 
 // 댓글
 const commentStartBtn = document.querySelector('.moims--detail--section--commentcreate--btn')

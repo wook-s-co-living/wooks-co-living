@@ -169,3 +169,46 @@ likeForm.addEventListener('submit', function (event) {
       console.log(error.response)
     })
 })
+
+// 공유하기
+
+const shareBtn = document.querySelector('.owl--carousel--share')
+const shareCollapse = document.querySelector('.owl--carousel--collapse')
+
+if (shareBtn) {
+  shareBtn.addEventListener('click', (event) => {
+    if (shareCollapse.classList.contains('d-none')) {
+      shareCollapse.classList.remove('d-none')
+    } else {
+      shareCollapse.classList.add('d-none')
+    }
+  })
+  
+  document.addEventListener('click', (event) => {
+    const target = event.target
+    if (!shareBtn.contains(target) && !shareCollapse.contains(target)) {
+      shareCollapse.classList.add('d-none')
+    }
+  })
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+
+  document.getElementById('owl--carousel--collapse--url').addEventListener('click', function() {
+    shareCollapse.classList.add('d-none')
+
+    var currentUrl = window.location.href
+    var tempInput = document.createElement('input')
+
+    tempInput.value = currentUrl
+    document.body.appendChild(tempInput)
+
+    tempInput.select()
+
+    document.execCommand('copy')
+
+    document.body.removeChild(tempInput)
+
+    alert('URL이 복사되었습니다!')
+  })
+})

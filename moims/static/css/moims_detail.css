@@ -590,6 +590,72 @@
   margin-top: 1px;
 }
 
+/* 공유하기 */
+
+.moims--detail--share--collapse {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  border: 1px solid rgb(120 120 120);
+  border-radius: 10px;
+  background-color: white;
+  z-index: 50;
+  box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.1), 5px 5px 15px 0px rgba(0,0,0,0.1);
+  text-align: start;
+  font-size: 16px;
+  padding: 20px;
+}
+
+.moims--detail--share--collapse span {
+  margin-left: 5px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.moims--detail--share--collapse button {
+  background-color: white;
+  border: 0;
+  padding: 0;
+  width: 100%;
+  text-align: start;
+}
+
+.moims--detail--share--collapse button:hover {
+  color: rgb(0 144 249);
+}
+
+.moims--detail--share--collapse a {
+  display: block;
+  text-decoration: none;
+  padding-top: 13px;
+  color: black;
+}
+
+.moims--detail--share--collapse a:hover {
+  color: rgb(0 144 249);
+}
+
+.moims--detail--share--collapse a:hover .moims--detail--share--collapse span {
+  color: rgb(0 144 249);
+}
+
+/* 맵 타겟 */
+
+.moims--detail--map--target {
+  font-size: 14px;
+  color: #34568b;
+  text-decoration: none;
+}
+
+.moims--detail--map--target span {
+  margin-left: 3px;
+}
+
+.moims--detail--map--target:hover {
+  color: #041f4a;
+  font-weight: bold;
+}
+
 @media(max-width: 800px) {
   .moims--detail--container {
     width: 100%;

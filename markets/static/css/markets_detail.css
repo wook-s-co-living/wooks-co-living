@@ -73,6 +73,65 @@
   z-index: 50;
 }
 
+.owl--carousel--share {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: rgb(240 240 240);
+  background-color: #fff0;
+  border: 0;
+  display: block;
+  font-size: 20px;
+  z-index: 50;
+}
+
+.owl--carousel--collapse {
+  position: absolute;
+  top: 50px;
+  right: 10px;
+  border: 1px solid rgb(120 120 120);
+  border-radius: 10px;
+  background-color: white;
+  z-index: 50;
+  box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.1), 5px 5px 15px 0px rgba(0,0,0,0.1);
+  text-align: start;
+  font-size: 16px;
+  padding: 20px;
+}
+
+.owl--carousel--collapse span {
+  margin-left: 5px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.owl--carousel--collapse button {
+  background-color: white;
+  border: 0;
+  padding: 0;
+  width: 100%;
+  text-align: start;
+}
+
+.owl--carousel--collapse button:hover {
+  color: rgb(0 144 249);
+}
+
+.owl--carousel--collapse a {
+  display: block;
+  text-decoration: none;
+  padding-top: 13px;
+  color: black;
+}
+
+.owl--carousel--collapse a:hover {
+  color: rgb(0 144 249);
+}
+
+.owl--carousel--collapse a:hover .owl--carousel--collapse span {
+  color: rgb(0 144 249);
+}
+
 .owl--carousel--close {
   position: absolute;
   background-color: transparent;
@@ -84,6 +143,7 @@
   font-size: 40px;
   z-index: 50;
 }
+
 
 /* 디테일 헤더 */
 

@@ -27,6 +27,24 @@
         <a class="owl--carousel--back" href="{% url 'markets:index' %}">
           <i class="bi bi-chevron-left"></i>
         </a>
+
+        <button class='owl--carousel--share'>
+          <i class="bi bi-share"></i>
+        </button>
+
+        <div class='owl--carousel--collapse d-none'>
+          <button id='owl--carousel--collapse--url'>
+            <i class="bi bi-cloud-arrow-up-fill"></i> <span>URL</span>
+          </button>
+
+          <a href="https://twitter.com/intent/tweet?text=혼거동락_{{ post.title }}&url=http://127.0.0.1:8000/markets/{{ post.pk }}/" data-toggle="tooltip" data-placement="top" title="" target="_blank" rel="noopener" aria-label="Twitter" data-original-title="Twitter">
+            <i class="bi bi-twitter"></i> <span>Twitter</span>
+          </a>
+
+          <a id="kakaotalk-sharing-btn" href="javascript:shareMessage()">
+            <i class="bi bi-chat-fill"></i> <span>KaKao</span>
+          </a>
+        </div>
       </div>
 
       <div class='markets--carousel--dnone d-none'>
@@ -180,17 +198,6 @@
 
     </section>
   </div>
-  
-  <!--공유하기-->
-  <a href="https://twitter.com/intent/tweet?text=혼거동락_{{ post.title }}&url=http://127.0.0.1:8000/markets/{{ post.pk }}/" data-toggle="tooltip" data-placement="top" title="" target="_blank" rel="noopener" aria-label="Twitter" data-original-title="Twitter">트위터 내보내기 버튼</a>
-  <a id="kakaotalk-sharing-btn" href="javascript:shareMessage()">카카오톡 공유 보내기 버튼</a>
-
-  {% comment %} <div>{{ post.title }}</div> {% endcomment %}
-  {% comment %} {% for postimage in post.postimages.all %}
-    <div>
-      <img src="{{ postimage.image.url }}" alt="{{ post.title }}">
-    </div>
-  {% endfor %} {% endcomment %}
 
   <script>
     $('.owl-carousel').owlCarousel({
@@ -230,7 +237,7 @@
         objectType: 'feed',
         content: {
           title: '{{ post.title }}',
-          description: '{{ post.content }}',
+          description: '플리마켓',
           imageUrl: 'https://1.bp.blogspot.com/-mJ5jFeNA4gQ/X79hVOtDv8I/AAAAAAAAQYk/p5C-cInqnT8mIJ_i5BNNwKcCBh-1P1UOACLcBGAsYHQ/s625-rw/money%2Brain.jpg',
           link: {
             // [내 애플리케이션] > [플랫폼] 에서 등록한 사이트 도메인과 일치해야 함
