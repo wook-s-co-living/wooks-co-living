@@ -36,7 +36,10 @@ def index(request):
     sort = request.GET.get('sort')
 
     if category and category != 'null':
-        posts = Post.objects.filter(category=category).order_by('-created_at')
+        if category == '건물 소식':
+            posts = Post.objects.filter(user__building=request.user.building, category=category).order_by('-created_at')
+        else:
+            posts = Post.objects.filter(category=category).order_by('-created_at')
     else:
         posts = Post.objects.all().order_by('-created_at')
 

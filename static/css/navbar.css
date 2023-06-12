@@ -66,11 +66,13 @@
     padding-top: 22px;
 }
 
-.nav--links a:hover {
+.nav--links a:hover,
+.nav--links .nav--links--hover {
     color: #02517b;
     font-weight: bold;
     border-bottom: 3px solid #02517b;
 }
+
 .login--button {
     margin-left: 20px;
     padding: 10px 20px;
@@ -96,8 +98,9 @@
 .nav--bar.scrolled .nav--links a {
     color: white; /* 로고와 메뉴의 텍스트 색상 변경 */
 }
-.nav--bar.scrolled .nav--links a:hover {
-    color: #FFC93C;
+.nav--bar.scrolled .nav--links a:hover,
+.nav--bar.scrolled .nav--links--hover {
+    color: #FFC93C!important;
     border-bottom: 3px solid #FFC93C;
 }
 .nav--bar.scrolled .login--button {
