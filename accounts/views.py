@@ -191,6 +191,7 @@ def update(request):
         form = CustomUserChangeForm(instance=request.user)
     context = {
         'form': form,
+        'KAKAO_JS_KEY': KAKAO_JS_KEY,
     }
     return render(request, 'accounts/update.html', context)
 

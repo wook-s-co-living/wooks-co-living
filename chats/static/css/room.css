@@ -42,9 +42,11 @@
 .chats--container {
   width: 400px;
   margin: 50px auto;
-  min-height: 100vh;
+  margin-top: 20px;
+  min-height: 80vh;
   padding-bottom: 70px;
 }
+
 
 .chats--title {
   text-align: center;
@@ -119,7 +121,7 @@
 }
 
 #chat-log {
-  height: 100vh;
+  height: 80vh;
   padding: 5px;
   overflow: auto;
 }
@@ -158,9 +160,9 @@
 .input--box {
   border-radius: 20px;
   display: flex;
-  border: 1px solid rgb(240, 240, 240);
+  border: 1px solid rgb(230 230 230);
   padding-left: 10px;
-  height: 30px;
+  height: 40px;
 }
 
 .chat--profile--sub {
@@ -236,4 +238,16 @@
   color: black;
   font-weight: 600;
   font-size: 0.9rem;
+}
+
+@media (max-width: 600px) {
+  .chats--container {
+    width: 100%;
+    margin: 20px 0;
+    padding-bottom: 70px;
+  }
+
+  #chat-log {
+    height: 90vh;
+  }
 }

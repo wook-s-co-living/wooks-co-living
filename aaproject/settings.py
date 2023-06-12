@@ -207,10 +207,7 @@ DEFAULT_FROM_EMAIL = EMAIL_SENDER_NAME + ' <' + EMAIL_HOST_USER + '>'
 ASGI_APPLICATION = "aaproject.asgi.application"
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
-        },
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
     },
 }
 
