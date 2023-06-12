@@ -288,8 +288,19 @@ width: 100px;
 .section-100 {
 	padding: 100px 0;
 }
-.testimonial-container h1{
+.testimonial--title1,
+.testimonial--title2 {
+    text-align: center;
+}
+.testimonial--title1{
+    color: #FFC93C;
+    margin-bottom: 1rem;
+}
+.testimonial--title2 {
+    font-size: 2rem;
+    font-weight: 600;
     color: #34568b;
+    margin-bottom: 2rem;
 }
 .testimonial-view {
 	margin-bottom: 30px;
