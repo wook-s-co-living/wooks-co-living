@@ -379,6 +379,10 @@
   color: rgb(150 150 150);
 }
 
+.bi-lightning-fill {
+  color: rgb(70 70 70);
+}
+
 @media (max-width: 800px) {
   .communities--index--container {
     width: 100%;
