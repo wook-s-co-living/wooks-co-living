@@ -39,8 +39,8 @@
 
             <section id='nav--bar--bell--collapse' class='d-none'>
               {% for unchecked_alarm  in unchecked_alarms  %}
-                <a href="{% url 'chats:room' unchecked_alarm.sender %}">
-                  {{ unchecked_alarm.sender }}이(가) 메세지를 보냈습니다
+                <a href="{% url 'chats:room' unchecked_alarm.sender.first_name %}">
+                  {{ unchecked_alarm.sender.first_name }}이(가) 메세지를 보냈습니다
                 </a>
               {% endfor %}
             </section>
