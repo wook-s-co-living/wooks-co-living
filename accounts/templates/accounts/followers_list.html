@@ -21,7 +21,7 @@
               <img src="{% static 'image/profile-none.png' %}" alt="follower image" class="profile">
             </div>
           {% endif %}
-          {{ follower.username }}
+          {{ follower.first_name }}
         </a>
     </li>
     {% empty %}

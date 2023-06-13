@@ -7,10 +7,7 @@ indexSocket.onmessage = (event) => {
   const retriever = data.retriever
   const message = data.message
   const sendername = data.sendername
-  const senderImage = data.senderImage
-
-
-  
+  const senderImage = data.senderImage  
   const parentElement = document.querySelector('.chats--container')
   const senderElement = document.querySelector(`#${sender}`)
   
@@ -42,6 +39,7 @@ indexSocket.onmessage = (event) => {
           </div>
         </div>
     `;    
+    
     if(parentElement.children[1]) {
       parentElement.insertBefore(newChat, parentElement.children[1]);
     }
@@ -49,7 +47,6 @@ indexSocket.onmessage = (event) => {
       parentElement.appendChild(newChat);
     }
   }
-
 }
 
 loginSocket.onmessage = (event) => {

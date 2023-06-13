@@ -2,6 +2,10 @@
 {% load static %}
 {% load my_filters %}
 
+{% block title %}
+  채팅 | {{ user2.first_name }}
+{% endblock title %}
+
 {% block header %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/room.css' %}"> 
 {% endblock header %}
