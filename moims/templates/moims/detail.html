@@ -126,7 +126,7 @@
           <h1>참여 멤버 (<span>{{ post.join_users.count }}</span>/{{ post.limit }})</h1>
 
           <div class="owl-carousel owl-theme">
-            {% for join_user in post.join_users.all reversed %}
+            {% for join_user in join_users %}
               <a class='moims--detail--section--member--item' href="{% url 'accounts:profile' join_user.username %}">
                 {% if join_user.image %}
                   <img src="{{ join_user.image.url }}" alt="{{ join_user }}">

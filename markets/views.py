@@ -58,11 +58,6 @@ def index(request):
 def detail(request, market_pk):
     post = Post.objects.get(pk=market_pk)
 
-    # if request.method == 'POST':
-    #     post.sale_status = request.POST.get('sale_status')
-    #     post.save()
-    #     return redirect ('markets:detail', market_pk)
-
     user_posts = post.user.user_markets_posts.order_by('-pk').exclude(pk=market_pk)[:6]
 
     post_user =  Post.objects.get(pk=market_pk).user

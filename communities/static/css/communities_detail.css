@@ -175,9 +175,14 @@
 .communities--detail--section--content {
   font-size: 16px;
   color: rgb(70 70 70);
-  line-height: 25px;
+  line-height: 35px;
   margin-bottom: 40px;
   word-break: break-word;
+}
+
+.communities--detail--section--content u {
+  color: #34568b;
+  font-weight: bold;
 }
 
 /* 디테일 섹션 푸터 */

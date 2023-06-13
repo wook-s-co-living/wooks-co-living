@@ -162,7 +162,7 @@
         <input type="button" id="moim1" value="오픈모임({{person.user_moims_posts.all|length}})" class="tab--btn {% if request.user == person %} ylw {% endif %}">
         {% if request.user == person %}
           <input type="button" id="moim2" value="관심모임({{person.like_moims_posts.all|length}})" class="tab--btn">
-          <input type="button" id="moim3" value="참여모임({{person.join_moims_posts.all|length}})" class="tab--btn">
+          <input type="button" id="moim3" value="참여모임({{join_moims_posts|length}})" class="tab--btn">
         {% endif %}
           <hr>
 
@@ -226,7 +226,7 @@
 
         <div class="moim--box moim3">
           <div class="content--box">
-            {% for moim in person.join_moims_posts.all %}
+            {% for moim in join_moims_posts %}
               <a href="{% url 'moims:detail' moim.pk %}" class="moim--link join-moim">
                 <img src="{{ moim.image_first.url }}" alt="">
                 <div class="info--txt">
@@ -245,7 +245,7 @@
             {% empty %}
               <div class="content--empty">참여한 모임이 없습니다.</div>
             {% endfor %} 
-            {% if person.join_moims_posts.all|length > 4 %}
+            {% if join_moims_posts|length > 4 %}
               <div class="show_more_box">
                 <button class="btn-more btn-more3 show_more_btn">더보기</button>
               </div>

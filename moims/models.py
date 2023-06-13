@@ -67,6 +67,8 @@ class Post(models.Model):
             dir_path = os.path.dirname(os.path.join(settings.MEDIA_ROOT, self.image_first.name))
             if not os.listdir(dir_path):
                 os.rmdir(dir_path)
+        if self.image:
+            os.remove(os.path.join(settings.MEDIA_ROOT, self.image.path))
         super(Post, self).delete(*args, **kargs)
 
     def save(self, *args, **kwargs):

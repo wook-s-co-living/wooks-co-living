@@ -330,6 +330,10 @@
     bottom: 80px;
     margin-left: 88%;
   }
+
+  #markets--index--alert {
+    bottom: 60px;
+  }
 }
 
 @media(max-width: 600px) {

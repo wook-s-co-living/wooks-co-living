@@ -372,6 +372,10 @@ opacity: 0;
         width: 100%;
     }
 
+    .index--textbox_intro {
+        padding: 0 20px;
+    }
+
     .index--section_intro {
         width: 100%;
     }
@@ -410,17 +414,9 @@ opacity: 0;
     }
 
     .parallax a {
-        position: absolute;
-        top: 50%;
-        left: 20%;
         border: none;
-        color: #fff;
-        text-decoration: none;
-        padding: 15px 20px;
-        outline: none;
+        padding: 12px 17px!important;
         border-radius: 30px;
-        background: linear-gradient(to right, #52A0FD 0%, #00e2fa 80%, #00e2fa 100%);
-        box-shadow: 0 15px 15px rgba(82,160,253,0.4);
-        text-shadow: 0 0 10px skyblue, 0 0 20px skyblue, 0 0 30px skyblue, 0 0 40px skyblue;
+        font-size: 17px;
     }
 }

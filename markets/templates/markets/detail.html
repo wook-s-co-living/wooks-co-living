@@ -24,7 +24,7 @@
             </button>
           {% endfor %}
         </div>
-        <a class="owl--carousel--back" href="{% url 'markets:index' %}">
+        <a class="owl--carousel--back" href="{% url 'markets:index' %}?category={{ request.GET.category }}&dis={{ request.GET.dis }}">
           <i class="bi bi-chevron-left"></i>
         </a>
 
@@ -75,7 +75,13 @@
           <div>
             <h1>{{ post.user.first_name }}</h1>
 
-            <h2>{{ post.user.town }} {{ post.user.building }}</h2>
+            <h2>
+              {% if request.GET.dis == 'town' %}
+                {{ post.user.town }}
+              {% else %}
+                {{ post.user.town }} {{ post.user.building }}
+              {% endif %}
+            </h2>
           </div>
         </div>
 

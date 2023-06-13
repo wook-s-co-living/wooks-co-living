@@ -131,7 +131,7 @@
                           <img src="{% static 'image/noimage.png' %}" alt="blank-profile-image">
                         {% endif %} 
                       </div>
-                      {{ post.user }}
+                      {{ post.user.first_name }}
                     </div>
 
                     <h1>{{ post.title }}</h1>

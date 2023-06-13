@@ -387,6 +387,7 @@
   .communities--index--container {
     width: 100%;
     margin: 0;
+    margin-bottom: 40px;
   }
 
   .communities--index--category {
