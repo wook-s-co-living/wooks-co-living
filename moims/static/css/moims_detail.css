@@ -624,14 +624,17 @@
   color: rgb(0 144 249);
 }
 
-.moims--detail--share--collapse a {
+.moims--detail--share--collapse a,
+.moims--detail--share--collapse button:not(#moims--detail--share--url) {
   display: block;
   text-decoration: none;
   padding-top: 13px;
   color: black;
 }
 
-.moims--detail--share--collapse a:hover {
+.moims--detail--share--collapse a:hover,
+.moims--detail--share--collapse button:hover,
+.moims--detail--share--collapse button:not(#moims--detail--share--url):hover {
   color: rgb(0 144 249);
 }
 

@@ -48,12 +48,12 @@
 
           <!--구글캘린더에 공유-->
           {% if post.category == "once" %}
-          <form action="{% url 'moims:calendar' post.pk %}" method="POST">
-            {% csrf_token %}
-            <button type="submit" class="submit-button">
-              <i class="bi bi-calendar-check"></i> <span>Calendar</span>
-            </button>
-          </form>
+            <form class='moims--detail--calendar' data-post-id="{{ post.pk }}">
+              {% csrf_token %}
+              <button type="submit" class="submit-button">
+                <i class="bi bi-calendar-event-fill"></i> <span>Calendar</span>
+              </button>
+            </form>
           {% endif %}
         </section>
       </header>
@@ -279,7 +279,7 @@
         </div>
 
         {% comment %} 알림창 {% endcomment %}
-        <div id='moims--detail--alert' style='display: none;'>
+        <div id='moims--detail--alert' style='display: none;' data-user-name="{{ request.user.username }}">
           <h1>관심목록에 추가됐어요.</h1>
           
           <a href="{% url 'accounts:profile' request.user.username %}?cate=moims">관심목록보기</a>

@@ -194,6 +194,8 @@ likeForm.addEventListener('submit', function (event) {
           if (likeAlert.style.display == 'none') {
             const likeAlertH1 = likeAlert.querySelector('h1')
             const likeAlertA = likeAlert.querySelector('a')
+            const likeAlertUsername = likeAlert.dataset.userName
+            likeAlertA.href = `/accounts/profile/${likeAlertUsername}/?cate=moims`
             
             if (!likeAlertH1) {
               const newH1 = document.createElement('h1')
@@ -306,6 +308,8 @@ joinForm.addEventListener('submit', function (event) {
           if (likeAlert.style.display == 'none') {
             const likeAlertH1 = likeAlert.querySelector('h1')
             const likeAlertA = likeAlert.querySelector('a')
+            const likeAlertUsername = likeAlert.dataset.userName
+            likeAlertA.href = `/accounts/profile/${likeAlertUsername}/?cate=moims`
 
             likeAlertH1.textContent = '참여가 완료되었어요!'
             likeAlertA.textContent = '참여모임보기'
@@ -357,5 +361,66 @@ if (kakaoBtns) {
       const kakaoUrl = event.target.dataset.kakaoUrl
       window.open(kakaoUrl)
     })
+  })
+}
+
+// 디테일 구글 캘린더
+
+const calendarForm = document.querySelector('.moims--detail--calendar')
+
+if (calendarForm) {
+  calendarForm.addEventListener('submit', (event) => {
+    event.preventDefault()
+
+    const postId = event.target.dataset.postId
+
+    axios({
+      method: "POST",
+      url: `/moims/${postId}/calendar/`,
+      headers: {'X-CSRFToken': csrftoken},
+    })
+      .then((response) => {
+        const message = response.data.message
+
+        if (likeAlert.style.display == 'none') {
+          const likeAlertH1 = likeAlert.querySelector('h1')
+          const likeAlertA = likeAlert.querySelector('a')
+          const likeAlertUsername = likeAlert.dataset.userName
+          likeAlertA.href = 'https://calendar.google.com/calendar'
+          
+          if (!likeAlertH1) {
+            const newH1 = document.createElement('h1')
+            newH1.textContent = message
+            likeAlert.innerHTML = ''
+            likeAlert.appendChild(newH1)
+          } else {
+            likeAlertH1.textContent = message
+          }
+          
+          if (!likeAlertA) {
+            const newA = document.createElement('a')
+            newA.textContent = '캘린더 보기'
+            likeAlert.appendChild(newA)
+          } else {
+            likeAlertA.textContent = '캘린더 보기'
+          }
+
+          likeAlert.style.display = 'flex'
+          likeAlert.style.opacity = '1'
+  
+          setTimeout(() => {
+            likeAlert.style.opacity = '0.9'
+            setTimeout(() => {
+              likeAlert.style.opacity = '0.8'
+              setTimeout(() => {
+                likeAlert.style.opacity = '0.7'
+                setTimeout(() => {
+                  likeAlert.style.display = 'none'
+                }, 50)
+              }, 50)
+            }, 50)
+          }, 1800)
+        }
+      })
   })
 }

@@ -364,14 +364,6 @@ def comment_likes(request, post_pk, comment_pk):
             comment.like_users.add(request.user)
             is_liked = True
             is_disliked = False
-
-@maum_limit
-@login_required
-def comment_dislikes(request, post_pk, comment_pk):
-    comment = Comment.objects.get(pk=comment_pk)
-    if request.user in comment.dislike_users.all():
-        comment.dislike_users.remove(request.user)
-        comment_is_disliked = False
     else:
         if comment.dislike_users.filter(pk=request.user.pk).exists():
             comment.dislike_users.remove(request.user)
@@ -389,6 +381,7 @@ def comment_dislikes(request, post_pk, comment_pk):
             is_liked = False
             is_disliked = True
 
+    
     context = {
         "is_liked": is_liked,
         "is_disliked": is_disliked,

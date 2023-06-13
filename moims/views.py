@@ -35,7 +35,7 @@ SCOPES = ['https://www.googleapis.com/auth/calendar']
 def calendar(request, moim_pk):
     post = Post.objects.get(pk=moim_pk)
     clndr(post)
-    return redirect('moims:detail', moim_pk)
+    return JsonResponse({'message': '구글 캘린더에 추가됐어요.'})
 
 def maum_limit(view_func):
     def wrapper(request, *args, **kwargs):
