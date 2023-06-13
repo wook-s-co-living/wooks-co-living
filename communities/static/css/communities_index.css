@@ -289,6 +289,24 @@
   border-radius: 100%;
 }
 
+.communities--index--topwriters-item section {
+  position: relative;
+}
+
+.communities--index--topwriters-item section div {
+  position: absolute;
+  padding: 8px 12px;
+  background-color: white;
+  z-index: 50;
+  box-shadow: 1px 7px 15px 4px rgba(0,0,0,0.1);
+  font-size: 12px;
+  right: -70px;
+  top: 15px;
+  width: 85px;
+  border-radius: 10px;
+  color: rgb(150 150 150);
+}
+
 /* top tags */
 
 .communities--index--toptags {
@@ -315,7 +333,8 @@
   color: rgb(120 120 120);
 }
 
-.communities--index--toptags--item:hover {
+.communities--index--toptags--item:hover,
+.communities--index--toptags--item--hover {
   color: black;
 }
 
@@ -383,6 +402,19 @@
   color: rgb(70 70 70);
 }
 
+/* 8조 배너 */
+.team8_banner {
+  display: block;
+  position: absolute;
+  left: -200px;
+  top: 350px;
+  width: 180px;
+}
+
+.team8_banner img {
+  width: 100%;
+}
+
 @media (max-width: 800px) {
   .communities--index--container {
     width: 100%;
@@ -410,6 +442,10 @@
   }
 
   .communities--index--toptags {
+    display: none;
+  }
+
+  .team8_banner {
     display: none;
   }
 }

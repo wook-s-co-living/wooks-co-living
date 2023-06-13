@@ -19,7 +19,22 @@ if (sortBtn) {
   })
 }
 
+// 활동 점수
+const boltBtns = document.querySelectorAll('.communities--index--topwriters-item section')
 
+boltBtns.forEach((btn) => {
+  const boltCollapse = btn.querySelector('div')
+
+  btn.addEventListener('mouseenter', (event) => {
+    boltCollapse.classList.remove('d-none')
+  })
+
+  btn.addEventListener('mouseleave', (event) => {
+    boltCollapse.classList.add('d-none')
+  })
+})
+
+// 검색
 const searchInput = document.querySelector('.communities--index--create--form input')
 
 searchInput.addEventListener('input', async (event) => {

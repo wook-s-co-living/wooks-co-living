@@ -35,11 +35,21 @@
             <section>
               <i class="bi bi-lightning-fill"></i> 
               {{ top_writer.score }}
+
+              <div class='d-none'>
+                <i class="bi bi-info-circle"></i>
+                활동점수
+              </div>
             </section>
           </a>
         {% endfor %}
       </div>
     {% endif %}
+
+    {% comment %} 8조 배너 {% endcomment %}
+    <a href="" class='team8_banner'>
+      <img src="{% static 'image/team8_banner.gif' %}" alt="hgdr">
+    </a>
 
     {% comment %} weekly best {% endcomment %}
     {% if weekly_best_posts %}
@@ -86,7 +96,7 @@
         <div class='communities--index--toptags--section'>
           {% for tag in filtered_tags %}
             {% if tag.num_times != 0 %}
-              <a class='communities--index--toptags--item' href="{% url 'communities:index' %}?tag={{ tag }}">#{{ tag }}</a>
+              <a class='communities--index--toptags--item' href="{% url 'communities:index' %}?tag={{ tag }}" {% if request.GET.tag == tag.name %}style="color: black;"{% endif %}>#{{ tag }}</a>
             {% endif %}
           {% endfor %}
         </div>

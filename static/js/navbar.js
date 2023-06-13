@@ -14,11 +14,11 @@ window.addEventListener("scroll", function() {
 
 
 /* 화면을 늘리고 모바일 메뉴가 활성화 된 뒤에 다시 화면을 클렸을때 모바일 메뉴를 감춤 */ 
-window.addEventListener("resize", function() {
-    if(window.innerWidth > 768) {
-        mobileMenu.style.display = "none";
-    }
-});
+// window.addEventListener("resize", function() {
+//     if(window.innerWidth > 768) {
+//         mobileMenu.style.display = "none";
+//     }
+// });
 
 
 document.addEventListener('DOMContentLoaded', function() {

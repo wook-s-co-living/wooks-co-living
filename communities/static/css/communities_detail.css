@@ -1,6 +1,7 @@
 .communities--detail--container {
   width: 800px;
   margin: 0 auto;
+  position: relative;
 }
 
 /* 커뮤니티 카테고리 헤더 */
@@ -597,6 +598,19 @@
   color: rgb(0 144 249);
 }
 
+.sun_banner {
+  display: block;
+  position: absolute;
+  left: -210px;
+  top: 20px;
+  width: 180px;
+  border: 1px solid rgb(245 245 245);
+}
+
+.sun_banner img {
+  width: 100%;
+}
+
 @media (max-width: 800px) {
   .communities--detail--container {
     width: 100%;
@@ -609,5 +623,11 @@
 
   #communities--detail--alert {
     bottom: 60px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .sun_banner {
+    display: none;
   }
 }

@@ -25,7 +25,7 @@
         <input type="button" onclick="search_address()" value="주소 검색" class="address--btn">
       </div>
 
-      <div id="map" style="width:auto;height:350px;"></div>
+      <div id="map" style="width:auto;height:350px; z-index: 5;"></div>
         <input type="submit" value="회원 정보 수정" class="accounts--btn" id="submit_button">
         <a type="button" href="{% url 'accounts:change_password' %}" class="accounts--btn">비밀번호 변경</a>
     </form>

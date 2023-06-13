@@ -160,4 +160,6 @@ function previewImage(event) {
 }
 
 var imageInput = document.querySelector('#id_image_first');
-imageInput.addEventListener('change', previewImage);
+if (imageInput) {
+  imageInput.addEventListener('change', previewImage);
+}

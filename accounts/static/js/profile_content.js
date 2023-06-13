@@ -21,23 +21,27 @@ document.addEventListener("DOMContentLoaded", function() {
   }
   });
 
-  moim2Button.addEventListener("click", function() {
-    moim1.style.display = "none";
-    moim2.style.display = "block";
-    moim3.style.display = "none";
-    moim1Button.classList.remove("ylw");
-    moim2Button.classList.add("ylw");
-    moim3Button.classList.remove("ylw");
-  });
+  if (moim2Button) {
+    moim2Button.addEventListener("click", function() {
+      moim1.style.display = "none";
+      moim2.style.display = "block";
+      moim3.style.display = "none";
+      moim1Button.classList.remove("ylw");
+      moim2Button.classList.add("ylw");
+      moim3Button.classList.remove("ylw");
+    });
+  }
 
-  moim3Button.addEventListener("click", function() {
-    moim1.style.display = "none";
-    moim2.style.display = "none";
-    moim3.style.display = "block";
-    moim1Button.classList.remove("ylw");
-    moim2Button.classList.remove("ylw");
-    moim3Button.classList.add("ylw");
-  });
+  if (moim3Button) {
+    moim3Button.addEventListener("click", function() {
+      moim1.style.display = "none";
+      moim2.style.display = "none";
+      moim3.style.display = "block";
+      moim1Button.classList.remove("ylw");
+      moim2Button.classList.remove("ylw");
+      moim3Button.classList.add("ylw");
+    });
+  }
 });
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -58,12 +62,14 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   });
 
-  shop2Button.addEventListener("click", function() {
-    shop1.style.display = "none";
-    shop2.style.display = "block";
-    shop1Button.classList.remove("ylw");
-    shop2Button.classList.add("ylw");
-  });
+  if (shop2Button) {
+    shop2Button.addEventListener("click", function() {
+      shop1.style.display = "none";
+      shop2.style.display = "block";
+      shop1Button.classList.remove("ylw");
+      shop2Button.classList.add("ylw");
+    });
+  }
 });
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -84,12 +90,14 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   });
 
-  cmty2Button.addEventListener("click", function() {
-    cmty1.style.display = "none";
-    cmty2.style.display = "block";
-    cmty1Button.classList.remove("ylw");
-    cmty2Button.classList.add("ylw");
-  });
+  if (cmty2Button) {
+    cmty2Button.addEventListener("click", function() {
+      cmty1.style.display = "none";
+      cmty2.style.display = "block";
+      cmty1Button.classList.remove("ylw");
+      cmty2Button.classList.add("ylw");
+    });
+  }
 });
 
 function initializeShowMore(btnClass, itemClass) {
