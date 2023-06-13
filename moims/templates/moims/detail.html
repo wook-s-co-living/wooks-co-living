@@ -45,6 +45,16 @@
           <a id="kakaotalk-sharing-btn" href="javascript:shareMessage()">
             <i class="bi bi-chat-fill"></i> <span>KaKao</span>
           </a>
+
+          <!--구글캘린더에 공유-->
+          {% if post.category == "once" %}
+          <form action="{% url 'moims:calendar' post.pk %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="submit-button">
+              <i class="bi bi-calendar-check"></i> <span>Calendar</span>
+            </button>
+          </form>
+          {% endif %}
         </section>
       </header>
 
