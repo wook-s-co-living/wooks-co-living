@@ -430,6 +430,21 @@
     width: 170px;
   }
   
+  .communities--index--create--a {
+    font-size: 12px;
+  }
+
+  .communities--index--order--btn {
+    font-size: 12px;
+  }
+
+  .communities--index--order--btn span {
+    font-size: 12px;
+  }
+
+  .communities--index--category--btn {
+    font-size: 13px;
+  }
 }
 
 @media (max-width: 1200px) {
