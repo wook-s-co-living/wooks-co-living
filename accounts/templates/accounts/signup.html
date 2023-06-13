@@ -65,7 +65,7 @@
         <input type="button" onclick="search_address()" value="주소 검색" class="address--btn">
       </div>
       
-      <div id="map" style="width:auto;height:350px;"></div>
+      <div id="map" style="width:auto;height:350px; z-index: 5;"></div>
       <input type="submit" value="회원가입" class="accounts--btn" id="submit_button">
       <p class="relogin--txt">이미 아이디가 있으신가요?<a type="button" href="{% url 'accounts:login' %}">로그인</a></p>
     </form>
