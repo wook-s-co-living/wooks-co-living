@@ -126,7 +126,8 @@ class AlarmConsumer(AsyncWebsocketConsumer):
     async def alarm_message(self, event):
         sender = event["sender"]
         retriever = event["retriever"]
-        sendername = await sync_to_async(User.objects.get)(username=sender).first_name
+        senderUser = await sync_to_async(User.objects.get)(username=sender)
+        sendername = senderUser.first_name
         roomName = event["roomName"]
         
         # WebSocket으로 메시지를 전송합니다.
