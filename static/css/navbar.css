@@ -92,6 +92,7 @@
 /* 스크롤 됐을 경우 변하는 부분 */
 .nav--bar.scrolled {
   background-color: #34568b; /* 배경색 변경 */
+  border-bottom: none;
 }
 
 .nav--bar.scrolled .nav-logo--text,
@@ -380,12 +381,12 @@ position: relative;
 }
 
 .nav--bar--bell--a {
-display: block;
-position: relative;
-color: black;
-font-size: 22px;
-margin-right: 20px;
-text-decoration: none;
+  /* display: block;
+  position: relative; */
+  color: black;
+  font-size: 22px;
+  margin-right: 20px;
+  text-decoration: none;
 }
 
 .nav--bar--bell--a:hover {
@@ -401,15 +402,45 @@ color: rgb(163, 163, 163);
 }
 
 .nav--bar--bell--red {
-position: absolute;
-top: 0;
-right: 0;
-width: 7px;
-height: 7px;
-border-radius: 100%;
-background-color: red;
+  position: absolute;
+  top: 4px;
+  right: 48px;
+  width: 7px;
+  height: 7px;
+  border-radius: 100%;
+  background-color: red;
 }
 
+#nav--bar--bell--collapse {
+  position: absolute;
+  display: block;
+  top: 28px;
+  right: -10px;
+  box-shadow: 1px 7px 15px 4px rgba(0,0,0,0.1);
+  width: 120px;
+  text-decoration: none;
+  padding: 5px 0;
+  border-radius: 10px;
+  background-color: white;
+  z-index: 50;
+}
+
+#nav--bar--bell--collapse a {
+  display: block;
+  padding: 10px 12px;
+  font-size: 12px;
+  /* font-weight: bold; */
+  color: black;
+  line-height: 18px;
+}
+
+#nav--bar--bell--collapse a span {
+  color: #34568b;
+}
+
+#nav--bar--bell--collapse a:hover {
+  background-color: rgb(245 245 245);
+}
 
 .nav--bar--right--image {
 width: 25px;
@@ -427,7 +458,6 @@ transform: scale(1.1);
 width: 100%;
 border-radius: 100%;
 }
-
 /* 네비바 오른쪽 콜랩스 */
 
 #nav--bar--right--collapse {

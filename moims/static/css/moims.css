@@ -25,6 +25,7 @@
   align-items: center;
   justify-content: space-between;
   height: 100%;
+  padding: 0 36px;
 }
 
 .moims--index--header .bi-chevron-down {
@@ -219,6 +220,7 @@
   margin-bottom: 20px;
   width: 100%;
   max-height: 32px;
+  padding-bottom: 3px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -466,7 +468,7 @@ input[type=file]::file-selector-button {
 
 .moims--index--create {
   position: sticky;
-  margin-left: 72%;
+  margin-left: 70.3%;
   bottom: 20px;
 }
 

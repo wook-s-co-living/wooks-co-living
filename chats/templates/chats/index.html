@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}
+  내 채팅 리스트
+{% endblock title %}
+
 {% block header %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/room.css' %}"> 
 {% endblock header %}
@@ -25,23 +29,35 @@
               </div>
             </div>
           {% elif chatroom.user2 != user %}
-            <a href="{% url 'chats:room' chatroom.user2.first_name %}" class="chat--link">
+            <a href="{% url 'chats:room' chatroom.user2.first_name %}" class="chat--link" id="{{chatroom.user2}}">
               <div class="chat--box">
                 {% if chatroom.user2.image %}
                   <div class="chat--profile">
                     <img src="{{chatroom.user2.image.url}}" alt="profile_image">
+                    
                   </div>
                 {% else %}
                   <div class="chat--profile">
                     <img src="{% static 'image/noimage.png' %}" alt="noimage">
+                    
                   </div>
                 {% endif %}
+
+                {% if chatroom.user2.is_login %}
+                  <p class="status--login status--log" id="user{{chatroom.user2}}"></p>
+                  <p class="status--log" id="user{{chatroom.user2}}Sub"></p>
+                {% else %}
+                  <p class="status--logout status--log" id="user{{chatroom.user2}}"></p>
+                  <p class="status--log--black" id="user{{chatroom.user2}}Sub"></p>
+                {% endif %}
+
                 <div class="chat--txt">
                   <div>
                     {% if chatroom.user1 == chatroom.user2 %}
                     <i class="bi bi-person-circle"></i>
                     {% endif %}
                     {{ chatroom.user2.first_name }}
+
                   </div>
                   {% comment %} {% if chatroom.get_latest_message.sender == user %} {% endcomment %}
                   <div class="chat--txt--info">
@@ -55,23 +71,35 @@
               </div>
             </a>
           {% else %}
-            <a href="{% url 'chats:room' chatroom.user1.first_name %}" class="chat--link">
+            <a href="{% url 'chats:room' chatroom.user1.first_name %}" class="chat--link" id="{{chatroom.user1}}">
               <div class="chat--box">
                 {% if chatroom.user1.image %}
                   <div class="chat--profile">
                     <img src="{{chatroom.user1.image.url}}" alt="profile_image">
+                    
                   </div>
-                {% else %}
+                  {% else %}
                   <div class="chat--profile">
                     <img src="{% static 'image/noimage.png' %}" alt="noimage">
+                    
                   </div>
                 {% endif %}
+
+                {% if chatroom.user1.is_login %}
+                  <p class="status--login status--log" id="user{{chatroom.user1}}"></p>
+                  <p class="status--log" id="user{{chatroom.user1}}Sub"></p>
+                {% else %}
+                  <p class="status--logout status--log" id="user{{chatroom.user1}}"></p>
+                  <p class="status--log--black" id="user{{chatroom.user1}}Sub"></p>
+                {% endif %}
+                
                 <div class="chat--txt">
                   <div>
                     {% if chatroom.user1 == chatroom.user2 %}
                     <i class="bi bi-person-circle"></i>
                     {% endif %}
                     {{ chatroom.user1.first_name }}
+
                   </div>
                   <div class="chat--txt--info">
                     <span class="chat--message">{{ chatroom.get_latest_message.content }}</span>
@@ -83,4 +111,5 @@
           {% endif %}
         {% endfor %}
     </div>
+    <script src="{% static 'js/chat_index.js' %}"></script>
 {% endblock content %}

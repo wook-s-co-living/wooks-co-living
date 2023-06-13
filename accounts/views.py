@@ -191,6 +191,7 @@ def update(request):
         form = CustomUserChangeForm(instance=request.user)
     context = {
         'form': form,
+        'KAKAO_JS_KEY': KAKAO_JS_KEY,
     }
     return render(request, 'accounts/update.html', context)
 
@@ -214,6 +215,7 @@ def change_password(request):
 def profile(request, username):
     User = get_user_model()
     person = User.objects.get(username=username)
+    join_moims_posts = person.join_moims_posts.all().exclude(user=person)
     if request.method == 'POST':
         form = ProfileForm(request.POST, instance=person)
         if form.is_valid():
@@ -227,6 +229,7 @@ def profile(request, username):
         'followings': person.followings.all(),
         'followers': person.followers.all(),
         'form': form,
+        'join_moims_posts': join_moims_posts,
     }
     return render(request, 'accounts/profile.html', context)
 

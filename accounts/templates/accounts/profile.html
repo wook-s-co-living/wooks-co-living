@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load humanize %}
-{% block title %} {{ username }} Profile {% endblock title %}
+{% block title %} 프로필 | {{ person.first_name }} {% endblock title %}
 {% block header %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/accounts.css' %}">
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -45,7 +45,7 @@
             </div>
     
             {% comment %} 유저아이디 {% endcomment %}
-            <h2>{{ person.username }}</h2>
+            <h2>{{ person.first_name }}</h2>
             
             {% comment %} 팔로워, 팔로잉 {% endcomment %}
             <div class="follow--box">
@@ -55,20 +55,23 @@
             </div>
             
             {% comment %} 팔로우버튼 {% endcomment %}
-            {% if request.user != person %}
-              <form id="follow-form" data-user-id="{{ person.pk }}" data-username="{{ person.username }}" action="{% url 'accounts:follow' person.pk %}" method="post">
-                {% csrf_token %} 
-                  {% if request.user in person.followers.all %}
-                  <input class="profile--followbtn" type="submit" value="언팔로우">
-                  {% else %}
-                    {% if request.user.is_authenticated %}
-                      <input class="profile--followbtn" type="submit" value="팔로우">
+            <div class="d-flex gap-2">
+              {% if request.user != person %}
+                <form id="follow-form" data-user-id="{{ person.pk }}" data-username="{{ person.username }}" action="{% url 'accounts:follow' person.pk %}" method="post">
+                  {% csrf_token %} 
+                    {% if request.user in person.followers.all %}
+                    <input class="profile--followbtn" type="submit" value="언팔로우">
                     {% else %}
-                      <input class="profile--followbtn" type="submit" value="팔로우" disabled>
-                    {% endif %}
-                {% endif %}
-              </form>
-            {% endif %}
+                      {% if request.user.is_authenticated %}
+                        <input class="profile--followbtn" type="submit" value="팔로우">
+                      {% else %}
+                        <input class="profile--followbtn" type="submit" value="팔로우" disabled>
+                      {% endif %}
+                  {% endif %}
+                </form>
+              {% endif %}
+              <a href="{% url 'chats:room' person.first_name %}" class="profile--chatbtn">메세지</a>
+            </div>
     
             {% comment %} 마음거리 {% endcomment %}
             <div class="maum">
@@ -159,7 +162,7 @@
         <input type="button" id="moim1" value="오픈모임({{person.user_moims_posts.all|length}})" class="tab--btn {% if request.user == person %} ylw {% endif %}">
         {% if request.user == person %}
           <input type="button" id="moim2" value="관심모임({{person.like_moims_posts.all|length}})" class="tab--btn">
-          <input type="button" id="moim3" value="참여모임({{person.join_moims_posts.all|length}})" class="tab--btn">
+          <input type="button" id="moim3" value="참여모임({{join_moims_posts|length}})" class="tab--btn">
         {% endif %}
           <hr>
 
@@ -223,7 +226,7 @@
 
         <div class="moim--box moim3">
           <div class="content--box">
-            {% for moim in person.join_moims_posts.all %}
+            {% for moim in join_moims_posts %}
               <a href="{% url 'moims:detail' moim.pk %}" class="moim--link join-moim">
                 <img src="{{ moim.image_first.url }}" alt="">
                 <div class="info--txt">
@@ -242,7 +245,7 @@
             {% empty %}
               <div class="content--empty">참여한 모임이 없습니다.</div>
             {% endfor %} 
-            {% if person.join_moims_posts.all|length > 4 %}
+            {% if join_moims_posts|length > 4 %}
               <div class="show_more_box">
                 <button class="btn-more btn-more3 show_more_btn">더보기</button>
               </div>
@@ -466,7 +469,7 @@
                       <img src="{% static 'image/profile-none.png' %}" alt="follower image" class="profile">
                     </div>
                   {% endif %}
-                  {{ follower.username }}
+                  {{ follower.first_name }}
                 </a>
             </li>
             {% empty %}
@@ -503,7 +506,7 @@
                       <img src="{% static 'image/profile-none.png' %}" alt="following image" class="profile">
                     </div>
                   {% endif %}
-                  <span>{{ following.username }}</span>
+                  <span>{{ following.first_name }}</span>
                 </a>
             </li>
             {% empty %}

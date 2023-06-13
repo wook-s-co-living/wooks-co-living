@@ -2,9 +2,17 @@
 {% load static %}
 {% block title %}
   {% if request.GET.category == 'once' %}
-    moims_once
+    {% if request.GET.dis == 'town' %}
+      당일모임 | 내가 사는 동네
+    {% else %}
+      당일모임 | 내가 사는 건물
+    {% endif %}
   {% else %}
-    moims_many
+    {% if request.GET.dis == 'town' %}
+      정기모임 | 내가 사는 동네
+    {% else %}
+      정기모임 | 내가 사는 건물
+    {% endif %}
   {% endif %}
 {% endblock title %}
 
@@ -131,7 +139,7 @@
                           <img src="{% static 'image/noimage.png' %}" alt="blank-profile-image">
                         {% endif %} 
                       </div>
-                      {{ post.user }}
+                      {{ post.user.first_name }}
                     </div>
 
                     <h1>{{ post.title }}</h1>

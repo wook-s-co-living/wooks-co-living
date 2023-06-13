@@ -19,7 +19,7 @@ from django.utils import timezone
 from django.contrib import messages
 import datetime
 import os.path
-
+from django.db.models import Subquery, OuterRef
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -162,6 +162,12 @@ def detail(request, moim_pk):
     comments = post.comments.filter(parent_comment=None)
     comment_form = CommentForm()
 
+    join_users = post.join_users.all().annotate(
+        participation_order=Subquery(
+            post.join_users.through.objects.filter(user=OuterRef('pk'), post=post).values('id')[:1]
+        )
+    ).order_by('participation_order')
+
     comment_pk = request.session.pop('comment_pk', None)
 
     if comment_pk:
@@ -178,6 +184,7 @@ def detail(request, moim_pk):
         'KAKAO_JS_KEY': KAKAO_JS_KEY,
         'comment': comment,
         'comment_section_id': comment_section_id,
+        'join_users': join_users,
     }
     return render(request, 'moims/detail.html', context)
 

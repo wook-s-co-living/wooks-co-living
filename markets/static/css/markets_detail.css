@@ -490,3 +490,42 @@
 .markets--detail--info a:hover {
   color: black;
 }
+
+.markets--detail--salestatus button {
+  background-color: white;
+  border: 1px solid rgb(200 200 200);
+  border-radius: 14px;
+  padding: 5px 10px;
+  margin-left: 5px;
+  font-size: 14px;
+}
+
+.markets--detail--salestatus button:hover {
+  background-color: #34568b;
+  color: white;
+}
+
+.market--form {
+  display: block;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid #dee2e6;
+  border-radius: 0.375rem;
+  appearance: none;
+  font-size: 0.9rem;
+  transition: border .15s ease-in-out;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.market--form:focus {
+  border: 1px solid #34568b !important;
+  outline: none;
+}
+
+.detail--sale--status {
+  padding: 6px 10px;
+  background-color: #34568b;
+  color: white;
+  border-radius: 5px;
+  margin-left: 10px;
+}

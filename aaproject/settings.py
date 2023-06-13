@@ -94,7 +94,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'aaproject.context_processors.all_users',
+                'aaproject.context_processors.unchecked_alarms',
             ],
         },
     },
@@ -207,10 +207,7 @@ DEFAULT_FROM_EMAIL = EMAIL_SENDER_NAME + ' <' + EMAIL_HOST_USER + '>'
 ASGI_APPLICATION = "aaproject.asgi.application"
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
-        },
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
     },
 }
 

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load humanize %}
-{% block title %} markets_index {% endblock title %}
+{% block title %} 플리마켓 {% endblock title %}
 
 {% block header %}
   <link rel="stylesheet" href="{% static 'css/markets_index.css' %}">
@@ -99,7 +99,7 @@
 
       <section class='markets--index--section'>
         {% for post in posts %}
-          <a class='markets--index--postitem' href="{% url 'markets:detail' post.pk %}">
+          <a class='markets--index--postitem' href="{% url 'markets:detail' post.pk %}?category={{ request.GET.category }}&dis={{ request.GET.dis }}">
             
             {% if post.postimages %}
               <header>
@@ -123,6 +123,10 @@
                 <h3>무료 나눔</h3>
               {% endif %}
 
+              {% if post.sale_status != '판매중' %}
+                <p class='detail--sale--status'>{{ post.sale_status }}</p>
+              {% endif %}
+
               <h4>
                 <form class='markets--index--section--likes' method="POST" data-post-id="{{ post.pk }}">
                   {% csrf_token %}
@@ -144,7 +148,7 @@
           {% if request.GET.q %}
             <div class='markets--index--empty'>일치하는 검색어가 없습니다 😥</div>
           {% else %}
-            <div class='markets--index--empty'>제일 먼저 모임 글을 작성해 보세요! 😃</div>
+            <div class='markets--index--empty'>제일 먼저 게시물을 작성해 보세요! 😃</div>
           {% endif %}
         {% endfor %}
       </section>

@@ -2,6 +2,10 @@
 {% load static %}
 {% load my_filters %}
 
+{% block title %}
+  채팅 | {{ user2.first_name }}
+{% endblock title %}
+
 {% block header %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/room.css' %}"> 
 {% endblock header %}
@@ -70,7 +74,7 @@
   <input type="hidden" id="retriever" value="{{ retriever }}">
   <input type="hidden" id="retriever_name" value="{{ retriever_name }}">
 </div>
-<script type="text/javascript" src="{% static 'js/chat.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/chat_room.js' %}"></script>
 <script>
   const imageUrl = '{{ user2_image_url }}';
   const chatLog = document.getElementById('chat-log');

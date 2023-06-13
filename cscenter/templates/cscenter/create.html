@@ -1,12 +1,33 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %} Cscenter create {% endblock title %}
+{% block title %} 고객센터 문의 {% endblock title %}
+{% block header %}
+  <link rel="stylesheet" href="{% static 'css/cscenter_create.css' %}">
+{% endblock header %}
 
 {% block content %}
-<form action="{% url 'cscenter:create' %}" method="POST">
-  {% csrf_token %}
-  {{ post_form.as_p }}
-  {{ post_form.media }}
-  <input type="submit">
-</form>
+  <div class="cs--create">
+    <p class="cs--title">문의 메일 작성</p>
+    <form action="{% url 'cscenter:create' %}" method="POST" onsubmit="finish(event)">
+      {% csrf_token %}
+      {{ post_form.media }}
+      <div class="d-flex gap-1">
+        {{ post_form.category }}
+        {{ post_form.title }}
+      </div>
+      {{ post_form.content }} 
+      <input type="submit" value="메일 발송" class="create--btn">
+    </form>
+  </div>
 {% endblock content %}
+
+{% block script %}
+  <script>
+    function finish(event) {
+      event.preventDefault(); 
+      alert("메일 발송이 완료 되었습니다.\n혼거동락팀에서 계정의 이메일 주소로 답변드리겠습니다.");
+      var form = event.target;
+      form.submit();
+    }
+  </script>
+{% endblock script %}

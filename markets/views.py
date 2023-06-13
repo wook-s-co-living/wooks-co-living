@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from .models import Post, Postimage
 from .forms import PostForm, PostImageForm, DeleteImageForm
+from django.db.models import Q
+from chats.models import Chatroom
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.contrib import messages
@@ -58,12 +60,18 @@ def detail(request, market_pk):
 
     user_posts = post.user.user_markets_posts.order_by('-pk').exclude(pk=market_pk)[:6]
 
+    post_user =  Post.objects.get(pk=market_pk).user
+
+    chatrooms_length = Chatroom.objects.filter(Q(user1=post_user) | Q(user2=post_user)).count()
+
     if not request.session.get("post_viewed_{}".format(market_pk)):
         post.views += 1
         post.save()
         request.session["post_viewed_{}".format(market_pk)] = True
+    
+    post_form = PostForm(instance=post)
 
-    context = {'post': post, 'user_posts': user_posts, 'KAKAO_JS_KEY': KAKAO_JS_KEY,}
+    context = {'post': post, 'user_posts': user_posts, 'KAKAO_JS_KEY': KAKAO_JS_KEY, 'chatrooms_length': chatrooms_length, 'post_form': post_form,}
     return render(request, 'markets/detail.html', context)
 
 @maum_limit
@@ -151,3 +159,11 @@ def likes(request, market_pk):
 
     context = {'is_liked': is_liked}
     return JsonResponse(context)
+
+
+def update_sale_status(request, market_pk):
+    if request.method == 'POST':
+        post = Post.objects.get(pk=market_pk)
+        post.sale_status = request.POST.get('sale_status')
+        post.save()
+    return redirect('markets:detail', market_pk)

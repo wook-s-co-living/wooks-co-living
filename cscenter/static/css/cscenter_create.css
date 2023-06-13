@@ -1,0 +1,85 @@
+.cs--create {
+  width: 800px;
+  margin: 50px auto;
+  min-height: 100vh;
+  padding: 20px;
+}
+.cs--create form {
+  width: 100%;
+}
+@media (max-width: 800px) {
+  .cs--create {
+      width: 100%;
+  }
+}
+
+.cs--title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #34568b;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.create--btn {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.75rem 0.75rem;
+  border-radius: 0.375rem;
+  text-align: center;
+  font-weight: bold;
+  color: rgb(50,50,50);
+  background-color: #FEE500;
+  border: none;
+  text-decoration: none;
+  display: block;
+  position: relative;
+}
+
+.create--btn:hover {
+  color: black;
+  background-color: rgb(211, 189, 40);
+}
+
+.cs--form {
+  display: block;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid #dee2e6;
+  border-radius: 0.375rem;
+  appearance: none;
+  font-size: 1rem;
+  color: gray;
+  transition: border .15s ease-in-out;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.cs--form::placeholder {
+  color: rgb(185, 185, 185);
+}
+
+.cs--form:focus {
+  border: 1px solid #34568b;
+  outline: none;
+}
+
+.django-ckeditor-widget {
+  width: 100%;
+}
+
+#cke_1_contents {
+  height: 100% !important;
+  width: 100% !important;
+}
+.cke_reset {
+  height: 350px !important;
+  width: 100% !important;
+}
+.cke_inner {
+  height: 100% !important;
+  width: 100% !important;
+}
+#cke_id_content {
+  width: 100% !important;
+  height: 100% !important;
+}
