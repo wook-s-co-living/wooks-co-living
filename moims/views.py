@@ -10,13 +10,32 @@ from dotenv import load_dotenv
 load_dotenv()
 KAKAO_JS_KEY = os.getenv('KAKAO_JS_KEY')
 KAKAO_API_KEY = os.getenv('KAKAO_API_KEY')
+CALENDAR_API_KEY = os.getenv('CALENDAR_API_KEY')
 from django.utils.safestring import mark_safe
 from django.utils.html import escape
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.contrib import messages
+import datetime
+import os.path
 
+from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+from google.oauth2 import credentials
+from datetime import datetime, timedelta
+
+# If modifying these scopes, delete the file token.json.
+SCOPES = ['https://www.googleapis.com/auth/calendar']
+
+
+def calendar(request, moim_pk):
+    post = Post.objects.get(pk=moim_pk)
+    clndr(post)
+    return redirect('moims:detail', moim_pk)
 
 def maum_limit(view_func):
     def wrapper(request, *args, **kwargs):
@@ -78,6 +97,64 @@ def create(request):
     }
     return render(request, 'moims/create.html', context)
 
+def clndr(post):
+    
+    creds = None
+
+    if os.path.exists('token.json'):
+        print("1111111")
+        creds = credentials.Credentials.from_authorized_user_file('token.json', SCOPES)
+
+    # If there are no (valid) credentials available, let the user log in.
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            print("222222")
+            creds.refresh(Request())
+        else:
+            print("333333")
+            flow = InstalledAppFlow.from_client_secrets_file(
+                'credentials.json', SCOPES)
+            creds = flow.run_local_server(port=0)
+
+        # Save the credentials for the next run
+        with open('token.json', 'w') as token:
+            print("444444")
+            token.write(creds.to_json())
+
+    try:
+        service = build('calendar', 'v3', credentials=creds)
+        once_datetime = post.once_datetime
+        end_datetime = once_datetime + timedelta(hours=2)
+        once_datetime_str = once_datetime.strftime('%Y-%m-%dT%H:%M:%S%z')
+        end_datetime_str = end_datetime.strftime('%Y-%m-%dT%H:%M:%S%z')
+        ev = {
+            'summary': post.title,
+            'location': post.address,
+            'description': f"http://127.0.0.1:8000/moims/{post.pk}/",
+            'start': {
+                'dateTime': once_datetime_str,
+                'timeZone': 'Asia/Seoul',
+            },
+            'end': {
+                'dateTime': end_datetime_str,
+                'timeZone': 'Asia/Seoul',
+            },
+            'attendees': [
+                {'email': post.user.email},
+            ],
+            'reminders': {
+                'useDefault': False,
+                'overrides': [
+                    {'method': 'email', 'minutes': 24 * 60},
+                ],
+            },
+        }
+
+        event = service.events().insert(calendarId='primary', body=ev).execute()
+        
+    except HttpError as error:
+        print('An error occurred: %s' % error)
+
 @maum_limit
 @login_required
 def detail(request, moim_pk):
@@ -103,6 +180,7 @@ def detail(request, moim_pk):
         'comment_section_id': comment_section_id,
     }
     return render(request, 'moims/detail.html', context)
+
 
 @maum_limit
 @login_required

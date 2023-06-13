@@ -14,4 +14,5 @@ urlpatterns = [
     path('<int:moim_pk>/update/<int:comment_pk>/', views.comment_update, name='comment_update'),
     path('<int:moim_pk>/delete/<int:comment_pk>/', views.comment_delete, name='comment_delete'),
     path('search/', views.search, name='search'),
+    path('<int:moim_pk>/calendar/', views.calendar, name='calendar')
 ]
