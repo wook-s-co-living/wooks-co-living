@@ -34,20 +34,21 @@
                 {% if chatroom.user2.image %}
                   <div class="chat--profile">
                     <img src="{{chatroom.user2.image.url}}" alt="profile_image">
-                    <header class='loginStatus'></header>
+                    
                   </div>
                 {% else %}
                   <div class="chat--profile">
                     <img src="{% static 'image/noimage.png' %}" alt="noimage">
-                    <header class='loginStatus'></header>
+                    
                   </div>
                 {% endif %}
 
                 {% if chatroom.user2.is_login %}
-                  <p class="status--login status--log" id="user{{chatroom.user2.is_login}}"></p>
+                  <p class="status--login status--log" id="user{{chatroom.user2}}"></p>
+                  <p class="status--log" id="user{{chatroom.user2}}Sub"></p>
                 {% else %}
-                  <p class="status--logout status--log" id="user{{chatroom.user2.is_login}}"></p>
-                  <p class="status--log--black"></p>
+                  <p class="status--logout status--log" id="user{{chatroom.user2}}"></p>
+                  <p class="status--log--black" id="user{{chatroom.user2}}Sub"></p>
                 {% endif %}
 
                 <div class="chat--txt">
@@ -75,22 +76,21 @@
                 {% if chatroom.user1.image %}
                   <div class="chat--profile">
                     <img src="{{chatroom.user1.image.url}}" alt="profile_image">
-                    <div>aa</div>
-                    <header class='loginStatus'></header>
+                    
                   </div>
                   {% else %}
                   <div class="chat--profile">
                     <img src="{% static 'image/noimage.png' %}" alt="noimage">
-                    <div>aa</div>
-                    <header class='loginStatus'></header>
+                    
                   </div>
                 {% endif %}
 
-                {% if chatroom.user2.is_login %}
-                  <p class="status--login status--log" id="user{{chatroom.user2.is_login}}"></p>
+                {% if chatroom.user1.is_login %}
+                  <p class="status--login status--log" id="user{{chatroom.user1}}"></p>
+                  <p class="status--log" id="user{{chatroom.user1}}Sub"></p>
                 {% else %}
-                  <p class="status--logout status--log" id="user{{chatroom.user2.is_login}}"></p>
-                  <p class="status--log--black"></p>
+                  <p class="status--logout status--log" id="user{{chatroom.user1}}"></p>
+                  <p class="status--log--black" id="user{{chatroom.user1}}Sub"></p>
                 {% endif %}
                 
                 <div class="chat--txt">

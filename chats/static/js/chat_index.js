@@ -7,10 +7,8 @@ indexSocket.onmessage = (event) => {
   const retriever = data.retriever
   const message = data.message
   const sendername = data.sendername
-  const senderImage = data.senderImage
+  const senderImage = data.senderImage  
   const parentElement = document.querySelector('.chats--container')
-  
-  // 만약 위에가 sendername이 같다면 위에서 숫자만 추가한다.
   const senderElement = document.querySelector(`#${sender}`)
   
   if (senderElement) {
@@ -28,6 +26,8 @@ indexSocket.onmessage = (event) => {
           <div class="chat--profile">
             <img src="${senderImage}" alt="profile_image">
           </div>
+          <p class="status--login status--log" id="user${sender}"></p>
+          <p class="status--log" id="user${sender}Sub"></p>
           <div class="chat--txt">
             <div>
               ${sendername}
@@ -39,10 +39,14 @@ indexSocket.onmessage = (event) => {
           </div>
         </div>
     `;    
-
-    parentElement.insertBefore(newChat, parentElement.children[1]);
+    
+    if(parentElement.children[1]) {
+      parentElement.insertBefore(newChat, parentElement.children[1]);
+    }
+    else {
+      parentElement.appendChild(newChat);
+    }
   }
-
 }
 
 loginSocket.onmessage = (event) => {
@@ -50,21 +54,20 @@ loginSocket.onmessage = (event) => {
   const loginUser = data.loginUser
   const loginStatus = data.loginStatus
   const element = document.querySelector(`#user${loginUser}`);
-  console.log("도달1")
-  if (loginUser == "{{user}}") {
-  console.log("도달2")
-} else if (loginStatus) {
-    console.log("도달3")
+  const subElement = document.querySelector(`#user${loginUser}Sub`);
+  if (loginStatus) {
+    console.log(element)
     element.classList.remove('status--logout');
     element.classList.add('status--login');
-    element.textContent = '활성화';
+
+    subElement.classList.remove('status--log--black');
+    subElement.classList.add('status--log');
   } else {
     element.classList.remove('status--login');
     element.classList.add('status--logout');
-    element.textContent = '비활성화';
+
+    subElement.classList.remove('status--log');
+    subElement.classList.add('status--log--black');
+    // status--log--black 추가
   }
-  console.log(`#user${loginUser}`)
 };
-
-
-
