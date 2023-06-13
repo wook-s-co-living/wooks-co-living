@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load humanize %}
-{% block title %} markets_detail {% endblock title %}
+{% block title %} {{ post.title }} {% endblock title %}
 
 {% block header %}
   <script src="{% static 'owlcarousel/jquery.min.js' %}"></script>
