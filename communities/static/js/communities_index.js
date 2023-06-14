@@ -47,7 +47,7 @@ searchInput.addEventListener('input', async (event) => {
     const response = await fetch(
       `/communities/?category=${categoryValue}&tag=${tagValue}&q=${searchValue}`
     )
-    console.log(response)
+    
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }

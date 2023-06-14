@@ -17,7 +17,6 @@ $(document).ready(function() {
       },
       dataType: 'json',
       success: function(data) {
-        console.log(data['overlap']);
         if (data['overlap'] === "fail") {
           alert("이미 존재하는 아이디입니다.");
           usernameInput.focus();
@@ -45,7 +44,6 @@ $(document).ready(function() {
       },
       dataType: 'json',
       success: function(data) {
-        console.log(data['overlap']);
         if (data['overlap'] === "fail") {
           alert("이미 존재하는 이메일입니다.");
           emailInput.focus();

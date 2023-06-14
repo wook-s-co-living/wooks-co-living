@@ -61,11 +61,10 @@ loginSocket.onmessage = (event) => {
   const data = JSON.parse(event.data);
   const loginUser = data.loginUser
   const loginStatus = data.loginStatus
-  console.log(loginUser)
+  
   const element = document.querySelector(`#user${loginUser}`);
   const subElement = document.querySelector(`#user${loginUser}Sub`);
   if (loginStatus) {
-    console.log(element)
     element.classList.remove('status--logout');
     element.classList.add('status--login');
 

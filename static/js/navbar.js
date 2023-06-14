@@ -150,13 +150,13 @@ if (!liveAlarmSocket || liveAlarmSocket.readyState !== WebSocket.OPEN) {
 
 const currentUser2 = document.getElementById('currentUser').value;
 
-loginSocket.onopen = () => {
-  console.log('loginSocket connection established.');
-};
+// loginSocket.onopen = () => {
+//   console.log('loginSocket connection established.');
+// };
 
-navAlarmSocket.onopen = () => {
-  console.log('alarmSocket connection established.');
-};
+// navAlarmSocket.onopen = () => {
+//   console.log('alarmSocket connection established.');
+// };
 
 navAlarmSocket.onmessage = (event) => {
   const data = JSON.parse(event.data);
@@ -209,10 +209,10 @@ navAlarmSocket.onmessage = (event) => {
     
     }
   };
-  loginSocket.onclose = () => {
-    console.log('loginSocket connection closed.');
-  };
-  navAlarmSocket.onclose = () => {
-    console.log('alarmSocket connection closed.');
-  };
+  // loginSocket.onclose = () => {
+  //   console.log('loginSocket connection closed.');
+  // };
+  // navAlarmSocket.onclose = () => {
+  //   console.log('alarmSocket connection closed.');
+  // };
 };

@@ -54,7 +54,7 @@ searchInput.addEventListener('input', async (event) => {
   const urlParams = new URLSearchParams(window.location.search)
   const disValue = urlParams.get('dis')
   const categoryValue = urlParams.get('category')
-  console.log(disValue)
+  
   try {
     const response = await fetch(
       `/markets/?dis=${disValue}&category=${categoryValue}&q=${searchValue}`

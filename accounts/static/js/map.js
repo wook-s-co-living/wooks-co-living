@@ -115,8 +115,7 @@ function displayMarkers() {
         var lon2 = positions[1].latlng.getLng();
 
         var distance = calculateDistance(lat1, lon1, lat2, lon2);
-        console.log('Distance between the two points: ' + distance + ' kilometers');
-        console.log(positions)
+        
         function showDialog(message) {
           var dialog = document.getElementById('dialog');
           var dialogMessage = document.getElementById('dialog-message');

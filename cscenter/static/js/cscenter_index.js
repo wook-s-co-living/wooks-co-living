@@ -1,6 +1,6 @@
 const categoryBtns = document.querySelectorAll('.cscenter--index--section--category--item')
 const categoryContainer = document.querySelector('.cscenter--index--section--category--posts')
-console.log(categoryBtns)
+
 if (categoryBtns) {
   
   categoryBtns.forEach((btn) => {
