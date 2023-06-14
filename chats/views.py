@@ -35,6 +35,13 @@ def index(request):
 def room(request, first_name):
     user_name = User.objects.get(first_name=first_name).username
     user2 = User.objects.get(first_name=first_name)
+    if(Chatroom.objects.filter(user1=request.user, user2=user2).first()):
+        chatroom = Chatroom.objects.get(user1=request.user, user2=user2)
+    else:
+        chatroom = Chatroom.objects.get(user1=user2, user2=request.user)
+
+    messages2 = Message.objects.filter(chatroom=chatroom)
+    messages2.update(is_checked=True)
     user2_image_url = user2.image.url if user2.image else static('image/noimage.png')
     try:
         room = Chatroom.objects.get(user1=request.user, user2=User.objects.get(username=user_name))
@@ -90,13 +97,16 @@ def update_latest_message(request):
         }
         return JsonResponse(response)
     
-def get_chatroom_data(request, chatroom_id):
-    try:
-        chatroom = Chatroom.objects.get(pk=chatroom_id)
-        data = {
-            'user1': chatroom.user1,
-            'user2': chatroom.user2,
-        }
-        return JsonResponse(data)
-    except Chatroom.DoesNotExist:
-        return JsonResponse({'error': 'Chatroom does not exist'}, status=404)
+# def get_chatroom_data(request, chatroom_id):
+#     try:
+#         chatroom = Chatroom.objects.get(pk=chatroom_id)
+#         print(chatroom.user1)
+#         print(chatroom.user2)
+#         print(chatroom)
+#         data = {
+#             'user1': chatroom.user1.username,
+#             'user2': chatroom.user2.username,
+#         }
+#         return JsonResponse(data)
+#     except Chatroom.DoesNotExist:
+#         return JsonResponse({'error': 'Chatroom does not exist'}, status=404)

@@ -14,6 +14,7 @@ indexSocket.onmessage = (event) => {
   if (senderElement) {
     senderElement.querySelector('.chat--message').textContent = `${message}`
     senderElement.querySelector('.chat--created').textContent = '방금 전'
+    senderElement.style.backgroundColor = 'lightgray';
     parentElement.insertBefore(senderElement, parentElement.children[1]);
     
   } else {
@@ -21,6 +22,7 @@ indexSocket.onmessage = (event) => {
     newChat.href = `/chats/${sendername}/`;
     newChat.className = 'chat--link';
     newChat.id = `${sender}`;
+    newChat.style.backgroundColor = 'lightgray';
     newChat.innerHTML = `
         <div class="chat--box">
           <div class="chat--profile">
@@ -53,6 +55,7 @@ loginSocket.onmessage = (event) => {
   const data = JSON.parse(event.data);
   const loginUser = data.loginUser
   const loginStatus = data.loginStatus
+  console.log(loginUser)
   const element = document.querySelector(`#user${loginUser}`);
   const subElement = document.querySelector(`#user${loginUser}Sub`);
   if (loginStatus) {
