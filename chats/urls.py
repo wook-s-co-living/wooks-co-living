@@ -9,4 +9,5 @@ urlpatterns = [
     path("update_latest_message/", views.update_latest_message),
     # path("get_chatroom_data/<int:chatroom_id>/", views.get_chatroom_data),
     path("<str:first_name>/", views.room, name="room"),
+    path("<str:first_name>/delete/", views.delete, name="delete"),
 ]

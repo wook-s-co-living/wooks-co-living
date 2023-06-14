@@ -13,9 +13,9 @@
 {% block content %}
 <div class="chats--container">
   <div class="room--title">
-    <a href="{% url 'chats:index' %}" class="back--btn" type="button">〈</a>
+    <a href="{% url 'chats:index' %}" class="back--btn" type="button"><i class="bi bi-chevron-left"></i></a>
     <a href="{% url 'accounts:profile' user2.username%}" class="room--title--link">
-      {% if user2.image %}
+      {% if user2.image %} 
       <div class="title--profile">
         <img src="{{ user2.image.url }}" alt="profile_image">
       </div>
@@ -26,6 +26,15 @@
       {% endif %}
       {{ retriever_name }}
     </a>
+    <footer>
+      <form action="{% url 'chats:delete' user2.first_name %}" method="POST">
+        {% csrf_token %}
+        <button type='submit'>
+          <i class="bi bi-box-arrow-right"></i>
+          <span>나가기</span>
+        </button>
+      </form>
+    </footer>
   </div>
   <div id="chat-log">
     {% for message in messages %}

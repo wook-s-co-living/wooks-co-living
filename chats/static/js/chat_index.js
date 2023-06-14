@@ -1,6 +1,5 @@
 //메세지가 오면 onmessage가 로그인은 없으니 로그인을 이용해서 하자 로그인이 온 sender가 상대방인데 그때 id를 골라서맨 위로 올리기
 
-
 indexSocket.onmessage = (event) => {
   const data = JSON.parse(event.data);
   const sender = data.sender
@@ -14,7 +13,13 @@ indexSocket.onmessage = (event) => {
   if (senderElement) {
     senderElement.querySelector('.chat--message').textContent = `${message}`
     senderElement.querySelector('.chat--created').textContent = '방금 전'
-    senderElement.style.backgroundColor = 'lightgray';
+
+    const notificationElement = senderElement.querySelector('.chat--notification')
+
+    notificationElement.style.display = 'block';
+    
+    notificationElement.textContent = parseInt(notificationElement.textContent) + 1
+
     parentElement.insertBefore(senderElement, parentElement.children[1]);
     
   } else {
@@ -22,7 +27,7 @@ indexSocket.onmessage = (event) => {
     newChat.href = `/chats/${sendername}/`;
     newChat.className = 'chat--link';
     newChat.id = `${sender}`;
-    newChat.style.backgroundColor = 'lightgray';
+
     newChat.innerHTML = `
         <div class="chat--box">
           <div class="chat--profile">
@@ -30,6 +35,7 @@ indexSocket.onmessage = (event) => {
           </div>
           <p class="status--login status--log" id="user${sender}"></p>
           <p class="status--log" id="user${sender}Sub"></p>
+          <div class='chat--notification'>1</div>
           <div class="chat--txt">
             <div>
               ${sendername}

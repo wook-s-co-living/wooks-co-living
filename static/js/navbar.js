@@ -147,6 +147,7 @@ if (!liveAlarmSocket || liveAlarmSocket.readyState !== WebSocket.OPEN) {
   // 만약 소켓이 없으면 소켓 생성 -> 로그인을 의미하는 socket생성
   liveAlarmSocket = new WebSocket(protocol + '//' + window.location.host + '/ws/livealarm/');
 }
+
 const currentUser2 = document.getElementById('currentUser').value;
 
 loginSocket.onopen = () => {
@@ -159,19 +160,17 @@ navAlarmSocket.onopen = () => {
 
 navAlarmSocket.onmessage = (event) => {
   const data = JSON.parse(event.data);
-  console.log(data)
+  
   const sender = data.sender
   const retriever = data.retriever
   const content = data.content
   const sendername = data.sendername
   var currentURL = window.location.href;
-  console.log(currentURL);
+  
   const decodedString = decodeURIComponent(currentURL);
   const segments = decodedString.split('/');
   const chatroomId = segments[segments.length - 2];
-  console.log(decodedString);
-  console.log(chatroomId);
-  console.log(sendername)
+  
   
   if(chatroomId == sendername){
 
@@ -181,7 +180,8 @@ navAlarmSocket.onmessage = (event) => {
   
       const navBarBellCollapse = document.querySelector('#nav--bar--bell--collapse');
       const aTags = navBarBellCollapse.querySelectorAll('a');
-  
+      navBarBellCollapse.style.display = 'block'
+
       if (aTags.length >= 5) {
         aTags[4].remove(); // 첫 번째 <a> 태그 제거
       }
@@ -199,7 +199,13 @@ navAlarmSocket.onmessage = (event) => {
         navBarBellCollapse.appendChild(newAlarm);
       }
   
-      document.querySelector('.nav--bar--bell--red').classList.remove('d-none');
+      document.querySelectorAll('.nav--bar--bell--red').forEach(element => {
+        element.classList.remove('d-none');
+      });
+      
+      
+      
+
     
     }
   };

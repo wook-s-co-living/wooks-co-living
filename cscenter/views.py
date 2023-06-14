@@ -84,18 +84,3 @@ def delete(request, post_pk):
     if post.user == request.user:
         post.delete()
     return redirect('cscenter:index')
-
-def update(request, post_pk):
-    post = Post.objects.get(pk=post_pk)
-    if request.method == "POST":
-        update_form = PostForm(request.POST, instance=post)
-        if update_form.is_valid():
-            update = update_form.save()
-            return redirect('cscenter:detail', post.pk)
-    else:
-        update_form = PostForm(instance=post)
-    context = {
-        'post': post,
-        'update_form': update_form,
-    }
-    return render(request, 'cscenter/update.html', context)

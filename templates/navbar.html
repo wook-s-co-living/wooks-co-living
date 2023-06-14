@@ -37,7 +37,7 @@
               <header class='nav--bar--bell--red {% if has_unchecked_alarms %}{% else %}d-none{% endif %}'></header>
             </a>
 
-            <section id='nav--bar--bell--collapse' class='d-none'>
+            <section id='nav--bar--bell--collapse' class='d-none' {% if not unchecked_alarms %}style='display: none;'{% endif %}>
               {% for unchecked_alarm  in unchecked_alarms  %}
                 <a href="{% url 'chats:room' unchecked_alarm.sender.first_name %}">
                   <span>{{ unchecked_alarm.sender.first_name }}</span>님이 메세지를 보냈어요.
@@ -102,7 +102,7 @@
 
         <a class='bot--nav--bar--bell--a' href="{% url 'chats:index' %}">
           <i class="bi bi-bell"></i>
-          <div class='nav--bar--bell--red d-none'></div>
+          <div class='botnav--bar--bell--red {% if has_unchecked_alarms %}{% else %}d-none{% endif %}'></div>
         </a>
       </header>
 

@@ -33,21 +33,21 @@
     {% endblock content %}
   </div>
 
-  <div>----------------------</div>
-  <div id="livealarm"></div>
-  <div>----------------------</div>
+  <div id='side-alarm'></div>
+
   {% block footer %}
     {% include 'footer.html' %}
   {% endblock footer %}
 
-  {% block script %}
-  {% endblock script %}
-
-
+  <script src="{% static 'js/navbar.js' %}"></script>
+  
+  
   <input type="hidden" id="currentUser" value="{{user}}">
   
-  <script src="{% static 'js/navbar.js' %}"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
   <script type="text/javascript" src="{% static 'js/base.js' %}"></script>
+  
+  {% block script %}
+  {% endblock script %}
 </body>
 </html>

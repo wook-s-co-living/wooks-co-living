@@ -46,3 +46,78 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
+/* live alarm */
+
+.livealarm {
+	display: block;
+	position: fixed;
+	bottom: 80px;
+	left: 50%;
+	transform: translateX(-50%);
+	padding: 18px 30px;
+	background-color: rgb(50 50 50);
+	color: white;
+	text-decoration: none;
+	font-size: 16px;
+	border-radius: 10px;
+	font-weight: bold;
+	line-height: 20px;
+	white-space: nowrap;
+	z-index: 1200;
+}
+
+.livealarm:hover {
+	background-color: rgb(20 20 20);
+}
+
+.livealarm span {
+	color: #FEE500;
+}
+
+#side-alarm {
+	position: fixed;
+	bottom: 20px;
+	right: 30px;
+}
+
+#side-alarm .sidelivealarm {
+	display: block;
+	padding: 18px 30px;
+	background-color: rgb(50 50 50);
+	color: white;
+	text-decoration: none;
+	font-size: 15px;
+	border-radius: 10px;
+	font-weight: bold;
+	line-height: 20px;
+	z-index: 1200;
+	margin-top: 20px;
+	max-width: 320px;
+}
+
+#side-alarm .sidelivealarm div {
+	margin-bottom: 10px;
+}
+
+#side-alarm .sidelivealarm span {
+	color: #FEE500;
+}
+
+#side-alarm .sidelivealarm section {
+	font-size: 14px;
+	display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}
+
+@media (max-width: 800px) {
+	.livealarm {
+		font-size: 14px;
+		padding: 14px 24px;
+		top: 60px;
+		bottom: auto;
+	}
+}
