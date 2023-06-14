@@ -153,30 +153,62 @@ navAlarmSocket.onopen = () => {
 };
 
 navAlarmSocket.onmessage = (event) => {
-  if (typeof chatSocket !== 'undefined') { // + url의 맨 뒤가 sender와 같으면
-    console.log("채팅방에 들어있음");
-    console.log(chatSocket.url)
-  }
   const data = JSON.parse(event.data);
   console.log(data)
   const sender = data.sender
   const retriever = data.retriever
   const content = data.content
   const sendername = data.sendername
-  console.log(retriever, currentUser2)
-  if (retriever == currentUser2) {
-    // 만약 위에가 sendername이 같다면 위에서 숫자만 추가한다.
+  
+  const segments = chatSocket.url.split('/');
+  const chatroomId = segments[segments.length - 2];
 
-    const navBarBellCollapse = document.querySelector('#nav--bar--bell--collapse');
-    const aTags = navBarBellCollapse.querySelectorAll('a');
-
-    if (aTags.length >= 5) {
-      aTags[0].remove(); // 첫 번째 <a> 태그 제거
+  fetch(`/chats/get_chatroom_data/${chatroomId}/`)
+  .then(function(response) {
+    if (response.ok) {
+      return response.json();
+    } else {
+      throw new Error('Failed to fetch chatroom data');
     }
-
-    navBarBellCollapse.innerHTML += `<a href=/chats/${sendername}><span>${sendername}</span>님이 메세지를 보냈어요.</a>`
-
-    document.querySelector('.nav--bar--bell--red').classList.remove('d-none');
+  })
+  .then(function(data) {
+    // 데이터 사용
+    var user1 = data.user1;
+    var user2 = data.user2;
+    console.log(user1, user2);
+  })
+  .catch(function(error) {
+    console.error(error);
+  });
+  
+  if (typeof chatSocket !== 'undefined' && (user1 === sender || user2 === sender)) { // + url의 맨 뒤가 sender와 같으면
+    
+  } else {
+    if (retriever == currentUser2) {
+      // 만약 위에가 sendername이 같다면 위에서 숫자만 추가한다.
+  
+      const navBarBellCollapse = document.querySelector('#nav--bar--bell--collapse');
+      const aTags = navBarBellCollapse.querySelectorAll('a');
+  
+      if (aTags.length >= 5) {
+        aTags[4].remove(); // 첫 번째 <a> 태그 제거
+      }
+  
+      const newAlarm = document.createElement('a');
+      newAlarm.href = `/chats/${sendername}`;
+      newAlarm.innerHTML = `<span>${sendername}</span>님이 메세지를 보냈어요.`;
+      
+      const firstLink = navBarBellCollapse.querySelector('a');
+      if (firstLink) {
+        // 첫 번째 링크가 있을 경우 앞에 추가
+        navBarBellCollapse.insertBefore(newAlarm, firstLink);
+      } else {
+        // 링크가 없을 경우 맨 뒤에 추가
+        navBarBellCollapse.appendChild(newAlarm);
+      }
+  
+      document.querySelector('.nav--bar--bell--red').classList.remove('d-none');
+    }
   }
   
   loginSocket.onclose = () => {
