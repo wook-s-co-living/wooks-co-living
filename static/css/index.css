@@ -167,7 +167,7 @@ body, html {
 
 .index--flow_section_w100 {
     width: 100%;
-    height: 350px;
+    height: 850px;
     text-align: center;
     background-color: none;
     line-height: 3rem;
@@ -175,6 +175,7 @@ body, html {
     font-size: 2rem;
     font-weight: 600;
     margin: 3rem auto;
+    overflow: hidden;
 }
 .index--flow_section_w100 strong {
     display: inline-block;
@@ -186,24 +187,31 @@ body, html {
 
 
 @keyframes moveRight {
-from {
-    transform: translateX(-50%);
-}
-to {
-    transform: translateX(100%);
-}
+    from {
+        transform: translateX(-300%);
+    }
+    to {
+        transform: translateX(75%);
+    }
 }
   
 .sample-ele {
-display: flex;
-height: 300px;
-width: auto;
-animation: moveRight 15s linear infinite;
+    display: flex;
+    height: 600px;
+    width: auto;
+    animation: moveRight 40s linear infinite;
 }
+
 .sample-ele img{
-height: 100px;
-width: 100px;
+    display: inline-block;
+    height: 100%;
+    width: 300px;
+    margin: 0 100px;
+    box-shadow: 5px 10px 20px 10px rgba(0,0,0,0.2);
+    border-radius: 55px;
 }
+
+
 .index--maum_title {
     text-align: center;
     color: #34568b;
