@@ -294,6 +294,13 @@ body, html {
 	opacity: 0.5;
 	transition: all 0.3s;
 }
+
+.testimonial-box h5 {
+    font-weight: bold;
+    color: #34568b;
+    font-size: 20px;
+}
+
 .testimonial-box .quote-icon {
 	font-size: 50px;
 	color: #eee;
@@ -306,7 +313,7 @@ body, html {
     margin: 0 auto;
 	border: 3px solid #eee;
 	border-radius: 50px;
-	object-fit: contain;
+	object-fit: cover;
 	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.16);
 }
 
@@ -320,6 +327,7 @@ body, html {
     text-align: center;
     color: gray;
     margin-bottom: 1.5rem;
+    font-size: 15px;
 }
 .testimonial--text {
     padding: 1rem;
@@ -331,18 +339,18 @@ body, html {
 /* 좌우 화살표 */
 .owl-nav .owl-prev {
 	position: absolute;
-	top: calc(50% - 25px);
+	top: calc(40%);
 	left: 30%;
-	opacity: 0.5;
+	opacity: 0.3;
 	font-size: 50px !important;
 	z-index: 1;
 }
 
 .owl-nav .owl-next {
 	position: absolute;
-	top: calc(50% - 25px);
+	top: calc(40%);
 	right: 30%;
-	opacity: 0.5;
+	opacity: 0.3;
 	font-size: 50px !important;
 	z-index: 1;
 }

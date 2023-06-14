@@ -147,7 +147,7 @@ def clndr(post):
         }
         event = service.events().insert(calendarId='primary', body=ev).execute()
         
-        os.remove(token.json)
+        os.remove('token.json')
     except HttpError as error:
         print('An error occurred: %s' % error)
 
