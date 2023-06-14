@@ -66,7 +66,7 @@ def signup(request):
                 'user': user,
                 'domain': current_site.domain,
                 'token': token,
-                'activate_url' : f'http://127.0.0.1:8000/accounts/activate/{token}',
+                'activate_url' : f'https://co-living.kro.kr/accounts/activate/{token}',
             })
             email = EmailMessage(mail_subject, message, to=[user.email])
             email.send()
@@ -322,7 +322,7 @@ def password_reset_request(request):
 					email_template_name = "accounts/password_reset_email.txt"
 					c = {
 						"email": user.email,
-						'domain': 'http://127.0.0.1:8000',
+						'domain': 'https://co-living.kro.kr/',
 						'site_name': '혼거동락',
 						"uid": urlsafe_base64_encode(force_bytes(user.pk)),
 						"user": user,

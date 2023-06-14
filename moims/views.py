@@ -130,7 +130,7 @@ def clndr(post):
         ev = {
             'summary': post.title,
             'location': post.address,
-            'description': f"http://127.0.0.1:8000/moims/{post.pk}/",
+            'description': f"https://co-living.kro.kr/moims/{post.pk}/",
             'start': {
                 'dateTime': once_datetime_str,
                 'timeZone': 'Asia/Seoul',
