@@ -209,3 +209,54 @@ class IndexConsumer(AsyncWebsocketConsumer):
             "senderImage": senderImage,
         }))
 
+
+class LivealarmConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        await self.accept()
+        print("login을 하고 socket에 연결")
+        await self.channel_layer.group_add("livealarm_group", self.channel_name)
+        # Add the user to a group or do any other initialization
+        
+    async def disconnect(self, close_code):
+        print("logout을 하고 socket과 연결 종료")
+        print(close_code)
+        await self.channel_layer.group_discard("livealarm_group", self.channel_name)
+        # Remove the user from the group or perform any cleanup
+        
+    async def receive(self, text_data):
+        text_data_json = json.loads(text_data)
+        
+        roomName = text_data_json["roomName"]
+        sender = text_data_json["sender"]
+        retriever = text_data_json["retriever"]
+        senderUser = await sync_to_async(User.objects.get)(username=sender)
+        if senderUser.image :
+            senderImage = senderUser.image.url
+        else : 
+            senderImage = "/static/image/noimage.png"
+        
+        # await sync_to_async(Message.objects.create)(content=content, sender=sender, retriever=retriever)
+        # Send message to room group
+        await self.channel_layer.group_send(
+            "livealarm_group", {"type": "livealarm_message", "sender": sender, "retriever": retriever, "roomName": roomName,}
+        )
+
+    async def livealarm_message(self, event):
+        sender = event["sender"]
+        retriever = event["retriever"]
+        senderUser = await sync_to_async(User.objects.get)(username=sender)
+        retrieverUser = await sync_to_async(User.objects.get)(username=retriever)
+        senderId = senderUser.id
+        retrieverId = retrieverUser.id
+        sendername = senderUser.first_name
+        roomName = event["roomName"]
+        
+        # WebSocket으로 메시지를 전송합니다.
+        await self.send(text_data=json.dumps({
+            "sender": sender,
+            "retriever": retriever,
+            "senderId": senderId,
+            "retrieverId": retrieverId,
+            "roomName": roomName,
+            "sendername": sendername,
+        }))

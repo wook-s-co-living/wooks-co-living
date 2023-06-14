@@ -157,6 +157,13 @@ document.querySelector('#chat-message-submit').onclick = function(e) {
         'retriever': retriever,
         'roomName': roomName,
     }))
+
+    liveAlarmSocket.send(JSON.stringify({
+        'message': message,
+        'sender': currentUser,
+        'retriever': retriever,
+        'roomName': roomName,
+    }))
 messageInputDom.value = '';
 };
 

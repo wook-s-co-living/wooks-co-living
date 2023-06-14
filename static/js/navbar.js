@@ -129,6 +129,7 @@ var protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
 var loginSocket;
 var navAlarmSocket;
 var indexSocket;
+var liveAlarmSocket;
 
 if (!loginSocket || loginSocket.readyState !== WebSocket.OPEN) { 
   // 만약 소켓이 없으면 소켓 생성 -> 로그인을 의미하는 socket생성
@@ -141,6 +142,10 @@ if (!navAlarmSocket || navAlarmSocket.readyState !== WebSocket.OPEN) {
 if (!indexSocket || indexAlarmSocket.readyState !== WebSocket.OPEN) { 
   // 만약 소켓이 없으면 소켓 생성 -> 로그인을 의미하는 socket생성
   indexSocket = new WebSocket(protocol + '//' + window.location.host + '/ws/index/');
+}
+if (!liveAlarmSocket || liveAlarmSocket.readyState !== WebSocket.OPEN) { 
+  // 만약 소켓이 없으면 소켓 생성 -> 로그인을 의미하는 socket생성
+  liveAlarmSocket = new WebSocket(protocol + '//' + window.location.host + '/ws/livealarm/');
 }
 const currentUser2 = document.getElementById('currentUser').value;
 
@@ -159,31 +164,18 @@ navAlarmSocket.onmessage = (event) => {
   const retriever = data.retriever
   const content = data.content
   const sendername = data.sendername
-  
-  const segments = chatSocket.url.split('/');
+  var currentURL = window.location.href;
+  console.log(currentURL);
+  const decodedString = decodeURIComponent(currentURL);
+  const segments = decodedString.split('/');
   const chatroomId = segments[segments.length - 2];
-
-  fetch(`/chats/get_chatroom_data/${chatroomId}/`)
-  .then(function(response) {
-    if (response.ok) {
-      return response.json();
-    } else {
-      throw new Error('Failed to fetch chatroom data');
-    }
-  })
-  .then(function(data) {
-    // 데이터 사용
-    var user1 = data.user1;
-    var user2 = data.user2;
-    console.log(user1, user2);
-  })
-  .catch(function(error) {
-    console.error(error);
-  });
+  console.log(decodedString);
+  console.log(chatroomId);
+  console.log(sendername)
   
-  if (typeof chatSocket !== 'undefined' && (user1 === sender || user2 === sender)) { // + url의 맨 뒤가 sender와 같으면
-    
-  } else {
+  if(chatroomId == sendername){
+
+  }else{
     if (retriever == currentUser2) {
       // 만약 위에가 sendername이 같다면 위에서 숫자만 추가한다.
   
@@ -208,9 +200,9 @@ navAlarmSocket.onmessage = (event) => {
       }
   
       document.querySelector('.nav--bar--bell--red').classList.remove('d-none');
+    
     }
-  }
-  
+  };
   loginSocket.onclose = () => {
     console.log('loginSocket connection closed.');
   };
