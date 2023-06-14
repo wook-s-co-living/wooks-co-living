@@ -102,23 +102,19 @@ def clndr(post):
     creds = None
 
     if os.path.exists('token.json'):
-        print("1111111")
         creds = credentials.Credentials.from_authorized_user_file('token.json', SCOPES)
 
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
-            print("222222")
             creds.refresh(Request())
         else:
-            print("333333")
             flow = InstalledAppFlow.from_client_secrets_file(
                 'credentials.json', SCOPES)
             creds = flow.run_local_server(port=0)
 
         # Save the credentials for the next run
         with open('token.json', 'w') as token:
-            print("444444")
             token.write(creds.to_json())
 
     try:
@@ -130,7 +126,7 @@ def clndr(post):
         ev = {
             'summary': post.title,
             'location': post.address,
-            'description': f"https://co-living.r-e.kr/moims/{post.pk}/",
+            'description': f"https://wooks-co-living.o-r.kr/moims/{post.pk}/",
             'start': {
                 'dateTime': once_datetime_str,
                 'timeZone': 'Asia/Seoul',
@@ -149,9 +145,9 @@ def clndr(post):
                 ],
             },
         }
-
         event = service.events().insert(calendarId='primary', body=ev).execute()
         
+        os.remove(token.json)
     except HttpError as error:
         print('An error occurred: %s' % error)
 

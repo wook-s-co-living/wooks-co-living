@@ -66,7 +66,7 @@ def signup(request):
                 'user': user,
                 'domain': current_site.domain,
                 'token': token,
-                'activate_url' : f'https://co-living.r-e.kr/accounts/activate/{token}',
+                'activate_url' : f'https://wooks-co-living.o-r.kr/accounts/activate/{token}',
             })
             email = EmailMessage(mail_subject, message, to=[user.email])
             email.send()
@@ -322,7 +322,7 @@ def password_reset_request(request):
 					email_template_name = "accounts/password_reset_email.txt"
 					c = {
 						"email": user.email,
-						'domain': 'https://co-living.r-e.kr/',
+						'domain': 'https://wooks-co-living.o-r.kr/',
 						'site_name': '혼거동락',
 						"uid": urlsafe_base64_encode(force_bytes(user.pk)),
 						"user": user,
