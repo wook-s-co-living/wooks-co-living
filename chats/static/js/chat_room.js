@@ -13,21 +13,68 @@ const currentUser = document.getElementById('currentUser').value;
 const retriever = document.getElementById('retriever').value;
 const retrieverName = document.getElementById('retriever_name').value;
 
-chatSocket.onmessage = function(e) {
-    const data = JSON.parse(e.data);
-    const message = data.message;
-    const sender = data.sender;  // 발신자 정보를 받아옵니다.
+function updateLatestMessage(retrieverId, senderId) {
 
-    // 현재 사용자와 발신자가 동일한지 확인합니다.
-    const isCurrentUser = (sender === currentUser);
-    
-    if (isCurrentUser) {
-        // 발신자가 현재 사용자인 경우 오른쪽에 채팅을 배치합니다.
-        document.querySelector('#chat-log').innerHTML += '<div class="chat-bubble chat-right"><span data-sender="' + sender + '"></span><div class="d-flex align-items-end"><span class="right--time">' + getCurrentTime() + '</span><p>' + message + '</p></div></div>';
-    } else {
+}
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+        }
+    }
+}
+return cookieValue;
+    }
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        const message = data.message;
+        const sender = data.sender;
+        const retriever = data.retriever;
+        const senderId = data.senderId;
+        const retrieverId = data.retrieverId;
+        
+        
+        console.log(chatSocket.url)
+        // 현재 사용자와 발신자가 동일한지 확인합니다.
+        const isCurrentUser = (sender === currentUser);
+        
+        if (isCurrentUser) { // 내가 발신자면
+            document.querySelector('#chat-log').innerHTML += '<div class="chat-bubble chat-right"><span data-sender="' + sender + '"></span><div class="d-flex align-items-end"><span class="right--time">' + getCurrentTime() + '</span><p>' + message + '</p></div></div>';
+        } else { // 내가 수신자면
+            
+        var dataset = {
+            retriever: retriever,
+            sender: sender,
+        
+            hi: "hihi"
+        };
+        
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/chats/update_latest_message/', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        
+        var csrftoken = getCookie('csrftoken');
+        
+        xhr.setRequestHeader('X-CSRFToken', csrftoken);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            console.log("성공요")// 응답 처리
+        } else {
+                console.log("실패요")// 응답 처리
+            }
+        };
+        xhr.send(JSON.stringify(dataset));
+        
+
         const chatLog = document.querySelector('#chat-log');
-
-        // 이전 메시지의 발신자 가져오기
         const lastMessage = chatLog.lastElementChild;
         const previousSender = lastMessage ? lastMessage.querySelector('span').dataset.sender : null;
 
@@ -41,7 +88,6 @@ chatSocket.onmessage = function(e) {
         const profileSub = document.createElement('div');
         profileSub.className = 'chat--profile--sub';
 
-        // 이전 발신자와 현재 발신자가 다른 경우 이미지 삽입
         if (previousSender !== sender) {
             const image = document.createElement('img');
             image.alt = 'profile_image';
