@@ -196,6 +196,36 @@
   color: black;
 }
 
+/* 채팅방 나가기 */
+
+.room--title footer {
+  flex-grow: 1;
+  display: flex;
+  flex-flow: row-reverse;
+}
+
+.room--title form button {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  background-color: white;
+  border: 0;
+  font-size: 26px;
+  color: rgb(200 200 200);
+}
+
+.room--title form button:hover {
+  color: #34568b;
+}
+
+.room--title form button i {
+  margin-left: 4px;
+}
+
+.room--title form span {
+  font-size: 6px;
+}
+
 .title--profile {
   width: 40px;
   height: 40px;
@@ -271,6 +301,19 @@
   font-weight: 600;
   font-size: 0.9rem;
 
+}
+
+/* 빨간색 채팅 개수 */
+
+.chat--notification {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  background-color: rgb(247, 21, 21);
+  color: white;
+  padding: 3px 5px;
+  font-size: 10px;
+  border-radius: 8px;
 }
 
 @media (max-width: 600px) {

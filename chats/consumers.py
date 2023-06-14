@@ -77,12 +77,12 @@ class LoginConsumer(AsyncWebsocketConsumer):
         await sync_to_async(user.save)()
 
         await self.channel_layer.group_send(
-            "login_group", {"type": "chat_message", "loginUser": loginUser, "loginStatus": loginStatus,}
+            "login_group", {"type": "login_message", "loginUser": loginUser, "loginStatus": loginStatus,}
         )
 
         await self.channel_layer.group_discard("login_group", self.channel_name)
 
-    async def chat_message(self, event):
+    async def login_message(self, event):
         loginUser = event["loginUser"]
         loginStatus = event["loginStatus"]
 
@@ -225,7 +225,7 @@ class LivealarmConsumer(AsyncWebsocketConsumer):
         
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        
+        message = text_data_json["message"]
         roomName = text_data_json["roomName"]
         sender = text_data_json["sender"]
         retriever = text_data_json["retriever"]
@@ -238,12 +238,13 @@ class LivealarmConsumer(AsyncWebsocketConsumer):
         # await sync_to_async(Message.objects.create)(content=content, sender=sender, retriever=retriever)
         # Send message to room group
         await self.channel_layer.group_send(
-            "livealarm_group", {"type": "livealarm_message", "sender": sender, "retriever": retriever, "roomName": roomName,}
+            "livealarm_group", {"type": "livealarm_message", "message": message ,"sender": sender, "retriever": retriever, "roomName": roomName,}
         )
 
     async def livealarm_message(self, event):
         sender = event["sender"]
         retriever = event["retriever"]
+        message = event["message"]
         senderUser = await sync_to_async(User.objects.get)(username=sender)
         retrieverUser = await sync_to_async(User.objects.get)(username=retriever)
         senderId = senderUser.id
@@ -254,6 +255,7 @@ class LivealarmConsumer(AsyncWebsocketConsumer):
         # WebSocket으로 메시지를 전송합니다.
         await self.send(text_data=json.dumps({
             "sender": sender,
+            "message": message,
             "retriever": retriever,
             "senderId": senderId,
             "retrieverId": retrieverId,

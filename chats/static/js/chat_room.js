@@ -41,7 +41,6 @@ return cookieValue;
         const retrieverId = data.retrieverId;
         
         
-        console.log(chatSocket.url)
         // 현재 사용자와 발신자가 동일한지 확인합니다.
         const isCurrentUser = (sender === currentUser);
         
@@ -66,10 +65,7 @@ return cookieValue;
         xhr.onload = function () {
             if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
-            console.log("성공요")// 응답 처리
-        } else {
-                console.log("실패요")// 응답 처리
-            }
+        }
         };
         xhr.send(JSON.stringify(dataset));
         

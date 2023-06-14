@@ -14,9 +14,7 @@
       <div class="chats--title">채팅 리스트</div>
         {% for chatroom in chatrooms %}
           {% with unchecked_messages=chatroom.get_latest_message.is_checked %}
-          
-        
-        
+    
           {% if chatroom.user2 is null or chatroom.user1 is null %}
             <div class="chat--box">
               <div class="chat--profile">
@@ -33,7 +31,7 @@
               </div>
             </div>
           {% elif chatroom.user2 != user %}
-            <a href="{% url 'chats:room' chatroom.user2.first_name %}" class="chat--link" id="{{chatroom.user2}}"{% if unchecked_messages %}{% else %}style="background-color: lightgray;"{% endif %}>
+            <a href="{% url 'chats:room' chatroom.user2.first_name %}" class="chat--link" id="{{chatroom.user2}}">
               <div class="chat--box">
                 {% if chatroom.user2.image %}
                   <div class="chat--profile">
@@ -55,6 +53,11 @@
                   <p class="status--log--black" id="user{{chatroom.user2}}Sub"></p>
                 {% endif %}
 
+                {% comment %} 빨간색 채팅 개수 {% endcomment %}
+                <div class='chat--notification' {% if not chatroom.unchecked_message_count %}style="display: none;"{% endif %}>
+                  {{ chatroom.unchecked_message_count }} 
+                </div>
+
                 <div class="chat--txt">
                   <div>
                     {% if chatroom.user1 == chatroom.user2 %}
@@ -75,7 +78,7 @@
               </div>
             </a>
           {% else %}
-            <a href="{% url 'chats:room' chatroom.user1.first_name %}" class="chat--link" id="{{chatroom.user1}}"{% if unchecked_messages %}{% else %}style="background-color: lightgray;"{% endif %}>
+            <a href="{% url 'chats:room' chatroom.user1.first_name %}" class="chat--link" id="{{chatroom.user1}}">
               <div class="chat--box">
                 {% if chatroom.user1.image %}
                   <div class="chat--profile">
@@ -96,6 +99,12 @@
                   <p class="status--logout status--log" id="user{{chatroom.user1}}"></p>
                   <p class="status--log--black" id="user{{chatroom.user1}}Sub"></p>
                 {% endif %}
+              
+                {% comment %} 빨간색 채팅 개수 {% endcomment %}
+                
+                <div class='chat--notification' {% if not chatroom.unchecked_message_count %}style="display: none;"{% endif %}>
+                  {{ chatroom.unchecked_message_count }}
+                </div>
                 
                 <div class="chat--txt">
                   <div>
@@ -114,7 +123,11 @@
             </a>
           {% endif %}
           {% endwith %}
+
         {% endfor %}
     </div>
-    <script src="{% static 'js/chat_index.js' %}"></script>
 {% endblock content %}
+    
+{% block script %}
+  <script src="{% static 'js/chat_index.js' %}"></script>
+{% endblock script %}

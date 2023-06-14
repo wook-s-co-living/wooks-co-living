@@ -25,7 +25,12 @@ def maum_limit(view_func):
 @maum_limit
 def index(request):
     chatrooms = Chatroom.objects.filter(Q(user1=request.user) | Q(user2=request.user))
+    
+    for chatroom in chatrooms:
+        chatroom.unchecked_message_count = chatroom.message_set.filter(retriever=request.user, is_checked=False).count()
+
     sorted_chatrooms = sorted(chatrooms, key=lambda x: x.get_latest_message().created_at if x.get_latest_message() else x.created_at, reverse=True)
+
     context = {
         'chatrooms': sorted_chatrooms,
     }
@@ -35,13 +40,7 @@ def index(request):
 def room(request, first_name):
     user_name = User.objects.get(first_name=first_name).username
     user2 = User.objects.get(first_name=first_name)
-    if(Chatroom.objects.filter(user1=request.user, user2=user2).first()):
-        chatroom = Chatroom.objects.get(user1=request.user, user2=user2)
-    else:
-        chatroom = Chatroom.objects.get(user1=user2, user2=request.user)
 
-    messages2 = Message.objects.filter(chatroom=chatroom)
-    messages2.update(is_checked=True)
     user2_image_url = user2.image.url if user2.image else static('image/noimage.png')
     try:
         room = Chatroom.objects.get(user1=request.user, user2=User.objects.get(username=user_name))
@@ -50,6 +49,13 @@ def room(request, first_name):
             room = Chatroom.objects.get(user1=User.objects.get(username=user_name), user2=request.user)
         except Chatroom.DoesNotExist:
             room = Chatroom.objects.create(user1=request.user, user2=User.objects.get(username=user_name))
+
+    if(Chatroom.objects.filter(user1=request.user, user2=user2).first()):
+        chatroom = Chatroom.objects.get(user1=request.user, user2=user2)
+    else:
+        chatroom = Chatroom.objects.get(user1=user2, user2=request.user)
+    messages2 = Message.objects.filter(retriever=request.user, chatroom=chatroom)
+    messages2.update(is_checked=True) # 
 
     room_name = room.pk
     messages = room.message_set.all()
@@ -97,16 +103,14 @@ def update_latest_message(request):
         }
         return JsonResponse(response)
     
-# def get_chatroom_data(request, chatroom_id):
-#     try:
-#         chatroom = Chatroom.objects.get(pk=chatroom_id)
-#         print(chatroom.user1)
-#         print(chatroom.user2)
-#         print(chatroom)
-#         data = {
-#             'user1': chatroom.user1.username,
-#             'user2': chatroom.user2.username,
-#         }
-#         return JsonResponse(data)
-#     except Chatroom.DoesNotExist:
-#         return JsonResponse({'error': 'Chatroom does not exist'}, status=404)
+def delete(request, first_name):
+    user = User.objects.get(first_name=first_name)
+
+    if(Chatroom.objects.filter(user1=request.user, user2=user).first()):
+        chatroom = Chatroom.objects.get(user1=request.user, user2=user)
+    else:
+        chatroom = Chatroom.objects.get(user1=user, user2=request.user)
+    print('=================')
+    print(chatroom)
+    chatroom.delete()
+    return redirect('chats:index')
