@@ -598,13 +598,41 @@
   color: rgb(0 144 249);
 }
 
-.sun_banner {
+.team11_banner {
   display: block;
   position: absolute;
   left: -210px;
   top: 20px;
   width: 180px;
   border: 1px solid rgb(245 245 245);
+}
+
+.sun_banner img,
+.team6_banner img,
+.team11_banner img {
+  width: 100%;
+}
+
+.team6_banner {
+  display: block;
+  position: absolute;
+  right: -210px;
+  top: 20px;
+  width: 180px;
+  border: 1px solid rgb(240 240 240);
+}
+
+.team11_banner img {
+  width: 100%;
+}
+
+.sun_banner {
+  display: block;
+  position: absolute;
+  right: -210px;
+  top: 400px;
+  width: 180px;
+  border: 1px solid rgb(240 240 240);
 }
 
 .sun_banner img {
