@@ -126,8 +126,12 @@
 
         {% endfor %}
     </div>
+
 {% endblock content %}
     
 {% block script %}
+  <script>
+    const currentUser5 = '{{ requestUser }}'
+  </script>
   <script src="{% static 'js/chat_index.js' %}"></script>
 {% endblock script %}

@@ -332,7 +332,8 @@ def comment_delete(request, post_pk, comment_pk):
 
     post = Post.objects.get(pk=post_pk)
     comments = post.comments.filter(parent_comment=None)
-    first_comment = comments.first()
+    if comments:
+        first_comment = comments.first()
 
     request.session['comment_pk'] = first_comment.pk
 

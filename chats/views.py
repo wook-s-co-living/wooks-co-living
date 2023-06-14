@@ -33,6 +33,7 @@ def index(request):
 
     context = {
         'chatrooms': sorted_chatrooms,
+        'requestUser': request.user,
     }
     return render(request, "chats/index.html", context)
 

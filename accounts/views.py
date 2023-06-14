@@ -322,7 +322,7 @@ def password_reset_request(request):
 					email_template_name = "accounts/password_reset_email.txt"
 					c = {
 						"email": user.email,
-						'domain': 'https://wooks-co-living.o-r.kr/',
+						'domain': 'https://wooks-co-living.o-r.kr',
 						'site_name': '혼거동락',
 						"uid": urlsafe_base64_encode(force_bytes(user.pk)),
 						"user": user,

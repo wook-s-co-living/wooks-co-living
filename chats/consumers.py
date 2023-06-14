@@ -62,7 +62,7 @@ class LoginConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_add("login_group", self.channel_name)
 
         await self.channel_layer.group_send(
-            "login_group", {"type": "chat_message", "loginUser": loginUser, "loginStatus": loginStatus,}
+            "login_group", {"type": "login_message", "loginUser": loginUser, "loginStatus": loginStatus,}
         )
 
     async def disconnect(self, close_code):

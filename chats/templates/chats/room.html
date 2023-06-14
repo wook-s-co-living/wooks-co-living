@@ -83,7 +83,7 @@
   <input type="hidden" id="retriever" value="{{ retriever }}">
   <input type="hidden" id="retriever_name" value="{{ retriever_name }}">
 </div>
-<script type="text/javascript" src="{% static 'js/chat_room.js' %}"></script>
+
 <script>
   const imageUrl = '{{ user2_image_url }}';
   const chatLog = document.getElementById('chat-log');
@@ -93,3 +93,7 @@
   scrollToBottom();
 </script>
 {% endblock content %}
+
+{% block script %}
+  <script type="text/javascript" src="{% static 'js/chat_room.js' %}"></script>
+{% endblock script %}
