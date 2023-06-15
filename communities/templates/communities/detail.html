@@ -307,10 +307,11 @@
       content: {
         title: '{{ post.title }}',
         description: '커뮤니티',
-        imageUrl: 'https://pbs.twimg.com/media/FKQuyJjXEAQvzeq.jpg',
+        imageUrl: 'https://wooks-co-living.o-r.kr/static/image/co-living-logo.png',
         link: {
           // [내 애플리케이션] > [플랫폼] 에서 등록한 사이트 도메인과 일치해야 함
-          webUrl: 'http://127.0.0.1:8000/',
+          mobileWebUrl: 'https://wooks-co-living.o-r.kr/',
+          webUrl: 'https://wooks-co-living.o-r.kr/',
         },
       },
       social: {
@@ -321,7 +322,8 @@
         {
           title: '웹으로 보기',
           link: {
-            webUrl: 'http://127.0.0.1:8000/communities/{{ post.pk }}/',
+            mobileWebUrl: 'https://wooks-co-living.o-r.kr/communities/{{ post.pk }}/',
+            webUrl: 'https://wooks-co-living.o-r.kr/communities/{{ post.pk }}/',
           },
         },
       ],

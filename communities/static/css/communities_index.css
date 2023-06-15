@@ -163,6 +163,7 @@
   text-decoration: none;
   color: rgb(20 20 20);
   display: block;
+  line-height: 20px;
 }
 
 .communities--index--section--item--section:hover {
@@ -182,6 +183,7 @@
 
 .communities--index--section--item--footer header a {
   text-decoration: none;
+  margin: 2px 0;
 }
 
 .communities--index--section--item--category {
@@ -415,6 +417,17 @@
   width: 100%;
 }
 
+@media (max-width: 400px) {
+  .communities--index--create--form input {
+    width: 155px!important;
+  }
+
+  .communities--index--category--btn {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+}
+
 @media (max-width: 800px) {
   .communities--index--container {
     width: 100%;
@@ -444,6 +457,7 @@
 
   .communities--index--category--btn {
     font-size: 13px;
+    padding: 7px 11px;
   }
 }
 

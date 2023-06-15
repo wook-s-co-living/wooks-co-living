@@ -47,8 +47,7 @@
 .chats--container {
   width: 400px;
   margin: 50px auto;
-  margin-top: 20px;
-  min-height: 80vh;
+  height: calc(100vh - 150px);
   padding-bottom: 70px;
 }
 
@@ -127,7 +126,7 @@
 }
 
 #chat-log {
-  height: 80vh;
+  height: calc(100vh - 250px);
   padding: 5px;
   overflow: auto;
 }
@@ -329,6 +328,6 @@
   }
 
   #chat-log {
-    height: 80vh;
+    height: calc(100vh - 200px);
   }
 }

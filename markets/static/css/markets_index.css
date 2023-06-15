@@ -334,6 +334,10 @@
   #markets--index--alert {
     bottom: 60px;
   }
+
+  #markets--index--search--block input {
+    width: 180px;
+  }
 }
 
 @media(max-width: 600px) {

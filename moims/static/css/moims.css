@@ -520,6 +520,11 @@ input[type=file]::file-selector-button {
   .moims--index--header {
     top: 0;
   }
+
+  #moims--index--search--block input {
+    width: 180px;
+    max-width: 180px;
+  }
 }
 
 @media(max-width: 600px) {

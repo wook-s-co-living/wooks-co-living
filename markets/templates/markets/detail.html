@@ -251,10 +251,11 @@
         content: {
           title: '{{ post.title }}',
           description: '플리마켓',
-          imageUrl: 'https://1.bp.blogspot.com/-mJ5jFeNA4gQ/X79hVOtDv8I/AAAAAAAAQYk/p5C-cInqnT8mIJ_i5BNNwKcCBh-1P1UOACLcBGAsYHQ/s625-rw/money%2Brain.jpg',
+          imageUrl: 'https://wooks-co-living.o-r.kr/{{ post.postimages.first.image.url }}',
           link: {
             // [내 애플리케이션] > [플랫폼] 에서 등록한 사이트 도메인과 일치해야 함
-            webUrl: 'http://127.0.0.1:8000/',
+            mobileWebUrl: 'https://wooks-co-living.o-r.kr/',
+            webUrl: 'https://wooks-co-living.o-r.kr/',
           },
         },
         social: {
@@ -264,7 +265,8 @@
           {
             title: '웹으로 보기',
             link: {
-              webUrl: 'http://127.0.0.1:8000/markets/{{ post.pk }}/',
+              mobileWebUrl: 'https://wooks-co-living.o-r.kr/markets/{{ post.pk }}/',
+              webUrl: 'https://wooks-co-living.o-r.kr/markets/{{ post.pk }}/',
             },
           },
         ],
