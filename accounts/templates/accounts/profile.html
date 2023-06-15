@@ -80,53 +80,59 @@
             </div>
           </div>
           
-          <div class="user--eva">
-            {% if request.user != person %}
-              {% comment %} 좋아요 {% endcomment %}
-              {% if request.user.is_authenticated %}
-              <form id="user-likes-form" data-username="{{ person.username }}" class="user--like">
-                  {% csrf_token %}
-                  {% if request.user in person.likes.all %}
-                  <button class="user--emoji" type="submit" {% if user in person.dislikes.all %} disabled style="color:gray;" {% endif %}>
-                    <i class="bi bi-emoji-smile-fill" id="user-up"></i>  
-                  </button>
-                  {% else %}
-                  <button class="user--emoji" type="submit" {% if user in person.dislikes.all %} disabled style="color:gray;" {% endif %}>
-                    <i class="bi bi-emoji-smile" id="user-up"></i>
-                  </button>
-                  {% endif %}
-              </form>
+          {% if person.maum != 100 %}
+            <div class="user--eva">
+              {% if request.user != person %}
+                {% comment %} 좋아요 {% endcomment %}
+                {% if request.user.is_authenticated %}
+                <form id="user-likes-form" data-username="{{ person.username }}" class="user--like">
+                    {% csrf_token %}
+                    {% if request.user in person.likes.all %}
+                    <button class="user--emoji" type="submit" {% if user in person.dislikes.all %} disabled style="color:gray;" {% endif %}>
+                      <i class="bi bi-emoji-smile-fill" id="user-up"></i>  
+                    </button>
+                    {% else %}
+                    <button class="user--emoji" type="submit" {% if user in person.dislikes.all %} disabled style="color:gray;" {% endif %}>
+                      <i class="bi bi-emoji-smile" id="user-up"></i>
+                    </button>
+                    {% endif %}
+                </form>
+                {% else %}
+                <button class="user--emoji" disabled>
+                  <i class="bi bi-emoji-smile" id="user-up"></i>
+                </button>
+                {% endif %}
+                <span id="user-likes-count" class="count--like">{{ person.likes.count }}</span>
+      
+                {% comment %} 싫어요 {% endcomment %}
+                {% if request.user.is_authenticated %}
+                <form id="user-dislikes-form" data-username="{{ person.username }}" class="user--dislike">
+                    {% csrf_token %}
+                    {% if request.user in person.dislikes.all %}
+                    <button class="user--emoji" type="submit" {% if user in person.likes.all %} disabled style="color:gray;" {% endif %}>
+                    <i class="bi bi-emoji-neutral-fill" id="user-down"></i>  
+                    </button>
+                    {% else %}
+                    <button class="user--emoji" type="submit" {% if user in person.likes.all %} disabled style="color:gray;" {% endif %}>
+                      <i class="bi bi-emoji-neutral" id="user-down"></i>
+                    </button>
+                    {% endif %}
+                </form>
+                {% else %}
+                <button class="user--emoji" disabled>
+                  <i class="bi bi-emoji-neutral" id="user-down"></i>
+                </button>
+                {% endif %}
+                <span id="user-dislikes-count" class="count--like">{{ person.dislikes.count }}</span>
               {% else %}
-              <button class="user--emoji" disabled>
-                <i class="bi bi-emoji-smile" id="user-up"></i>
-              </button>
+                <a href="{% url 'accounts:delete'%}" class="user--delete--btn" onclick="return confirm('탈퇴 시, 더 이상 서비스를 이용하실 수 없습니다.\n정말 탈퇴하시겠습니까?')">회원탈퇴</a>
               {% endif %}
-              <span id="user-likes-count" class="count--like">{{ person.likes.count }}</span>
-    
-              {% comment %} 싫어요 {% endcomment %}
-              {% if request.user.is_authenticated %}
-              <form id="user-dislikes-form" data-username="{{ person.username }}" class="user--dislike">
-                  {% csrf_token %}
-                  {% if request.user in person.dislikes.all %}
-                  <button class="user--emoji" type="submit" {% if user in person.likes.all %} disabled style="color:gray;" {% endif %}>
-                  <i class="bi bi-emoji-neutral-fill" id="user-down"></i>  
-                  </button>
-                  {% else %}
-                  <button class="user--emoji" type="submit" {% if user in person.likes.all %} disabled style="color:gray;" {% endif %}>
-                    <i class="bi bi-emoji-neutral" id="user-down"></i>
-                  </button>
-                  {% endif %}
-              </form>
-              {% else %}
-              <button class="user--emoji" disabled>
-                <i class="bi bi-emoji-neutral" id="user-down"></i>
-              </button>
-              {% endif %}
-              <span id="user-dislikes-count" class="count--like">{{ person.dislikes.count }}</span>
-            {% else %}
-              <a href="{% url 'accounts:delete'%}" class="user--delete--btn" onclick="return confirm('탈퇴 시, 더 이상 서비스를 이용하실 수 없습니다.\n정말 탈퇴하시겠습니까?')">회원탈퇴</a>
-            {% endif %}
-          </div>
+            </div>
+          {% else %}
+            <div class='reported--user' style='font-size: 12px; margin-top: 20px; color: rgb(120 120 120);'>
+              비매너 행위로 정지된 계정입니다.
+            </div>
+          {% endif %}
         </div>
 
         <div class="user--info--box">

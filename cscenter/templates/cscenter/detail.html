@@ -52,11 +52,5 @@
   </div>
 </div>
 
-{% if post.user == user %}
-  <form action="{% url 'cscenter:delete' post.pk %}" method="POST">
-    {% csrf_token %}
-    <input type="submit" value="DELETE">
-  </form>
-{% endif %}
 
 {% endblock content %} 

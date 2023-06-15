@@ -330,6 +330,7 @@ input[id="tab06"]:checked ~ .card6 {
   justify-content: center;
   align-items: center;
   width: 200px;
+  min-width: 200px;
 }
 
 .profile--namecard {
