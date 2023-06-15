@@ -3,6 +3,10 @@
 {% load humanize %}
 {% block title %} {{ post.title }} {% endblock title %}
 
+{% block style %}
+  .bottom--nav {display: none!important;}
+{% endblock style %}
+
 {% block header %}
   <script src="{% static 'owlcarousel/jquery.min.js' %}"></script>
   <link rel="stylesheet" href="{% static 'owlcarousel/owl.carousel.css' %}">

@@ -5,6 +5,10 @@
 
 {% block title %} {{ post.title }} {% endblock title %}
 
+{% block style %}
+  .bottom--nav {display: none!important;}
+{% endblock style %}
+
 {% block header %}
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
   <link rel="stylesheet" href="{% static 'css/moims_detail.css' %}">
