@@ -15,7 +15,9 @@
 <a href="https://wooks-co-living.o-r.kr">혼거동락 웹 사이트</a>
 
 ## 🧑‍💻 기술스택
+
 <br>
+
 <img src="https://img.shields.io/badge/git-F05032?style=for-plastic&logo=git&logoColor=white" style="margin-right:5px;"> 
 <img src="https://img.shields.io/badge/github-181717?style=for-plastic&logo=github&logoColor=white" style="margin-right:5px;"> 
 <img src="https://img.shields.io/badge/python-3776AB?style=for-plastic&logo=python&logoColor=white" style="margin-right:5px;"> 
@@ -25,6 +27,7 @@
 <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-plastic&logo=javascript&logoColor=white" style="margin-right:5px;"> 
 <img src="https://img.shields.io/badge/axios-5A29E4?style=for-plastic&logo=axios&logoColor=white" style="margin-right:5px;"> 
 <img src="https://img.shields.io/badge/sqlite-003B57?style=for-plastic&logo=sqlite&logoColor=white">
+
 <hr>
 
 ## 🫂 ACCOUNTS
