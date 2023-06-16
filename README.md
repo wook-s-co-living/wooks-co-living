@@ -1,14 +1,11 @@
 # wooks-co-living
 
-<img src="static\image\team8_banner.gif" style="width:53%; margin-bottom:20px;">
-<br>
-<img src="static\image\혼거동락.png" style="width:53%; margin-right:10px;">
-<img src="static\image\iphone_index.png" style="width:20%;">
+<img src="static\image\team8_banner.gif" style="width:53%; margin-bottom:20px;"> <img src="static\image\혼거동락.png" style="width:53%; margin-right:10px;"> <img src="static\image\iphone_index.png" style="width:20%;">
 <br>
 <br>
 <br>
 
-## 🫧 프로젝트 주제
+## 😎 프로젝트 주제
 - 소가구를 위한 한 건물 / 한 동네 커뮤니티 플랫폼
   - 늘어나는 1인 가구들이 혼자 살면서 불편했던 점을 함께 함으로써 해결하고자 했습니다
   - ”혼거동락”, 혼자 살아도 함께 즐거운 곳으로 만들고자 합니다.
@@ -18,19 +15,11 @@
 
 <br>
 
-<img src="https://img.shields.io/badge/git-F05032?style=for-plastic&logo=git&logoColor=white" style="margin-right:5px;"> 
-<img src="https://img.shields.io/badge/github-181717?style=for-plastic&logo=github&logoColor=white" style="margin-right:5px;"> 
-<img src="https://img.shields.io/badge/python-3776AB?style=for-plastic&logo=python&logoColor=white" style="margin-right:5px;"> 
-<img src="https://img.shields.io/badge/django-092E20?style=for-plastic&logo=django&logoColor=white" style="margin-right:5px;"> 
-<img src="https://img.shields.io/badge/html5-E34F26?style=for-plastic&logo=html5&logoColor=white" style="margin-right:5px;"> 
-<img src="https://img.shields.io/badge/css3-1572B6?style=for-plastic&logo=css3&logoColor=white" style="margin-right:5px;"> 
-<img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-plastic&logo=javascript&logoColor=white" style="margin-right:5px;"> 
-<img src="https://img.shields.io/badge/axios-5A29E4?style=for-plastic&logo=axios&logoColor=white" style="margin-right:5px;"> 
-<img src="https://img.shields.io/badge/sqlite-003B57?style=for-plastic&logo=sqlite&logoColor=white">
+<img src="https://img.shields.io/badge/git-F05032?style=for-plastic&logo=git&logoColor=white" style="margin-right:5px;"> <img src="https://img.shields.io/badge/github-181717?style=for-plastic&logo=github&logoColor=white" style="margin-right:5px;"> <img src="https://img.shields.io/badge/python-3776AB?style=for-plastic&logo=python&logoColor=white" style="margin-right:5px;"> <img src="https://img.shields.io/badge/django-092E20?style=for-plastic&logo=django&logoColor=white" style="margin-right:5px;"> <img src="https://img.shields.io/badge/html5-E34F26?style=for-plastic&logo=html5&logoColor=white" style="margin-right:5px;"> <img src="https://img.shields.io/badge/css3-1572B6?style=for-plastic&logo=css3&logoColor=white" style="margin-right:5px;"> <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-plastic&logo=javascript&logoColor=white" style="margin-right:5px;"> <img src="https://img.shields.io/badge/axios-5A29E4?style=for-plastic&logo=axios&logoColor=white" style="margin-right:5px;"> <img src="https://img.shields.io/badge/sqlite-003B57?style=for-plastic&logo=sqlite&logoColor=white">
 
 <hr>
 
-## 🫂 ACCOUNTS
+## 👩🏻‍💻 ACCOUNTS
 
 - 이메일 인증 : 가입 시 입력한 이메일로 인증 메일 전송
 - 위치 인증 : 가입 시 위치와 입력한 주소가 5km 반경 안에 들어와야 가입 가능
